@@ -237,7 +237,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
   </div>
 
   <h2><span class="num">1</span>워밍업: 오류를 찾아라! 🔧<span class="time">10분</span></h2>
-  <p>아래 코드에는 <b>오류가 3개</b> 숨어 있어요. 먼저 눈으로 찾아 <b>동그라미</b> 치고, Thonny에서 <code>warmup.py</code>를 실행해 확인해 보세요.</p>
+  <p>아래 코드에는 <b>오류가 3개</b> 숨어 있어요. 먼저 눈으로 찾아 <b>동그라미</b> 치고, <code>warmup.py</code>를 실행해 확인해 보세요.</p>
   <pre class="code"><span class="l"><span class="c"># 8주 워밍업: 우리 반 간식 뽑기</span></span><span class="l"><span class="c"># 간식 후보 명단(리스트)을 만들고, 새 간식을 추가한 뒤 오늘의 간식을 뽑아요.</span></span><span class="l"><span class="c"># 이 코드에는 오류가 3개 숨어 있어요. 고쳐 보세요!</span></span><span class="l"></span><span class="l">import random</span><span class="l"></span><span class="l">snacks = ["젤리", "과자", "초콜릿"</span><span class="l">print(f"간식 후보: {snacks}")</span><span class="l"></span><span class="l">snacks.add("아이스크림")</span><span class="l">print(f"새 후보를 넣었어요: {snacks}")</span><span class="l">print(f"네 번째 후보: {snacks[4]}")</span><span class="l"></span><span class="l">today = random.choice(snacks)</span><span class="l">print(f"🍬 오늘의 간식은 {today}!")</span></pre>
 
   <table class="fill">
@@ -249,8 +249,8 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
   <div class="tip"><b>SyntaxError</b>: 괄호 짝 확인 &nbsp;|&nbsp; <b>AttributeError</b>: 그런 이름의 함수가 없어요 &nbsp;|&nbsp; <b>IndexError</b>: 리스트에 없는 칸 번호예요</div>
 
   <div class="box">
-    <h3>🐞 디버거 미션: 리스트 기차 칸 세기</h3>
-    <p class="muted">다 고쳤으면 벌레 버튼(Ctrl+F5) → <b>Step over(F6)</b>로 한 줄씩 실행해요. 변수 창의 <code>snacks</code>를 보고 칸마다 들어간 값을 적어 보세요.</p>
+    <h3>🔍 따라가기 미션: 리스트 기차 칸 세기</h3>
+    <p class="muted">다 고쳤으면 코드를 <b>한 줄씩 따라가며</b> <code>snacks</code>의 칸마다 들어간 값을 적어 보세요. 실행하면 8·11번 줄이 리스트를 출력하니 그걸로 확인해요.</p>
     <table class="fill" style="margin-top:2mm">
       <tr><th style="width:34mm">언제?</th><th>[0]</th><th>[1]</th><th>[2]</th><th>[3]</th></tr>
       <tr><td class="w">7번 줄 실행 뒤</td><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr>
@@ -263,7 +263,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
 <!-- ===================== 2쪽: 개념 카드 ===================== -->
 <section class="page">
   <h2><span class="num">2</span>개념 카드 📇<span class="time">25분</span></h2>
-  <p class="muted">코드를 읽고 <b>화면에 무엇이 나올지 먼저 예상해서</b> 써 보세요. 그다음 Thonny로 실행해서 맞았는지 확인해요.</p>
+  <p class="muted">코드를 읽고 <b>화면에 무엇이 나올지 먼저 예상해서</b> 써 보세요. 그다음 실행해서 맞았는지 확인해요.</p>
 
   <div class="grid2">
     <div class="concept">
@@ -398,7 +398,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
     <div class="box">
       <ul class="check">
         <li>워밍업 오류 3개를 오류 메시지를 보고 고쳤어요.</li>
-        <li>디버거 변수 창에서 리스트가 늘어나는 걸 봤어요.</li>
+        <li>따라가기로 리스트가 한 칸 늘어나는 걸 확인했어요.</li>
         <li>리스트 <code>[0]</code> <code>append()</code> <code>in</code> <code>random.choice()</code>를 써 봤어요.</li>
         <li>2단계 바꾸기(중고등: 확장 바꾸기)를 완성했어요.</li>
         <li>친구가 내 사건을 풀어 보게 했어요.</li>

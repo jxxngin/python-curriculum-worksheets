@@ -10,7 +10,7 @@
 | 10 | AttributeError (`'list' object has no attribute 'add'`) | `snacks.append("아이스크림")` |
 | 12 | IndexError (`list index out of range`) | 네 번째 칸은 `snacks[3]` |
 
-**디버거 미션**
+**따라가기 미션**
 
 | 언제? | [0] | [1] | [2] | [3] |
 | --- | --- | --- | --- | --- |

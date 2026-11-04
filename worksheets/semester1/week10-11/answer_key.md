@@ -10,7 +10,7 @@
 | 14 | SyntaxError (`expected ':'`) | `if want in items:` |
 | 18 | NameError (`name 'tries' is not defined`) | while 전에 `tries = 0`. 없는 물건을 입력해야 나타난다. |
 
-**디버거 미션** ("칼" → "지도")
+**따라가기 미션** ("칼" → "지도")
 
 | 입력 | want in items | tries | 반복이 끝났나요? |
 | --- | --- | --- | --- |

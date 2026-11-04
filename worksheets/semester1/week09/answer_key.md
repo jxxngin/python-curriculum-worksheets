@@ -10,7 +10,7 @@
 | 15 | TypeError (`can only concatenate str (not "int") to str`) | `print(f"철컥... 안 맞아요. 남은 기회: {3 - tries}")` |
 | 17 | NameError (`name 'tires' is not defined`) | `tires` → `tries` |
 
-**디버거 미션** ("은 열쇠" → "금 열쇠")
+**따라가기 미션** ("은 열쇠" → "금 열쇠")
 
 | 바퀴 | pick | tries | if 다음에 실행된 줄 |
 | --- | --- | --- | --- |

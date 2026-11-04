@@ -17,7 +17,7 @@
 | --- | --- |
 | [curriculum.md](curriculum.md) | 1년 커리큘럼 원본 (학기·주차별 개념과 프로젝트) |
 | [01-worksheet-format.md](01-worksheet-format.md) | A4 워크시트의 쪽 구성, 부품, 디자인, 인쇄 규칙 |
-| [02-content-rules.md](02-content-rules.md) | 내용 규칙: 개념 범위, 말투, 코드, 워밍업, 디버거, 힌트, 예상 표 |
+| [02-content-rules.md](02-content-rules.md) | 내용 규칙: 개념 범위, 말투, 편집기 중립, 코드, 워밍업, 따라가기, 힌트, 예상 표 |
 | [03-files-and-answer-key.md](03-files-and-answer-key.md) | 주차 폴더 파일 구성, 파이썬 파일 규칙, 정답지·교사 가이드 형식 |
 | [04-review-checklist.md](04-review-checklist.md) | 만든 뒤 점검: 자동 검사, 코드와 워크시트 대조, 인쇄, 사람 검토 |
 | [05-production-workflow.md](05-production-workflow.md) | 제작 절차: 샘플 승인, 진행 기록, 예약 루틴, 커밋 |

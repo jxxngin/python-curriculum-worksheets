@@ -18,9 +18,9 @@
 | `AttributeError: module 'random' has no attribute ...` | 모듈 안에 그런 이름의 기능이 없어요 (철자, 대소문자 확인) |
 | `SyntaxError: f-string: ...` | f-string의 `{}` 또는 `()` 짝이 안 맞아요 |
 
-### 🐞 디버거로 한 줄씩 실행해 보기
+### 🔍 한 줄씩 따라가 보기
 
-다 고친 뒤 Debug(Ctrl+F5) → Step over(F6)로 실행해 보세요. 변수 창에서 `dice1`, `dice2` 값을 확인하고, **다시 실행하면 값이 바뀌는지** 지켜보세요.
+다 고친 뒤 실행해서 화면에 나온 `dice1`, `dice2` 값을 적고, **다시 실행하면 값이 바뀌는지** 지켜보세요.
 
 ---
 

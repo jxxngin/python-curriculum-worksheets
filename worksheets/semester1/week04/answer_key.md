@@ -10,7 +10,7 @@
 | 8 | AttributeError (`module 'random' has no attribute 'randInt'`) | `randInt` → `randint` (대소문자) |
 | 13 | SyntaxError (괄호 짝) | `{abs(dice1 - dice2)}`처럼 `)` 추가 |
 
-**디버거 미션:** 값은 실행할 때마다 다르다(1~6).
+**따라가기 미션:** 값은 실행할 때마다 다르다(1~6).
 - 확인할 점: "차이"는 abs() 때문에 dice1이 더 작아도 음수가 나오지 않는다. 마지막 빈칸의 답은 "아니요"다.
 
 ## 2쪽 · 개념 카드

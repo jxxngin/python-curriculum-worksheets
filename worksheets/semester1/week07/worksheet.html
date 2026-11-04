@@ -246,11 +246,11 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
     <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
     <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
   </table>
-  <div class="tip"><b>SyntaxError</b>: <code>while</code> 줄 끝을 확인해요 &nbsp;|&nbsp; <b>무한 반복</b>: 빨간 정지 버튼 또는 Ctrl+F2로 멈추고, <code>count</code>가 바뀌는 줄이 있는지 봐요 &nbsp;|&nbsp; <b>NameError</b>: 누적 변수는 반복 전에 0으로!</div>
+  <div class="tip"><b>SyntaxError</b>: <code>while</code> 줄 끝을 확인해요 &nbsp;|&nbsp; <b>무한 반복</b>: 편집기의 정지 버튼으로 멈추고, <code>count</code>가 바뀌는 줄이 있는지 봐요 &nbsp;|&nbsp; <b>NameError</b>: 누적 변수는 반복 전에 0으로!</div>
 
   <div class="box">
-    <h3>🐞 디버거 미션: 반복할 때마다 누적 변수 지켜보기</h3>
-    <p class="muted">워밍업을 고친 뒤 디버거로 실행하며 <code>while</code> 줄로 <b>되돌아가는</b> 모습을 봐요. 그다음 아래 코드를 입력하고 Step over(F6)로 한 줄씩 실행하며, 한 바퀴가 끝날 때마다 변수 창의 값을 기록해요.</p>
+    <h3>🔍 따라가기 미션: 반복할 때마다 누적 변수 지켜보기</h3>
+    <p class="muted">아래 코드를 <b>한 줄씩 따라가며</b> <code>while</code> 줄로 <b>되돌아갈</b> 때마다(한 바퀴가 끝날 때마다) 값을 기록해요. 반복 안 맨 끝에 <code>print(total, n)</code>을 넣고 실행하면 확인할 수 있어요.</p>
     <div class="row" style="margin-top:2mm; align-items:flex-start">
       <pre class="code" style="flex:.75"><span class="l">total = 0</span><span class="l">n = 1</span><span class="l">while n &lt;= 4:</span><span class="l">    total = total + n</span><span class="l">    n = n + 1</span><span class="l">print(total)</span></pre>
       <table class="fill">
@@ -269,7 +269,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
 <!-- ===================== 2쪽: 개념 카드 ===================== -->
 <section class="page">
   <h2><span class="num">2</span>개념 카드 📇<span class="time">28분</span></h2>
-  <p class="muted">코드를 읽고 <b>화면에 무엇이 나올지 먼저 예상해서</b> 써 보세요. 그다음 Thonny로 실행해서 맞았는지 확인해요.</p>
+  <p class="muted">코드를 읽고 <b>화면에 무엇이 나올지 먼저 예상해서</b> 써 보세요. 그다음 실행해서 맞았는지 확인해요.</p>
 
   <div class="grid2">
     <div class="concept">
@@ -382,7 +382,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
   <div class="quest">
     <div class="qhead"><span>A · ⚾ 숫자 야구 게임 <span style="font-weight:400">(extension_baseball_starter.py)</span></span><span class="lv">바꾸기 · 완성 기준</span></div>
     <div class="qbody">
-      <p class="muted">숫자와 자리가 맞으면 <b>스트라이크</b>, 숫자만 맞으면 <b>볼</b>. 위쪽 "서로 다른 세 자리 숫자 뽑기"는 따라 하기 코드예요. 디버거로 <code>s1 s2 s3</code>를 살펴보세요.</p>
+      <p class="muted">숫자와 자리가 맞으면 <b>스트라이크</b>, 숫자만 맞으면 <b>볼</b>. 위쪽 "서로 다른 세 자리 숫자 뽑기"는 따라 하기 코드예요. <code>print(s1, s2, s3)</code>를 넣어 실행하며 살펴보세요.</p>
       <div class="row" style="align-items:flex-start">
         <table class="fill" style="flex:.85">
           <tr><th colspan="3">판정 연습: 정답이 <span class="mono">357</span>이라면?</th></tr>
@@ -440,7 +440,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
         <li>워밍업에서 무한 반복을 멈추고 원인을 고쳤어요.</li>
         <li><code>while</code> <code>break</code> <code>continue</code>를 모두 써 봤어요.</li>
         <li>누적 변수를 반복 전에 0으로 만들었어요.</li>
-        <li>디버거로 반복이 위로 되돌아가는 것을 봤어요.</li>
+        <li>따라가기로 반복이 위로 되돌아가는 것을 확인했어요.</li>
         <li>2단계 바꾸기(중고등: 확장 바꾸기)를 완성했어요.</li>
       </ul>
     </div>

@@ -11,6 +11,7 @@ python tools/check_worksheet.py worksheets/semesterN/weekNN/worksheet.html
 이 도구가 확인하는 것:
 - 3~8쪽, 쪽마다 `.foot`, 이름/날짜 칸, `@page A4`, 외부 리소스는 Google Fonts만
 - 공통 스타일이 템플릿과 같은지
+- 특정 편집기 표현(Thonny, 단축키, 디버거, 변수 창)이 없는지
 - (playwright가 있으면) 쪽마다 다음을 확인한다.
   - 내용이 A4를 넘지 않는다.
   - 카드·코드·표가 세로나 가로로 잘리지 않는다.
@@ -44,4 +45,5 @@ python tools/check_worksheet.py worksheets/semesterN/weekNN/worksheet.html
 - [ ] 2단계 바꾸기 분량이 그날 시간 안에 할 만하다.
 - [ ] 교과 연계 사실이 정확하다.
 - [ ] 말투와 표기 규칙을 지켰다(학생용 ~해요, 변수는 영어).
+- [ ] README·교사 가이드·정답지·파이썬 주석에도 특정 편집기 표현이 없다.
 - [ ] `answer_key.md`가 워크시트의 모든 정답 칸을 다룬다.

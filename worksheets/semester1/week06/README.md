@@ -16,9 +16,9 @@
 - `IndentationError: expected an indented block after 'else'` → `else:` 아래 줄은 들여쓰기!
 - ⚠️ 메시지 없는 오류: 비가 안 오고 하늘도 맑은데 우산을 챙기래요. `rain == "네" or "흐림"`은 어떻게 읽힐까요?
 
-### 🐞 디버거로 한 줄씩 실행해 보기
+### 🔍 한 줄씩 따라가 보기
 
-다 고친 뒤 Debug(Ctrl+F5) → Step over(F6)로 실행하며 변수 창에서 `need_umbrella`가 `False`에서 `True`로 바뀌는 순간을 찾아보세요.
+다 고친 뒤 코드를 한 줄씩 따라가며 `need_umbrella`가 `False`에서 `True`로 바뀌는 줄을 찾아보세요.
 
 ---
 

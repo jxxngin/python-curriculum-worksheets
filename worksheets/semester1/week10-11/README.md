@@ -17,9 +17,9 @@
 - `AttributeError: module 'time' has no attribute 'slep'` → 함수 이름 철자를 확인해요.
 - `NameError: name 'tries' is not defined` → 누적 변수는 반복 **전에** 0으로 만들어 둬요. (없는 물건을 입력해야 나와요!)
 
-### 🐞 디버거로 한 줄씩 실행해 보기
+### 🔍 한 줄씩 따라가 보기
 
-다 고친 뒤 Debug(Ctrl+F5) → Step over(F6)로 실행하며 `time.sleep(2)` 줄에서 Thonny가 **잠깐 멈췄다가** 다음 줄로 가는 것을 느껴 보세요. 없는 물건을 두 번 입력하고 `tries`가 어떻게 바뀌는지 지켜봐요.
+다 고친 뒤 실행하며 `time.sleep(2)` 줄에서 프로그램이 **잠깐 멈췄다가** 다음 줄로 가는 것을 느껴 보세요. 없는 물건을 두 번 입력하고 `tries`가 어떻게 바뀌는지 지켜봐요.
 
 ---
 

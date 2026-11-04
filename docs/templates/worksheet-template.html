@@ -222,7 +222,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
   - 쪽을 늘리거나 줄이면 .foot 의 "쪽 / 전체쪽"을 다시 매긴다.
 -->
 
-<!-- ===================== 1쪽: 목표 + 워밍업 + 디버거 미션 ===================== -->
+<!-- ===================== 1쪽: 목표 + 워밍업 + 따라가기 미션 ===================== -->
 <section class="page">
   <header class="head">
     <div class="badge">{{N}}학기<br>{{N}}주차<small>{{부제: 개념 주차는 "~하기"}}</small></div>
@@ -244,7 +244,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
   </div>
 
   <h2><span class="num">1</span>워밍업: {{워밍업 제목}} 🔧<span class="time">10분</span></h2>
-  <p>아래 코드에는 <b>오류가 3개</b> 숨어 있어요. 먼저 눈으로 찾아 <b>동그라미</b> 치고, Thonny에서 <code>warmup.py</code>를 실행해 확인해 보세요.</p>
+  <p>아래 코드에는 <b>오류가 3개</b> 숨어 있어요. 먼저 눈으로 찾아 <b>동그라미</b> 치고, <code>warmup.py</code>를 실행해 확인해 보세요.</p>
   <p class="muted">1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실어요.</p>
   <!-- 줄 번호는 warmup.py 와 같게. 앞 4줄을 생략했으면 counter-reset: ln 4 -->
   <pre class="code" style="counter-reset: ln 4"><span class="l">{{warmup.py 5번 줄}}</span><span class="l"></span><span class="l">{{warmup.py 7번 줄}}</span></pre>
@@ -258,8 +258,8 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
   <div class="tip"><b>{{오류 이름}}</b>: {{짧은 뜻}} &nbsp;|&nbsp; <b>{{오류 이름}}</b>: {{짧은 뜻}}</div>
 
   <div class="box">
-    <h3>🐞 디버거 미션: {{관찰할 것}}</h3>
-    <p class="muted">다 고쳤으면 벌레 버튼(Ctrl+F5)을 누르고 <b>Step over(F6)</b>로 한 줄씩 실행해요. {{입력값을 정해 주고 무엇을 적을지}}</p>
+    <h3>🔍 따라가기 미션: {{관찰할 것}}</h3>
+    <p class="muted">다 고쳤으면 {{입력값}}을 넣었다고 생각하고 코드를 <b>한 줄씩 따라가며</b> {{무엇을}} 적어요. {{확인 방법: 실행해서 출력으로 / print(변수)를 넣어서}}</p>
     <table class="fill tall" style="margin-top:2mm">
       <tr><th style="width:40mm">{{기준 (줄 번호 / 바퀴 / 입력)}}</th><th style="width:30mm">{{변수}}</th><th>{{값}}</th></tr>
       <tr><td class="w"></td><td class="w mono"></td><td class="w"></td></tr>
@@ -272,7 +272,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
 <!-- ===================== 2쪽: 개념 카드 ===================== -->
 <section class="page">
   <h2><span class="num">2</span>개념 카드 📇<span class="time">20분</span></h2>
-  <p class="muted">코드를 읽고 <b>화면에 무엇이 나올지 먼저 예상해서</b> 써 보세요. 그다음 Thonny로 실행해서 맞았는지 확인해요.</p>
+  <p class="muted">코드를 읽고 <b>화면에 무엇이 나올지 먼저 예상해서</b> 써 보세요. 그다음 실행해서 맞았는지 확인해요.</p>
 
   <div class="grid2">
     <div class="concept">
@@ -394,7 +394,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
     <div class="box">
       <ul class="check">
         <li>워밍업 오류 3개를 오류 메시지를 보고 고쳤어요.</li>
-        <li>디버거로 {{관찰한 것}}을 봤어요.</li>
+        <li>따라가기로 {{관찰한 것}}을 확인했어요.</li>
         <li>{{오늘 개념}}을 써 봤어요.</li>
         <li>2단계 바꾸기(중고등: 확장 바꾸기)를 완성했어요.</li>
       </ul>
