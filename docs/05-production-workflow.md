@@ -16,8 +16,8 @@
 1. [curriculum.md](curriculum.md)에서 그 주차 개념, 미니 / 확장 프로젝트, 보완 메모를 확인한다.
 2. 이전 주차 결과물을 훑어서 말투와 난이도를 이어 간다.
 3. 파이썬 파일을 먼저 만든다: warmup → starter → solution
-4. [templates/worksheet-template.html](templates/worksheet-template.html)을 복사해 `worksheet.html`을 만든다. 코드는 파이썬 파일에서 그대로 옮긴다.
-5. `README.md`, `answer_key.md`, `teacher_guide.md`를 만든다.
+4. [templates/lesson-template.html](templates/lesson-template.html)을 복사해 `lesson.html`을 만든다. 코드는 파이썬 파일에서 그대로 옮긴다.
+5. `answer_key.md`, `teacher_guide.md`를 만든다.
 6. [04-review-checklist.md](04-review-checklist.md)를 모두 통과시킨다.
 7. 진행 파일의 그 주차 줄을 `[x]`로 바꾸고 날짜를 적는다.
 8. 커밋하고 푸시한다. 커밋 메시지는 `N학기 N주차 워크시트: <미니 프로젝트 이름>`이다.

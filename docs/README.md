@@ -16,13 +16,14 @@
 | 문서 | 내용 |
 | --- | --- |
 | [curriculum.md](curriculum.md) | 1년 커리큘럼 원본 (학기·주차별 개념과 프로젝트) |
-| [01-worksheet-format.md](01-worksheet-format.md) | A4 워크시트의 쪽 구성, 부품, 디자인, 인쇄 규칙 |
+| [01-worksheet-format.md](01-worksheet-format.md) | 교안 형식(웹 우선, 인쇄 가능): 블록 흐름, 색, 부품, 칸 크기, 화면·인쇄 |
 | [02-content-rules.md](02-content-rules.md) | 내용 규칙: 개념 범위, 말투, 편집기 중립, 코드, 워밍업, 따라가기, 힌트, 예상 표 |
 | [03-files-and-answer-key.md](03-files-and-answer-key.md) | 주차 폴더 파일 구성, 파이썬 파일 규칙, 정답지·교사 가이드 형식 |
 | [04-review-checklist.md](04-review-checklist.md) | 만든 뒤 점검: 자동 검사, 코드와 워크시트 대조, 인쇄, 사람 검토 |
 | [05-production-workflow.md](05-production-workflow.md) | 제작 절차: 샘플 승인, 진행 기록, 예약 루틴, 커밋 |
 | [decisions.md](decisions.md) | 피드백과 결정 기록, 결정 대기 목록 |
-| [templates/worksheet-template.html](templates/worksheet-template.html) | 워크시트 틀: 공통 스타일과 쪽별 뼈대, 모든 부품 예시 |
+| [templates/lesson-template.html](templates/lesson-template.html) | 교안 틀: 공통 스타일과 블록 뼈대 |
+| [templates/legacy/](templates/legacy/) | 예전 A4 워크시트 틀(1학기 기존 파일용) |
 
 ## 문서끼리 어긋날 때
 

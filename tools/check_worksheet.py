@@ -1,19 +1,29 @@
-"""A4 워크시트(worksheet.html) 검사.
+"""교안·워크시트 검사.
 
-사용법: python tools/check_worksheet.py worksheets/semester1/week01/worksheet.html [...]
+사용법: python tools/check_worksheet.py <파일.html> [...]
 
-1) 구조 검사: .page 3~10쪽, 쪽마다 .foot, 이름/날짜 칸, 외부 리소스는 Google Fonts만,
-   공통 스타일이 템플릿과 같은지, 특정 편집기 표현(Thonny, 디버거 등)이 없는지
-2) 레이아웃 검사(playwright가 있으면): 쪽마다 내용이 A4 밖으로 넘치거나 쪽 번호와 겹치지 않는지,
-   카드·코드·표가 가로나 세로로 잘리지 않는지
-   설치: pip install playwright && python -m playwright install chromium
+두 형식을 구분해 검사한다.
+- 교안(새 형식, <main class="lesson">): docs/templates/lesson-template.html 기준
+  1) 구조: 머리(이름/날짜), 활동 블록 순서(mission → warmup → step… → change → … → hints),
+     블록마다 할 일 상자, 공통 스타일이 템플릿과 같은지, 외부 리소스, 편집기 표현
+  2) playwright가 있으면: 휴대폰(375px)·노트북(1024px) 폭에서 가로로 넘치지 않는지,
+     인쇄했을 때 끊기면 안 되는 칸(할 일, 코드, 쓰는 칸 등)이 한 쪽보다 크지 않은지, 인쇄 쪽 수
+- A4 워크시트(예전 형식, <section class="page">): docs/templates/legacy/a4-worksheet-template.html 기준
+  쪽 수, .foot, 공통 스타일, A4 안에서 넘치거나 잘리는 칸
+
+playwright 설치: pip install playwright && python -m playwright install chromium
 """
 import re
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
 
-TEMPLATE = Path(__file__).resolve().parent.parent / "docs" / "templates" / "worksheet-template.html"
+ROOT = Path(__file__).resolve().parent.parent
+LESSON_TEMPLATE = ROOT / "docs" / "templates" / "lesson-template.html"
+LEGACY_TEMPLATE = ROOT / "docs" / "templates" / "legacy" / "a4-worksheet-template.html"
 MARK = "/* ===== 주차별 추가"
+BANNED = ("Thonny", "Ctrl+F5", "Ctrl+F2", "Step over", "변수 창", "디버거")
+ORDER = ["mission", "warmup", "step", "change", "new", "challenge", "hints"]
 
 
 def common_css(html):
@@ -22,30 +32,124 @@ def common_css(html):
     return css.split(MARK)[0]
 
 
-from html.parser import HTMLParser  # noqa: E402
-
-
 class Scan(HTMLParser):
     def __init__(self):
         super().__init__()
         self.pages = 0
         self.foots = 0
         self.external = []
+        self.blocks = []        # 활동 블록 종류 순서
+        self.todo_in_block = []  # 블록마다 할 일 상자가 있는지
+        self._block_depth = None
+        self._depth = 0
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         classes = (a.get("class") or "").split()
+        if tag not in ("br", "img", "meta", "link", "input"):
+            self._depth += 1
         if "page" in classes:
             self.pages += 1
         if "foot" in classes:
             self.foots += 1
+        if tag == "section" and "block" in classes:
+            kind = next((c for c in classes if c in ORDER), "?")
+            self.blocks.append(kind)
+            self.todo_in_block.append(False)
+        if "todo" in classes and self.todo_in_block:
+            self.todo_in_block[-1] = True
         for key in ("src", "href"):
             url = a.get(key) or ""
             if url.startswith("http") and "fonts.googleapis.com" not in url and "fonts.gstatic.com" not in url:
                 self.external.append(url)
 
+    def handle_endtag(self, tag):
+        self._depth -= 1
 
-LAYOUT_JS = """
+
+def common_checks(path, html, template, errors):
+    if template.exists() and Path(path).resolve() != template.resolve():
+        if common_css(html) != common_css(template.read_text(encoding="utf-8")):
+            errors.append(f"공통 스타일이 템플릿({template.relative_to(ROOT).as_posix()})과 달라요. 덧붙일 스타일은 '주차별 추가' 표시 아래에만 써요")
+    banned = [w for w in BANNED if w in html]
+    if banned:
+        errors.append(f"특정 편집기 표현이 있어요: {banned} (docs/02-content-rules.md 편집기 중립)")
+    if "이름" not in html or "날짜" not in html:
+        errors.append("머리에 이름/날짜 칸이 없어요")
+
+
+def playwright():
+    try:
+        from playwright.sync_api import sync_playwright
+        return sync_playwright
+    except ImportError:
+        return None
+
+
+# ------------------------------------------------------------------ 교안 (새 형식)
+LESSON_PRINT_JS = """
+async () => {
+  await document.fonts.ready;
+  const limit = 297 * 96 / 25.4 - 2 * 12 * 96 / 25.4;   // A4 높이 - 위아래 여백(12mm)
+  const sel = '.todo, .tool, pre.code, .write, .screen, table.fill, .draw, .hint';
+  return [...document.querySelectorAll(sel)]
+    .filter(e => e.getBoundingClientRect().height > limit)
+    .map(e => (e.innerText || e.className).trim().split(String.fromCharCode(10))[0].slice(0, 30));
+}
+"""
+
+
+def check_lesson(path, html, s):
+    errors = []
+    common_checks(path, html, LESSON_TEMPLATE, errors)
+    if s.external:
+        errors.append(f"허용되지 않은 외부 리소스: {s.external}")
+    kinds = s.blocks
+    for need in ("mission", "warmup", "step", "change", "hints"):
+        if need not in kinds:
+            errors.append(f"활동 블록 '{need}'가 없어요")
+    rank = [ORDER.index(k) for k in kinds if k in ORDER]
+    if rank != sorted(rank):
+        errors.append(f"활동 블록 순서가 고정 흐름과 달라요: {kinds} (docs/01-worksheet-format.md)")
+    for k, has in zip(kinds, s.todo_in_block):
+        if not has and k != "hints":
+            errors.append(f"'{k}' 블록에 📋 할 일 상자가 없어요")
+
+    sp = playwright()
+    if not sp:
+        print(f"  (playwright 없음: {path} 화면·인쇄 검사는 건너뜀)")
+        return errors
+    with sp() as p:
+        browser = p.chromium.launch()
+        for w in (375, 1024):
+            page = browser.new_page(viewport={"width": w, "height": 900})
+            page.goto(Path(path).resolve().as_uri())
+            page.wait_for_timeout(1200)
+            sw = page.evaluate("document.documentElement.scrollWidth")
+            if sw > w + 1:
+                errors.append(f"{w}px 화면에서 가로로 넘쳐요 (폭 {sw}px)")
+            page.close()
+        page = browser.new_page(viewport={"width": 1024, "height": 900})
+        page.goto(Path(path).resolve().as_uri())
+        page.wait_for_timeout(1200)
+        page.emulate_media(media="print")
+        for t in page.evaluate(LESSON_PRINT_JS):
+            errors.append(f"인쇄할 때 한 쪽보다 큰 칸이 있어요: '{t}'. 나누거나 줄여요")
+        page.close()
+        page = browser.new_page()   # 새로 연 페이지로 PDF를 만들어야 쪽 수가 정확하다
+        page.goto(Path(path).resolve().as_uri())
+        page.wait_for_timeout(1200)
+        pdf = page.pdf(prefer_css_page_size=True, print_background=True)
+        n = len(re.findall(rb"/Type\s*/Page[^s]", pdf))
+        if n > 16:
+            errors.append(f"인쇄하면 {n}쪽이에요. 16쪽 이하로 줄여요")
+        print(f"  (인쇄 {n}쪽)")
+        browser.close()
+    return errors
+
+
+# ------------------------------------------------------------------ A4 워크시트 (예전 형식)
+LEGACY_LAYOUT_JS = """
 async () => {
   await document.fonts.ready;
   return [...document.querySelectorAll('.page')].map((p, i) => {
@@ -69,39 +173,27 @@ async () => {
 """
 
 
-def check(path):
+def check_legacy(path, html, s):
     errors = []
-    html = Path(path).read_text(encoding="utf-8")
-    s = Scan()
-    s.feed(html)
     if not 3 <= s.pages <= 10:
         errors.append(f"쪽 수가 {s.pages}쪽이에요 (3~10쪽이어야 해요)")
     if s.foots != s.pages:
         errors.append(f".foot {s.foots}개 / .page {s.pages}개 (쪽마다 하나씩)")
-    if "이름" not in html or "날짜" not in html:
-        errors.append("머리글에 이름/날짜 칸이 없어요")
     if s.external:
         errors.append(f"허용되지 않은 외부 리소스: {s.external}")
-    if TEMPLATE.exists() and Path(path).resolve() != TEMPLATE:
-        if common_css(html) != common_css(TEMPLATE.read_text(encoding="utf-8")):
-            errors.append("공통 스타일이 템플릿(docs/templates/worksheet-template.html)과 달라요. 덧붙일 스타일은 '주차별 추가' 표시 아래에만 써요")
-    banned = [w for w in ("Thonny", "Ctrl+F5", "Ctrl+F2", "Step over", "변수 창", "디버거") if w in html]
-    if banned:
-        errors.append(f"특정 편집기 표현이 있어요: {banned} (docs/02-content-rules.md 편집기 중립)")
+    common_checks(path, html, LEGACY_TEMPLATE, errors)
     if not re.search(r"@page\s*\{\s*size:\s*A4", html):
         errors.append("@page { size: A4 } 가 없어요")
-
-    try:
-        from playwright.sync_api import sync_playwright
-    except ImportError:
+    sp = playwright()
+    if not sp:
         print(f"  (playwright 없음: {path} 레이아웃 검사는 건너뜀)")
         return errors
-    with sync_playwright() as p:
+    with sp() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 900, "height": 1200})
         page.goto(Path(path).resolve().as_uri())
         page.wait_for_timeout(1500)
-        for r in page.evaluate(LAYOUT_JS):
+        for r in page.evaluate(LEGACY_LAYOUT_JS):
             if r["overflow"] or r["gap"] < 0:
                 errors.append(f"{r['page']}쪽 내용이 넘쳐요 (여유 {r['gap']}px). 내용을 줄이거나 다음 쪽으로 옮겨요")
             for c in r["cut"]:
@@ -110,6 +202,15 @@ def check(path):
                 errors.append(f"{r['page']}쪽 가로로 잘리는 칸: '{w}'. 코드 줄을 짧게 나눠요(괄호 안에서만)")
         browser.close()
     return errors
+
+
+def check(path):
+    html = Path(path).read_text(encoding="utf-8")
+    s = Scan()
+    s.feed(html)
+    if '<main class="lesson"' in html:
+        return check_lesson(path, html, s)
+    return check_legacy(path, html, s)
 
 
 if __name__ == "__main__":

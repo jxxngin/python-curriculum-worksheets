@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{N}}주차 교안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 교안 공통 스타일: docs/templates/lesson-template.html 과 같아야 한다. 고치지 않는다. ===== */
+:root {
+  --ink: #1f2937;
+  --sub: #6b7280;
+  --line: #d1d5db;
+  --soft: #f3f4f6;
+  --bg: #f6f7fb;
+  --paper: #ffffff;
+  --code-bg: #f8fafc;
+  /* 활동 색 (색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다) */
+  --mission: #2563eb; --mission-soft: #eff6ff;
+  --warmup: #ea580c;  --warmup-soft: #fff7ed;
+  --step: #16a34a;    --step-soft: #f0fdf4;
+  --change: #7c3aed;  --change-soft: #f5f3ff;
+  --new: #0891b2;     --new-soft: #ecfeff;
+  --challenge: #e11d48; --challenge-soft: #fff1f2;
+  --hint: #d97706;    --hint-soft: #fffbeb;
+  --tool: #4f46e5;    --tool-soft: #eef2ff;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.lesson { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; display: flex; flex-direction: column; gap: 28px; }
+code, .mono { font-family: "Nanum Gothic Coding", Consolas, monospace; }
+code { background: var(--soft); padding: 1px 6px; border-radius: 6px; font-size: .92em; }
+p { margin: 0; }
+.muted { color: var(--sub); font-size: .92em; }
+
+/* 머리 */
+.lesson-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.lesson-head .chip { background: var(--mission); color: #fff; border-radius: 999px; padding: 4px 14px; font-weight: 700; font-size: .9em; }
+.lesson-head h1 { margin: 0; font-size: 1.9em; font-weight: 900; letter-spacing: -0.5px; flex: 1 1 320px; }
+.who { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; white-space: nowrap; font-size: .9em; color: var(--sub); }
+.who span { display: inline-block; min-width: 120px; height: 1.4em; border-bottom: 1.5px solid var(--line); margin-right: 8px; }
+
+/* 활동 블록 */
+.block { --c: var(--ink); --cs: var(--soft); background: var(--paper); border-radius: 18px; padding: 24px 26px 26px; border-top: 8px solid var(--c); display: flex; flex-direction: column; gap: 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.block.mission   { --c: var(--mission);   --cs: var(--mission-soft); }
+.block.warmup    { --c: var(--warmup);    --cs: var(--warmup-soft); }
+.block.step      { --c: var(--step);      --cs: var(--step-soft); }
+.block.change    { --c: var(--change);    --cs: var(--change-soft); }
+.block.new       { --c: var(--new);       --cs: var(--new-soft); }
+.block.challenge { --c: var(--challenge); --cs: var(--challenge-soft); }
+.block.hints     { --c: var(--hint);      --cs: var(--hint-soft); }
+.block > h2 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.45em; font-weight: 900; color: var(--c); }
+.block > h2 .tag { background: var(--c); color: #fff; border-radius: 10px; padding: 2px 12px; font-size: .7em; }
+.block > h2 small { color: var(--sub); font-weight: 500; font-size: .6em; }
+h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
+
+/* 할 일 */
+.todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.todo h3 { color: var(--c); margin-bottom: 4px; }
+.todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
+
+/* 도구 카드 */
+.tool { background: var(--tool-soft); border-radius: 12px; padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+.tool .th { font-weight: 900; color: var(--tool); }
+
+/* 코드 */
+pre.code { margin: 0; padding: 14px 16px 14px 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px;
+  font-family: "Nanum Gothic Coding", Consolas, monospace; font-size: 16px; line-height: 1.75; counter-reset: ln; white-space: pre; overflow-x: auto; }
+pre.code > span.l { display: block; padding-left: 46px; position: relative; min-height: 1.75em; }
+pre.code > span.l::before { counter-increment: ln; content: counter(ln); position: absolute; left: 0; width: 32px; text-align: right; color: #9ca3af; font-size: .85em; }
+pre.code.nonum > span.l { padding-left: 16px; }
+pre.code.nonum > span.l::before { content: none; }
+pre.code .c { color: #6b7280; }
+.blank { display: inline-block; min-width: 90px; height: 1.5em; vertical-align: -0.35em; border: 2px dashed var(--c); border-radius: 8px; background: #fff; position: relative; }
+.blank[data-n]::after { content: attr(data-n); position: absolute; top: -10px; left: -10px; width: 18px; height: 18px; border-radius: 50%; background: var(--c); color: #fff; font: 700 11px/18px "Noto Sans KR", sans-serif; text-align: center; }
+
+/* 쓰는 칸 */
+.label { font-weight: 900; color: var(--c); }
+.write { border: 2px solid var(--line); border-radius: 12px; min-height: 160px; background:
+  repeating-linear-gradient(transparent 0 39px, #e5e7eb 39px 40px); background-origin: content-box; padding: 6px 14px; }
+.write.small { min-height: 90px; }
+.screen { border-radius: 12px; overflow: hidden; border: 2px solid var(--ink); }
+.screen .bar { background: var(--ink); color: #fff; font-size: .85em; padding: 4px 12px; }
+.screen .body { padding: 10px 14px; font-family: "Nanum Gothic Coding", monospace; font-size: 15px; line-height: 1.55; white-space: pre; overflow-x: auto; }
+table.fill { width: 100%; border-collapse: collapse; }
+table.fill th, table.fill td { border: 1.5px solid var(--line); padding: 8px 12px; text-align: left; }
+table.fill th { background: var(--cs); color: var(--ink); }
+table.fill td.w { height: 56px; }
+ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+ul.check li { padding-left: 34px; position: relative; }
+ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width: 22px; height: 22px; border: 2.5px solid var(--c); border-radius: 6px; background: #fff; }
+.draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
+
+/* 힌트 카드 */
+.hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.hint .hh { display: flex; justify-content: space-between; font-weight: 900; color: var(--hint); }
+.hint pre.code { font-size: 14px; }
+
+/* 인쇄: 활동 블록마다 새 쪽, 쓰는 칸은 쪽 사이에서 끊지 않는다 */
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .lesson { max-width: none; padding: 0; gap: 0; }
+  .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
+  .lesson-head + .block { break-before: auto; margin-top: 8mm; }
+  .todo, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li { break-inside: avoid; }
+  pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .block { padding: 18px 16px 20px; border-radius: 14px; }
+  pre.code { font-size: 14px; }
+}
+/* ===== 공통 스타일 끝 ===== */
+
+/* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
+</style>
+</head>
+<body>
+<!--
+  교안 틀 (웹 우선, 인쇄 가능). 규칙은 docs/01-worksheet-format.md
+  - 화면: 위에서 아래로 읽는 한 장. 인쇄: 활동 블록(.block)마다 새 쪽에서 시작
+  - 활동 블록 순서와 색은 매주 같다: 🎯 mission → 🔧 warmup → 🪜 step ×N → ⭐ change → 💡 new → 🚀 challenge → 🃏 hints
+  - 블록 안 순서: 제목 → 📋 할 일 → (도구 카드) → (코드) → (쓰는 칸 / 체크)
+  - {{ }} 안을 바꾼다.
+-->
+<main class="lesson">
+
+  <header class="lesson-head">
+    <span class="chip">{{N}}학기 · {{N}}주차 · {{부제}}</span>
+    <h1>{{미니 프로젝트 이름}}</h1>
+    <div class="who">이름 <span></span> 날짜 <span></span></div>
+  </header>
+
+  <!-- 🎯 미션 -->
+  <section class="block mission">
+    <h2>🎯 오늘의 미션</h2>
+    <p>{{2~3문장 이야기: 왜 이 프로그램이 필요할까?}}</p>
+    <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">{{mini_solution.py 를 실제로 실행한 화면}}</div></div>
+    <div class="todo">
+      <h3>📋 오늘 할 일</h3>
+      <ol>
+        <li>🔧 워밍업: 고장 난 코드를 고쳐요.</li>
+        <li>🪜 단계 1: {{기능 1}}</li>
+        <li>🪜 단계 2: {{기능 2}}</li>
+        <li>⭐ 내 것으로 바꿔요.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 🔧 워밍업 -->
+  <section class="block warmup">
+    <h2>🔧 워밍업 <small>{{고장 난 ○○ 고치기}}</small></h2>
+    <div class="todo">
+      <h3>📋 할 일</h3>
+      <ol>
+        <li>이상한 곳 <b>3개</b>에 동그라미 쳐요.</li>
+        <li><code>warmup.py</code>를 실행해서 오류 메시지를 봐요.</li>
+        <li>고친 방법을 표에 적어요.</li>
+      </ol>
+    </div>
+    <!-- 줄 번호는 warmup.py 와 같게. 앞 4줄을 생략했으면 counter-reset: ln 4 -->
+    <pre class="code" style="counter-reset: ln 4"><span class="l">{{warmup.py 5번 줄}}</span><span class="l">{{6번 줄}}</span></pre>
+    <table class="fill">
+      <tr><th style="width:20%">줄 번호</th><th style="width:30%">오류 이름</th><th>어떻게 고쳤나요?</th></tr>
+      <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
+      <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
+      <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
+    </table>
+  </section>
+
+  <!-- 🪜 단계 (기능 하나 = 단계 하나). 필요한 만큼 복사한다 -->
+  <section class="block step">
+    <h2><span class="tag">단계 1</span> {{만들 기능: 예) 제목 보여 주기}}</h2>
+    <div class="todo">
+      <h3>📋 할 일</h3>
+      <ol>
+        <li>🧰 도구 카드를 읽어요.</li>
+        <li>⌨️ 코드를 <code>{{my_project}}.py</code>에 따라 써요.</li>
+        <li>▶️ 실행하고, 화면에 나온 것을 적어요.</li>
+      </ol>
+    </div>
+    <div class="tool">
+      <div class="th">🧰 도구 카드 · {{도구 이름 (아이 말로)}}</div>
+      <p>{{언제 쓰나요? 한 줄}}</p>
+      <pre class="code nonum"><span class="l">{{예시 2~3줄}}</span></pre>
+      <p class="muted">→ {{예시 결과}}</p>
+    </div>
+    <div class="label">⌨️ 따라 쓸 코드</div>
+    <!-- 이 단계에서 새로 쓰는 3~6줄만. 2단계부터는 첫 줄에 회색 주석으로 "# … 단계 1 코드 아래에 이어서 써요" -->
+    <pre class="code"><span class="l">{{새로 쓰는 줄}}</span></pre>
+    <div class="label">▶️ 실행하고 확인</div>
+    <div class="write"></div>
+    <ul class="check"><li>화면에 {{○○}}가 나왔어요.</li></ul>
+  </section>
+
+  <!-- ⭐ 내 것으로 바꾸기 -->
+  <section class="block change">
+    <h2>⭐ 내 것으로 바꾸기 <small>오늘의 완성 기준</small></h2>
+    <div class="todo">
+      <h3>📋 할 일</h3>
+      <ol>
+        <li>표에 바꿀 내용을 먼저 적어요.</li>
+        <li>코드를 고치고 실행해요.</li>
+        <li>아래 체크를 모두 하면 완성!</li>
+      </ol>
+    </div>
+    <table class="fill">
+      <tr><th style="width:50%">{{설계 항목}}</th><th>{{설계 항목}}</th></tr>
+      <tr><td class="w">예) {{예시}}</td><td class="w mono">{{예시}}</td></tr>
+      <tr><td class="w"></td><td class="w"></td></tr>
+      <tr><td class="w"></td><td class="w"></td></tr>
+    </table>
+    <ul class="check">
+      <li>{{완성 기준 1}}</li>
+      <li>{{완성 기준 2}}</li>
+      <li>{{완성 기준 3}}</li>
+    </ul>
+    <div class="label">👀 친구에게 보여 주기: 친구의 한마디</div>
+    <div class="write small"></div>
+  </section>
+
+  <!-- 💡 새로 만들기 + ✅ 마무리 -->
+  <section class="block new">
+    <h2>💡 새로 만들기 <small>하고 싶은 사람</small></h2>
+    <div class="todo">
+      <h3>📋 할 일</h3>
+      <ol>
+        <li>아이디어 하나를 골라요.</li>
+        <li>무엇을 만들지 적고 만들어요.</li>
+      </ol>
+    </div>
+    <ul class="check">
+      <li>{{아이디어 1}}</li>
+      <li>{{아이디어 2}}</li>
+      <li>내 아이디어</li>
+    </ul>
+    <div class="write"></div>
+    <h3>✅ 오늘의 마무리</h3>
+    <ul class="check">
+      <li>워밍업 오류 3개를 고쳤어요.</li>
+      <li>단계를 하나씩 실행하며 만들었어요.</li>
+      <li>내 것으로 바꾸기를 완성했어요.</li>
+    </ul>
+    <div class="label">내 프로그램에서 가장 자랑하고 싶은 부분은?</div>
+    <div class="write small"></div>
+  </section>
+
+  <!-- 🚀 도전 프로젝트 -->
+  <section class="block challenge">
+    <h2>🚀 도전 프로젝트 <small>{{도전 프로젝트 이름}} · 일찍 끝낸 사람</small></h2>
+    <div class="todo">
+      <h3>📋 할 일</h3>
+      <ol>
+        <li><code>extension_starter.py</code>를 그대로 실행해 봐요.</li>
+        <li>{{무엇을 설계하고 그릴지}}</li>
+        <li>코드를 바꾸고 실행해서 체크해요.</li>
+      </ol>
+    </div>
+    <p>{{이야기 한두 문장}}</p>
+    <div class="draw"></div>
+    <ul class="check">
+      <li>{{도전 기준 1}}</li>
+      <li>{{도전 기준 2}}</li>
+    </ul>
+  </section>
+
+  <!-- 🃏 힌트 카드 -->
+  <section class="block hints">
+    <h2>🃏 힌트 카드 <small>막히면 1번부터 차례로</small></h2>
+    <div class="hints-grid">
+      <div class="hint"><div class="hh"><span>단계 1</span><span>●○○</span></div><p>{{어디를 보면 되는지}}</p></div>
+      <div class="hint"><div class="hh"><span>새로 만들기 · 방향</span><span>●○○</span></div><p>{{ }}</p></div>
+      <div class="hint"><div class="hh"><span>새로 만들기 · 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">{{ }}</span></pre></div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

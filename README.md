@@ -8,6 +8,6 @@
 - 워크시트: [worksheets/semester1](worksheets/semester1)
 - 에이전트 안내: [CLAUDE.md](CLAUDE.md)
 
-주차마다 프린트용 A4 워크시트(`worksheet.html`, 브라우저에서 열고 A4로 인쇄)와 화면용 활동 안내(`README.md`), 실습용 파이썬 파일, 교사용 정답지(`answer_key.md`)와 교사 가이드가 있다.
+새 형식 주차는 교안 `lesson.html`(화면에서 보는 교안, 인쇄하면 학습지)과 실습용 파이썬 파일, 교사용 정답지(`answer_key.md`), 교사 가이드로 이루어진다. 1학기 기존 주차는 예전 형식(A4 `worksheet.html` + `README.md`)이다.
 
 1학기는 Claude Code 클라우드 예약 루틴으로 만들었다. 다음 제작은 docs/의 기준이 확정된 뒤 [제작 절차](docs/05-production-workflow.md)에 따라 시작한다.
