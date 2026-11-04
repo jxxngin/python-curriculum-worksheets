@@ -208,6 +208,14 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
 .flow .draw > .tag { position: absolute; top: 1mm; left: 2mm; background: #fff; padding: 0 1.5mm; font-size: 8pt; font-weight: 700; border: 1px solid var(--ink); border-radius: 1mm; }
 .cols2 { columns: 2; column-gap: 6mm; }
 .cols2 li { break-inside: avoid; }
+/* 미션 브리핑과 도구 카드 (프로젝트 중심 흐름) */
+.mission { border: 2px solid var(--ink); border-radius: 3mm; padding: 3mm 3.5mm; display: flex; flex-direction: column; gap: 2.5mm; }
+.mission .story { font-size: 10.5pt; }
+.mission .screen .body { min-height: 0; font-size: 8.5pt; line-height: 1.5; background-image: none; white-space: pre; }
+.tool { border: 1.5px dashed var(--ink); border-radius: 2.5mm; padding: 2mm 2.5mm; display: flex; flex-direction: column; gap: 1.2mm; background: #fff; }
+.tool .th { font-weight: 900; font-size: 9.5pt; }
+.tool p { font-size: 9pt; }
+.tool pre.code { font-size: 8.5pt; line-height: 1.5; padding: 1.5mm 2mm; }
 /* ===== 공통 스타일 끝 ===== */
 
 /* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */

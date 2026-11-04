@@ -208,6 +208,14 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
 .flow .draw > .tag { position: absolute; top: 1mm; left: 2mm; background: #fff; padding: 0 1.5mm; font-size: 8pt; font-weight: 700; border: 1px solid var(--ink); border-radius: 1mm; }
 .cols2 { columns: 2; column-gap: 6mm; }
 .cols2 li { break-inside: avoid; }
+/* 미션 브리핑과 도구 카드 (프로젝트 중심 흐름) */
+.mission { border: 2px solid var(--ink); border-radius: 3mm; padding: 3mm 3.5mm; display: flex; flex-direction: column; gap: 2.5mm; }
+.mission .story { font-size: 10.5pt; }
+.mission .screen .body { min-height: 0; font-size: 8.5pt; line-height: 1.5; background-image: none; white-space: pre; }
+.tool { border: 1.5px dashed var(--ink); border-radius: 2.5mm; padding: 2mm 2.5mm; display: flex; flex-direction: column; gap: 1.2mm; background: #fff; }
+.tool .th { font-weight: 900; font-size: 9.5pt; }
+.tool p { font-size: 9pt; }
+.tool pre.code { font-size: 8.5pt; line-height: 1.5; padding: 1.5mm 2mm; }
 /* ===== 공통 스타일 끝 ===== */
 
 /* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
@@ -215,38 +223,43 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
 </head>
 <body>
 <!--
-  워크시트 틀. 사용법은 docs/01-worksheet-format.md 를 본다.
+  워크시트 틀 (프로젝트 중심). 사용법은 docs/01-worksheet-format.md, 내용 규칙은 docs/02-content-rules.md
   - {{ }} 안을 바꾼다. 필요 없는 부품은 지운다.
+  - 개념 카드 쪽을 따로 만들지 않는다. 새 개념은 따라 만들기 단계 안의 도구 카드(.tool)로 소개한다.
   - 코드는 파이썬 파일에서 글자 그대로 옮긴다. 들여쓰기 4칸.
   - 빈칸: <span class="blank w3" data-n="1"></span> (번호 = starter의 "# 빈칸 N")
   - 쪽을 늘리거나 줄이면 .foot 의 "쪽 / 전체쪽"을 다시 매긴다.
 -->
 
-<!-- ===================== 1쪽: 목표 + 워밍업 + 따라가기 미션 ===================== -->
+<!-- ===================== 1쪽: 미션 브리핑 + 워밍업 ===================== -->
 <section class="page">
   <header class="head">
     <div class="badge">{{N}}학기<br>{{N}}주차<small>{{부제: 개념 주차는 "~하기"}}</small></div>
     <div class="title">
       <h1>{{미니 프로젝트 이름}}</h1>
-      <p>{{개념1}} · {{개념2}} · {{개념3}}</p>
+      <p>오늘의 도구: {{도구1}} · {{도구2}} · {{도구3}}</p>
     </div>
     <div class="who"><span>이름</span><span></span><span>날짜</span><span></span></div>
   </header>
 
-  <div class="box soft">
-    <h3>🎯 오늘의 목표</h3>
-    <ul class="goal">
-      <li>{{목표 1 (~할 수 있어요)}}</li>
-      <li>{{목표 2}}</li>
-      <li>{{목표 3}}</li>
-      <li>{{목표 4}}</li>
-    </ul>
+  <div class="mission">
+    <p class="story">{{2~3문장 이야기: 왜 이 프로그램이 필요할까?}}</p>
+    <div class="row">
+      <div class="screen" style="flex:1.3"><div class="bar">완성하면 이렇게 돼요</div><div class="body mono">{{solution 실행 화면}}</div></div>
+      <div>
+        <h3>🎯 오늘의 미션</h3>
+        <ul class="check">
+          <li>{{만들 기능 1}}</li>
+          <li>{{만들 기능 2}}</li>
+          <li>{{만들 기능 3}}</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
-  <h2><span class="num">1</span>워밍업: {{워밍업 제목}} 🔧<span class="time">10분</span></h2>
+  <h2><span class="num">1</span>워밍업: {{고장 난 ○○ 고치기}} 🔧</h2>
   <p>아래 코드에는 <b>오류가 3개</b> 숨어 있어요. 먼저 눈으로 찾아 <b>동그라미</b> 치고, <code>warmup.py</code>를 실행해 확인해 보세요.</p>
   <p class="muted">1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실어요.</p>
-  <!-- 줄 번호는 warmup.py 와 같게. 앞 4줄을 생략했으면 counter-reset: ln 4 -->
   <pre class="code" style="counter-reset: ln 4"><span class="l">{{warmup.py 5번 줄}}</span><span class="l"></span><span class="l">{{warmup.py 7번 줄}}</span></pre>
 
   <table class="fill tall">
@@ -256,153 +269,143 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
     <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
   </table>
   <div class="tip"><b>{{오류 이름}}</b>: {{짧은 뜻}} &nbsp;|&nbsp; <b>{{오류 이름}}</b>: {{짧은 뜻}}</div>
-
-  <div class="box">
-    <h3>🔍 따라가기 미션: {{관찰할 것}}</h3>
-    <p class="muted">다 고쳤으면 {{입력값}}을 넣었다고 생각하고 코드를 <b>한 줄씩 따라가며</b> {{무엇을}} 적어요. {{확인 방법: 실행해서 출력으로 / print(변수)를 넣어서}}</p>
-    <table class="fill tall" style="margin-top:2mm">
-      <tr><th style="width:40mm">{{기준 (줄 번호 / 바퀴 / 입력)}}</th><th style="width:30mm">{{변수}}</th><th>{{값}}</th></tr>
-      <tr><td class="w"></td><td class="w mono"></td><td class="w"></td></tr>
-      <tr><td class="w"></td><td class="w mono"></td><td class="w"></td></tr>
-    </table>
-  </div>
   <div class="foot"><span>파이썬 {{N}}학기 · {{N}}주차</span><span>1 / 5</span></div>
 </section>
 
-<!-- ===================== 2쪽: 개념 카드 ===================== -->
+<!-- ===================== 2쪽: 따라 만들기 (단계 A·B·C) ===================== -->
 <section class="page">
-  <h2><span class="num">2</span>개념 카드 📇<span class="time">20분</span></h2>
-  <p class="muted">코드를 읽고 <b>화면에 무엇이 나올지 먼저 예상해서</b> 써 보세요. 그다음 실행해서 맞았는지 확인해요.</p>
+  <h2><span class="num">2</span>따라 만들기 🛠️</h2>
+  <p class="muted">한 단계씩 만들고 <b>바로 실행</b>해요. 빈칸은 먼저 <b>연필로</b> 쓰고 <code>mini_starter.py</code>에 입력해요.</p>
 
-  <div class="grid2">
-    <div class="concept">
-      <div class="ch"><span class="k">카드 1</span><b>{{개념 이름}}</b></div>
-      <p>{{한두 문장 설명}}</p>
-      <pre class="code"><span class="l">{{3~6줄 코드}}</span></pre>
-      <p class="muted">👉 {{input()이 있으면 입력값}}</p>
-      <div class="screen"><div class="bar">예상 실행 화면</div><div class="body"></div></div>
-    </div>
-    <div class="concept">
-      <div class="ch"><span class="k">카드 2</span><b>{{개념 이름}}</b></div>
-      <p>{{설명}}</p>
-      <pre class="code"><span class="l">{{코드}}</span></pre>
-      <div class="screen"><div class="bar">예상 실행 화면</div><div class="body"></div></div>
-    </div>
-    <div class="concept">
-      <div class="ch"><span class="k">카드 3</span><b>{{개념 이름}}</b></div>
-      <p>{{설명}}</p>
-      <pre class="code"><span class="l">{{코드}}</span></pre>
-      <div class="screen"><div class="bar">예상 실행 화면</div><div class="body"></div></div>
-    </div>
-    <div class="concept">
-      <div class="ch"><span class="k">카드 4</span><b>{{개념 이름}}</b></div>
-      <p>{{설명}}</p>
-      <pre class="code"><span class="l">{{코드}}</span></pre>
-      <div class="screen"><div class="bar">예상 실행 화면</div><div class="body"></div></div>
+  <div class="quest">
+    <div class="qhead"><span>단계 A · {{이 단계가 끝나면 화면에 무엇이 나올까?}}</span><span class="lv">①②</span></div>
+    <div class="qbody">
+      <div class="row">
+        <div style="flex:1.4">
+          <!-- starter 파일의 해당 부분. 일부만 실으면 pre.code.nonum + 앞뒤 2~3줄 -->
+          <pre class="code"><span class="l">name = <span class="blank w3" data-n="1"></span>("이름: ")</span><span class="l">{{다음 줄}}</span></pre>
+          <div class="tip">① {{빈칸 힌트}} · ② {{빈칸 힌트}}</div>
+        </div>
+        <div class="tool">
+          <div class="th">🧰 새 도구: {{도구 이름 (아이 말로)}}</div>
+          <p>{{언제 쓰나요? 한 줄}}</p>
+          <pre class="code nonum"><span class="l">{{프로젝트 소재 예시 2~3줄}}</span></pre>
+        </div>
+      </div>
+      <div class="screen"><div class="bar">실행 기록: 내가 입력한 것과 화면에 나온 것</div><div class="body"></div></div>
     </div>
   </div>
 
-  <div class="box">
-    <h3>✋ 직접 해 보기: {{과제 이름}}</h3>
-    <p class="muted">{{무엇을 하는 코드를 손으로 쓸지}}</p>
-    <div class="lines mono" style="margin-top:1mm"><span></span><span></span><span></span><span></span></div>
+  <div class="quest">
+    <div class="qhead"><span>단계 B · {{단계 목표}}</span><span class="lv">③④</span></div>
+    <div class="qbody">
+      <div class="row">
+        <div style="flex:1.4">
+          <pre class="code"><span class="l">{{코드}}</span></pre>
+          <div class="tip">③ {{ }} · ④ {{ }}</div>
+        </div>
+        <div class="tool">
+          <div class="th">🧰 새 도구: {{ }}</div>
+          <p>{{ }}</p>
+          <pre class="code nonum"><span class="l">{{ }}</span></pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="screen"><div class="bar">실행하기 전 예상</div><div class="body"></div></div>
+        <div class="screen"><div class="bar">실행해 보니</div><div class="body"></div></div>
+      </div>
+    </div>
   </div>
 
   <div class="box dashed">
-    <h3>🤔 생각해 보기</h3>
-    <p>{{왜 그럴까? 질문}}</p>
-    <div class="lines"><span></span><span></span></div>
+    <h3>🔍 따라가기</h3>
+    <p class="muted">{{입력값}}을 넣었다고 생각하고 코드를 <b>한 줄씩 손가락으로 따라가며</b> 표를 채워요. 실행해서 확인해요.</p>
+    <table class="fill" style="margin-top:1.5mm">
+      <tr><th style="width:30mm">{{줄 / 변수}}</th><th>{{값}}</th></tr>
+      <tr><td class="w"></td><td class="w"></td></tr>
+      <tr><td class="w"></td><td class="w"></td></tr>
+    </table>
   </div>
   <div class="foot"><span>파이썬 {{N}}학기 · {{N}}주차</span><span>2 / 5</span></div>
 </section>
 
-<!-- ===================== 3쪽: 미니 프로젝트 퀘스트 ===================== -->
+<!-- ===================== 3쪽: 내 것으로 바꾸기 + 새로 만들기 ===================== -->
 <section class="page">
-  <h2><span class="num">3</span>미니 프로젝트 퀘스트: {{미니 프로젝트 이름}}<span class="time">45분</span></h2>
-
+  <h2><span class="num">3</span>내 것으로 바꾸기 ⭐ 오늘의 완성 기준</h2>
   <div class="quest">
-    <div class="qhead"><span>1단계 · 따라 하기</span><span class="lv">모두</span></div>
-    <div class="qbody">
-      <p>빈칸 <b>①~④</b>에 들어갈 코드를 먼저 <b>연필로</b> 써 보세요. 그다음 <code>mini_starter.py</code>에 입력해서 실행해요.</p>
-      <!-- mini_starter.py 와 같은 줄. 일부만 실으면 pre.code.nonum + 빈칸 앞뒤 2~3줄 + "# … " 생략 표시 -->
-      <pre class="code"><span class="l">name = <span class="blank w3" data-n="1"></span>("이름: ")</span><span class="l">{{다음 줄}}</span></pre>
-      <div class="tip">① {{빈칸 1 짧은 힌트}} · ② {{빈칸 2}} · ③ {{빈칸 3}} · ④ {{빈칸 4}}</div>
-    </div>
-  </div>
-
-  <div class="quest">
-    <div class="qhead"><span>2단계 · 바꾸기 ⭐ 오늘의 완성 기준</span><span class="lv">모두</span></div>
+    <div class="qhead"><span>{{어떻게 바꿀지 한 줄}}</span><span class="lv">모두</span></div>
     <div class="qbody">
       <p>{{먼저 설계하고 코드로 옮겨요}}</p>
-      <table class="fill">
+      <table class="fill tall">
         <tr><th style="width:52%">{{설계 항목}}</th><th>{{설계 항목}}</th></tr>
         <tr><td class="w">예) {{예시}}</td><td class="w mono">{{예시}}</td></tr>
         <tr><td class="w"></td><td class="w"></td></tr>
         <tr><td class="w"></td><td class="w"></td></tr>
       </table>
       <ul class="check">
-        <li>{{완성 기준 1}}</li>
+        <li>{{만든 기능으로 쓴 완성 기준 1}}</li>
         <li>{{완성 기준 2}}</li>
         <li>{{완성 기준 3}}</li>
       </ul>
     </div>
   </div>
 
+  <h2><span class="num">4</span>새로 만들기 <span class="muted" style="font-weight:500">(선택)</span></h2>
   <div class="quest">
-    <div class="qhead"><span>3단계 · 새로 만들기</span><span class="lv">선택</span></div>
+    <div class="qhead"><span>내 아이디어 더하기</span><span class="lv">선택</span></div>
     <div class="qbody">
       <p class="muted">아이디어: {{아이디어 1}} · {{아이디어 2}} · {{아이디어 3}}</p>
       <div class="row">
         <div class="answer"><span class="tag">내가 만들 기능</span></div>
-        <div class="answer"><span class="tag">{{필요한 것 (변수, 조건 …)}}</span></div>
+        <div class="answer"><span class="tag">{{필요한 것}}</span></div>
       </div>
     </div>
+  </div>
+
+  <div class="box">
+    <h3>👀 친구에게 보여 주기</h3>
+    <table class="fill">
+      <tr><th style="width:30mm">실행해 본 친구</th><th>친구의 한마디</th></tr>
+      <tr><td class="w"></td><td class="w"></td></tr>
+      <tr><td class="w"></td><td class="w"></td></tr>
+    </table>
   </div>
   <div class="foot"><span>파이썬 {{N}}학기 · {{N}}주차</span><span>3 / 5</span></div>
 </section>
 
-<!-- ===================== 4쪽: 확장 프로젝트 + 마무리 ===================== -->
+<!-- ===================== 4쪽: 도전 프로젝트 + 마무리 ===================== -->
 <section class="page">
-  <h2><span class="num">4</span>확장 프로젝트 퀘스트: {{확장 프로젝트 이름}}</h2>
-  <p class="muted">중고등은 미니 1단계를 마친 뒤 이 퀘스트가 <b>오늘의 완성 기준</b>이에요. 초등은 미니 프로젝트를 다 마친 뒤 도전해요. <code>extension_starter.py</code>는 그대로 실행되니 실행해 보고 바꾸기부터 시작해요.</p>
-
+  <h2><span class="num">5</span>도전 프로젝트: {{도전 프로젝트 이름}} 🚀</h2>
+  <p class="muted">미니 프로젝트를 다 만든 사람이 도전해요. <code>extension_starter.py</code>는 그대로 실행되니 실행해 보고 바꾸기부터 시작해요.</p>
   <div class="quest">
-    <div class="qhead"><span>바꾸기 · {{설계 활동 이름}}</span><span class="lv">완성 기준</span></div>
+    <div class="qhead"><span>{{이야기 한 줄}}</span><span class="lv">도전</span></div>
     <div class="qbody">
       <p>{{설계·그리기 안내. 예상 표라면 시작 조건과 계산 규칙을 모두 적는다}}</p>
       <div class="draw" style="min-height:50mm"></div>
       <ul class="check">
-        <li>{{완성 기준 1}}</li>
-        <li>{{완성 기준 2}}</li>
-        <li>{{완성 기준 3}}</li>
+        <li>{{도전 기준 1}}</li>
+        <li>{{도전 기준 2}}</li>
+        <li>{{도전 기준 3}}</li>
       </ul>
-    </div>
-  </div>
-
-  <div class="quest">
-    <div class="qhead"><span>새로 만들기</span><span class="lv">선택</span></div>
-    <div class="qbody">
-      <p class="muted">아이디어: {{아이디어}} · {{아이디어}} · {{아이디어}}</p>
-      <div class="lines"><span></span><span></span></div>
     </div>
   </div>
 
   <div class="spacer"></div>
 
-  <h2><span class="num">5</span>오늘의 마무리 ✅</h2>
+  <h2><span class="num">6</span>오늘의 마무리 ✅</h2>
   <div class="row">
     <div class="box">
       <ul class="check">
         <li>워밍업 오류 3개를 오류 메시지를 보고 고쳤어요.</li>
-        <li>따라가기로 {{관찰한 것}}을 확인했어요.</li>
-        <li>{{오늘 개념}}을 써 봤어요.</li>
-        <li>2단계 바꾸기(중고등: 확장 바꾸기)를 완성했어요.</li>
+        <li>따라 만들기를 단계마다 실행하며 완성했어요.</li>
+        <li>내 것으로 바꾸기를 완성했어요.</li>
+        <li>친구에게 내 프로그램을 보여 줬어요.</li>
       </ul>
     </div>
     <div class="box" style="flex:.8">
       <h3>스스로 평가</h3>
       <p>오늘 내 실력 <span class="stars">☆☆☆</span></p>
-      <p class="muted" style="margin-top:1.5mm">{{돌아보기 질문}}</p>
+      <p class="muted" style="margin-top:1.5mm">내 프로그램에서 가장 자랑하고 싶은 부분은?</p>
       <div class="lines"><span></span><span></span></div>
     </div>
   </div>
@@ -414,38 +417,30 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
   <h2><span class="num">💡</span>힌트 카드<span class="time">선생님이 잘라서 필요할 때 한 장씩 나눠 줘요</span></h2>
   <p class="muted">막히면 힌트 1부터 차례로 받아요. 힌트를 받기 전에 3분은 혼자 고민해 보기!</p>
 
-  <h3 style="margin-top:2mm">미니 프로젝트 3단계 · 새로 만들기</h3>
+  <h3 style="margin-top:2mm">새로 만들기</h3>
   <div class="hints">
-    <div class="hint">
-      <div class="hh"><span>힌트 1 · 방향</span><span class="dots">●○○</span></div>
-      <p>{{무엇부터 생각할지. 새 변수가 필요하면 여기서 소개}}</p>
-    </div>
-    <div class="hint">
-      <div class="hh"><span>힌트 2 · 쓸 함수</span><span class="dots">●●○</span></div>
-      <p>{{쓸 함수·문법. 변수 이름은 starter와 같게}}</p>
-    </div>
-    <div class="hint">
-      <div class="hh"><span>힌트 3 · 거의 코드</span><span class="dots">●●●</span></div>
-      <!-- 4칸 들여쓰기, 긴 줄은 괄호 안에서만 나눔: 그대로 따라 쳐도 실행돼야 한다 -->
-      <pre class="code"><span class="l">{{거의 완성된 코드}}</span></pre>
-    </div>
+    <div class="hint"><div class="hh"><span>힌트 1 · 방향</span><span class="dots">●○○</span></div><p>{{무엇부터 생각할지}}</p></div>
+    <div class="hint"><div class="hh"><span>힌트 2 · 쓸 도구</span><span class="dots">●●○</span></div><p>{{변수 이름은 starter와 같게}}</p></div>
+    <div class="hint"><div class="hh"><span>힌트 3 · 거의 코드</span><span class="dots">●●●</span></div>
+      <!-- 4칸 들여쓰기, 긴 줄은 괄호 안에서만: 그대로 따라 쳐도 실행돼야 한다 -->
+      <pre class="code"><span class="l">{{거의 완성된 코드}}</span></pre></div>
   </div>
 
   <div class="cut"></div>
 
-  <h3 style="margin-top:2mm">확장 프로젝트 · 새로 만들기</h3>
+  <h3 style="margin-top:2mm">도전 프로젝트</h3>
   <div class="hints">
     <div class="hint"><div class="hh"><span>힌트 1 · 방향</span><span class="dots">●○○</span></div><p>{{ }}</p></div>
-    <div class="hint"><div class="hh"><span>힌트 2 · 쓸 함수</span><span class="dots">●●○</span></div><p>{{ }}</p></div>
+    <div class="hint"><div class="hh"><span>힌트 2 · 쓸 도구</span><span class="dots">●●○</span></div><p>{{ }}</p></div>
     <div class="hint"><div class="hh"><span>힌트 3 · 거의 코드</span><span class="dots">●●●</span></div><pre class="code"><span class="l">{{ }}</span></pre></div>
   </div>
 
   <div class="cut"></div>
 
-  <h3 style="margin-top:2mm">따라 하기 빈칸이 막힐 때</h3>
+  <h3 style="margin-top:2mm">따라 만들기 빈칸이 막힐 때</h3>
   <div class="hints">
-    <div class="hint" style="min-height:40mm"><div class="hh"><span>빈칸 ①</span><span class="dots">●○○</span></div><p>{{어디를 보면 답이 있는지}}</p></div>
-    <div class="hint" style="min-height:40mm"><div class="hh"><span>빈칸 ②·③</span><span class="dots">●○○</span></div><p>{{ }}</p></div>
+    <div class="hint" style="min-height:40mm"><div class="hh"><span>빈칸 ①·②</span><span class="dots">●○○</span></div><p>{{어디를 보면 답이 있는지 (도구 카드 등)}}</p></div>
+    <div class="hint" style="min-height:40mm"><div class="hh"><span>빈칸 ③</span><span class="dots">●○○</span></div><p>{{ }}</p></div>
     <div class="hint" style="min-height:40mm"><div class="hh"><span>빈칸 ④</span><span class="dots">●○○</span></div><p>{{ }}</p></div>
   </div>
   <div class="foot"><span>파이썬 {{N}}학기 · {{N}}주차</span><span>5 / 5</span></div>
@@ -453,17 +448,13 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
 
 <!--
   프로젝트 주차 부품 예시 (필요한 쪽에 복사해 쓴다)
-
   화면 흐름:
   <div class="flow">
     <div class="draw"><span class="tag">① 시작 화면</span></div><div class="arrow">→</div>
     <div class="draw"><span class="tag">② 반복되는 화면</span></div><div class="arrow">→</div>
     <div class="draw"><span class="tag">③ 끝 화면</span></div>
   </div>
-
   2단 체크 목록:  <ul class="check cols2"><li>…</li></ul>
-  이름표 답 칸:   <div class="answer"><span class="tag">…</span></div>
-  줄 번호 없는 조각: <pre class="code nonum">…</pre>
   긴 코드:        <pre class="code tight">…</pre>
 -->
 </body>
