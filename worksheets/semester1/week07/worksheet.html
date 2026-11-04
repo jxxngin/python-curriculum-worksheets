@@ -471,7 +471,7 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
     <div class="hint">
       <div class="hh"><span>힌트 1 · 방향</span><span class="dots">●○○</span></div>
       <p><b>A</b> 볼은 "같은 자리는 아니지만 다른 자리에 있는 숫자". 자리마다 스트라이크인지 먼저 보고, 아니면 볼인지 검사해요.</p>
-      <p><b>B</b> 하루 = 반복 한 번. 매일 새 감염·회복을 계산해 누적 변수를 바꿔요.</p>
+      <p><b>B</b> 하루 = 반복 한 번. 회복이 생기면 <code>infected</code> 하나로는 부족해요. 지금 아픈 사람 <code>sick</code>과 누적 감염 <code>total_sick</code>으로 나눠요.</p>
     </div>
     <div class="hint">
       <div class="hh"><span>힌트 2 · 쓸 함수</span><span class="dots">●●○</span></div>

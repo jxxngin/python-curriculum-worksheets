@@ -30,7 +30,7 @@ else:
 
 # ===== 문제 4 (6주): 영화 관람 판정 =====
 age = int(input("나이: "))
-with_parent = input("보호자와 함께 왔나요? (네/아니오) ").strip()
+with_parent = input("보호자와 함께 왔나요? ").strip()
 can_watch = False
 if age >= 12 or with_parent == "네":
     can_watch = True

@@ -37,7 +37,7 @@ else:
 
 # ===== 문제 4 (6주): 영화 관람 판정 =====
 age = int(input("나이: "))
-with_parent = input("보호자와 함께 왔나요? (네/아니오) ").strip()
+with_parent = input("보호자와 함께 왔나요? ").strip()
 # 빈칸 5: 두 조건 중 하나만 참이어도 참이 되는 키워드예요.
 can_watch = False
 if age >= 12 ___ with_parent == "네":

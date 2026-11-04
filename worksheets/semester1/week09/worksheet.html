@@ -352,7 +352,7 @@ ul.check li::before {
   <div class="concept">
     <div class="ch"><span class="k">문제 2</span><b>음료수 자판기</b><span class="muted">2주</span></div>
     <div class="row">
-      <div style="flex:1.7"><pre class="code"><span class="l">drink = input("콜라/사이다/주스: ").strip()</span><span class="l">if drink == "콜라":</span><span class="l">    print("🥤 콜라가 나왔어요.")</span><span class="l"><span class="blank w3" data-n="3"></span> drink == "사이다":</span><span class="l">    print("🫧 사이다가 나왔어요.")</span><span class="l">elif drink == "주스":</span><span class="l">    print("🧃 주스가 나왔어요.")</span><span class="l">else:</span><span class="l">    print("그런 음료는 없어요.")</span></pre></div>
+      <div style="flex:1.7"><pre class="code"><span class="l">drink = input("콜라 / 사이다 / 주스 중 고르세요: ").strip()</span><span class="l">if drink == "콜라":</span><span class="l">    print("🥤 콜라가 나왔어요.")</span><span class="l"><span class="blank w3" data-n="3"></span> drink == "사이다":</span><span class="l">    print("🫧 사이다가 나왔어요.")</span><span class="l">elif drink == "주스":</span><span class="l">    print("🧃 주스가 나왔어요.")</span><span class="l">else:</span><span class="l">    print("그런 음료는 없어요.")</span></pre></div>
       <div class="screen"><div class="bar">예상 실행 화면</div><div class="body" style="min-height:24mm"></div></div>
     </div>
     <div class="tip">③ 앞 조건이 아닐 때 다른 조건을 하나 더 검사하는 키워드 &nbsp;👉 "사이다"를 입력하면?</div>
@@ -380,7 +380,7 @@ ul.check li::before {
   <div class="concept">
     <div class="ch"><span class="k">문제 4</span><b>영화 관람 판정</b><span class="muted">6주</span></div>
     <div class="row">
-      <div style="flex:1.7"><pre class="code"><span class="l">age = int(input("나이: "))</span><span class="l">with_parent = input("보호자와 함께? ").strip()</span><span class="l">can_watch = False</span><span class="l">if age &gt;= 12 <span class="blank w2" data-n="5"></span> with_parent == "네":</span><span class="l">    can_watch = True</span><span class="l">if can_watch:</span><span class="l">    print("🎬 입장할 수 있어요!")</span><span class="l">else:</span><span class="l">    print("다음에 보호자와 함께 와요.")</span></pre></div>
+      <div style="flex:1.7"><pre class="code"><span class="l">age = int(input("나이: "))</span><span class="l">with_parent = input("보호자와 함께 왔나요? ").strip()</span><span class="l">can_watch = False</span><span class="l">if age &gt;= 12 <span class="blank w2" data-n="5"></span> with_parent == "네":</span><span class="l">    can_watch = True</span><span class="l">if can_watch:</span><span class="l">    print("🎬 입장할 수 있어요!")</span><span class="l">else:</span><span class="l">    print("다음에 보호자와 함께 와요.")</span></pre></div>
       <div class="screen"><div class="bar">예상 실행 화면</div><div class="body" style="min-height:24mm"></div></div>
     </div>
     <div class="tip">⑤ 둘 중 하나만 참이어도 참이 되는 키워드 &nbsp;👉 10살, "네"를 입력하면?</div>
@@ -388,7 +388,7 @@ ul.check li::before {
   <div class="concept">
     <div class="ch"><span class="k">문제 5</span><b>저금통</b><span class="muted">7주</span></div>
     <div class="row">
-      <div style="flex:1.7"><pre class="code"><span class="l">saved = 0</span><span class="l">while True:</span><span class="l">    coin = int(input("넣을 돈 (끝: 0): "))</span><span class="l">    if coin == 0:</span><span class="l">        break</span><span class="l">    saved = <span class="blank w3" data-n="6"></span> + coin</span><span class="l">print(f"🐷 모은 돈: {saved}원")</span></pre></div>
+      <div style="flex:1.7"><pre class="code"><span class="l">saved = 0</span><span class="l">while True:</span><span class="l">    coin = int(input("넣을 돈 (그만하려면 0): "))</span><span class="l">    if coin == 0:</span><span class="l">        break</span><span class="l">    saved = <span class="blank w3" data-n="6"></span> + coin</span><span class="l">print(f"🐷 모은 돈: {saved}원")</span></pre></div>
       <div class="screen"><div class="bar">예상 실행 화면</div><div class="body" style="min-height:24mm"></div></div>
     </div>
     <div class="tip">⑥ 지금까지 모은 돈에 이번 돈을 더해 쌓아요 &nbsp;👉 500, 100, 0을 입력하면?</div>
@@ -396,7 +396,7 @@ ul.check li::before {
   <div class="concept">
     <div class="ch"><span class="k">문제 6</span><b>소풍 가방</b><span class="muted">8주</span></div>
     <div class="row">
-      <div style="flex:1.7"><pre class="code"><span class="l">bag = ["물", "김밥"]</span><span class="l">item = input("넣을 물건: ").strip()</span><span class="l">if item <span class="blank w2" data-n="7"></span> bag:</span><span class="l">    print("이미 들어 있어요!")</span><span class="l">else:</span><span class="l">    bag.<span class="blank w3" data-n="8"></span>(item)</span><span class="l">print(f"🎒 가방: {bag}")</span></pre></div>
+      <div style="flex:1.7"><pre class="code"><span class="l">bag = ["물", "김밥"]</span><span class="l">item = input("가방에 넣을 물건: ").strip()</span><span class="l">if item <span class="blank w2" data-n="7"></span> bag:</span><span class="l">    print("이미 들어 있어요!")</span><span class="l">else:</span><span class="l">    bag.<span class="blank w3" data-n="8"></span>(item)</span><span class="l">print(f"🎒 가방: {bag}")</span></pre></div>
       <div class="screen"><div class="bar">예상 실행 화면</div><div class="body" style="min-height:24mm"></div></div>
     </div>
     <div class="tip">⑦ 리스트에 들어 있는지 검사하는 키워드 · ⑧ 맨 뒤에 붙이는 함수 &nbsp;👉 "과자"를 입력하면?</div>
