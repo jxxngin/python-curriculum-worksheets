@@ -23,6 +23,44 @@
 7. 진행 파일의 그 주차 줄을 `[x]`로 바꾸고 날짜를 적는다.
 8. 커밋하고 푸시한다. 커밋 메시지는 `N학기 N주차 워크시트: <미니 프로젝트 이름>`이다.
 
+## 설계 파일과 생성 도구
+
+교안 파일은 손으로 쓰지 않고 **주차 설계 파일**(`lesson_spec.py`)로 만든다. 단계 코드를 한 곳에서 정의하므로 교안·starter·solution이 자동으로 일치한다.
+
+```bash
+python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
+```
+
+- 만드는 파일: `lesson.html`, `README.md`, `answer_key.md`, (개념 주차) `mini_starter.py`, `mini_solution.py`
+- 손으로 쓰는 파일: `lesson_spec.py`, `warmup.py`, `extension_*.py`, `teacher_guide.md`, (프로젝트 주차) 주제별 starter/solution
+- 기준 예시: `week01/lesson_spec.py`(3단계), `week04/lesson_spec.py`(4단계, 무작위 값 고정)
+
+`SPEC` 주요 필드
+
+| 필드 | 뜻 |
+| --- | --- |
+| `week`, `title`, `badge`, `story` | 주차, 프로젝트 이름, 부제("~하기"), 미션 이야기 |
+| `demo_inputs`, `demo_randoms` | 완성 화면을 만들 때 넣을 입력, 고정할 무작위 값 |
+| `warm_title`, `warm_tip` | 워밍업 제목, 오류 이름 팁 (`warmup.py`는 따로 쓴다) |
+| `steps` | 단계 목록. 단계마다 `name`, `tool`(도구 카드: 이름, 언제 쓰나요, 예시 줄, 결과), `lines`(새로 쓰는 3~6줄), `sol_lines`(solution에서만 다를 때), `ok`(성공 체크), `trace`(따라가기), `extra_todo`, `small` |
+| `change` | 바꾸기: 표 머리, 예시 행, `must`(★ 최대 3개), `more`(더 해 보기) |
+| `change_example` | solution 맨 아래에 주석으로 넣을 바꾸기 예시 |
+| `new_ideas`, `brag` | 새로 만들기 아이디어, 마무리 질문 |
+| `challenge` | 도전 프로젝트: `name`, `design`, `story`, `tool`, `body`(표 등 HTML), `checks`, `more` |
+| `hints` | 힌트 카드: (이름, ●○○, 내용 HTML) |
+| `key` | 정답지: `warm`(줄, 오류, 고친 방법), `warm_note`, `steps`(단계별 실행 결과), `trace`(표), `change`, `challenge` |
+| 프로젝트 주차용 | `mini=False`, `complete=(실행할 파일, 입력, 무작위 값)`, `file`(학생이 이어 쓸 파일), `h1`, `week_label`, `mission_todo`; 단계에 `lines` 대신 `todo`, `body`(기획서 표 등), `write`, `readme` |
+
+## 프로젝트 주차 (5, 9, 10~11주)
+
+새 블록 종류를 만들지 않고 기존 블록을 쓴다. 블록 순서는 개념 주차와 같다.
+
+- `mission`: 이번 주에 할 일(기획 → 만들기 → 발표)과 예시 완성 화면
+- `warmup`: 그대로
+- `step`: 프로젝트 단계. 예) 중간: 주제 고르기·기획서 → 만들기 1·2 → 발표 준비. 설계와 보충: 설계도 ①·② → 보충 문제. 기말: 명령 카드 → 만들기(일정표) → 친구 테스트 → 발표 준비
+- `change`: 최소 완성 기준(★ 최대 3개 + 더 해 보기)과 평가표
+- `new`, `challenge`, `hints`: 그대로(필요 없으면 `new`·`challenge`는 빼도 된다)
+
 ## 중간에 끊긴 경우
 
 - 진행 파일에서 `[ ]`인데 주차 폴더에 파일이 일부만 있으면 이전 실행이 끊긴 것이다.

@@ -1,0 +1,53 @@
+"""week04 교안 설계. 실행: python tools/lesson_gen.py worksheets/semester1/week04/lesson_spec.py"""
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "tools"))
+from lesson_gen import code, table  # noqa: E402,F401
+
+SPEC = dict(week=4, title='비밀의 문 게임', badge='무작위로 뽑기',
+    story='보물이 숨은 문은 몇 번일까? 🚪 실행할 때마다 보물 위치와 비밀번호가 <b>바뀌는</b> 모험 게임을 만들어 봐요. 친구가 해도, 내가 다시 해도 매번 새로워요!',
+    demo_inputs=['하린', '2', '10'], demo_randoms=[2, 12],
+    warm_title='고장 난 주사위 고치기',
+    warm_tip='<b>NameError</b> 가져오지(import) 않은 이름 · <b>AttributeError</b> 그런 기능이 없어요(철자·대소문자) · <b>SyntaxError</b> 괄호 짝 확인',
+    steps=[
+        dict(name='보물 문을 무작위로 정하기', small=True,
+             tool=[('도구 상자 꺼내기: import', '파이썬에 들어 있는 도구 상자를 꺼내 써요. 맨 위에 한 번만!', ['import random'], 'random 도구 상자를 쓸 수 있어요'),
+                   ('무작위 뽑기: random.randint(a, b)', 'a부터 b까지 중 하나를 뽑아요. b도 나와요!', ['dice = random.randint(1, 6)', 'print(dice)'], '1~6 중 하나 (실행할 때마다 달라요)')],
+             lines=['import random', 'name = input("탐험가 이름: ")', 'score = 0', 'treasure_door = random.randint(1, 3)', 'print(f"(쉿! 테스트용) 보물은 {treasure_door}번 문")'],
+             sol_lines=['import random', 'name = input("탐험가 이름: ")', 'score = 0', 'treasure_door = random.randint(1, 3)', '# print(f"(쉿! 테스트용) 보물은 {treasure_door}번 문")'],
+             extra_todo=['3번 실행해서 보물 문 번호가 바뀌는지 봐요.'],
+             ok=['실행할 때마다 보물 문 번호가 바뀌었어요.']),
+        dict(name='1관문: 문을 골라 보물 찾기',
+             lines=['pick = int(input("[1관문] 몇 번 문을 열까요? (1~3): "))', 'if pick == treasure_door:', '    print("💎 보물을 찾았어요! +10점")', '    score = score + 10', 'else:', '    print(f"꽝! 보물은 {treasure_door}번 문에 있었어요.")'],
+             ok=['맞히면 "보물을 찾았어요", 틀리면 "꽝!"이 나왔어요.']),
+        dict(name='2관문: 비밀번호가 얼마나 가까운지 알려 주기', small=True,
+             tool=[('거리 재기: abs()', '두 수가 얼마나 떨어져 있는지 알려 줘요. 누가 더 커도 0 이상이 나와요.', ['print(abs(9 - 12))', 'print(abs(12 - 9))'], '둘 다 3')],
+             lines=['secret = random.randint(1, 20)', 'guess = int(input("[2관문] 1~20 중 비밀번호는? "))', 'gap = abs(guess - secret)', 'print(f"비밀번호와 {gap}만큼 차이 나요!")'],
+             ok=['비밀번호와의 차이가 화면에 나왔어요. (음수가 아니에요!)']),
+        dict(name='점수를 주고 게임 끝내기',
+             lines=['if gap == 0:', '    score = score + 20', 'elif gap <= 3:', '    score = score + 5', 'print(f"비밀번호는 {secret}이었어요.")', 'print(f"🏆 {name}님의 점수: {score}점")'],
+             extra_todo=['게임 완성! 단계 1의 테스트용 <code>print</code> 줄 맨 앞에 <code>#</code>을 붙여 보물 위치를 숨겨요.'],
+             ok=['마지막에 내 점수가 나왔어요.', '테스트용 줄을 #으로 숨겼어요.'],
+             trace=('보물 문 2, 비밀번호 12가 뽑혔고 하린 / 2 / 10을 넣었다면?', ['1관문 뒤 score', 'gap', '마지막 score'], [['', '', '']])),
+    ],
+    change=dict(headers=['새 관문 이름과 이야기', '무작위 범위 (randint)', '맞히면 점수'], example=['예) 용의 동굴 열쇠 고르기', '<span class="mono">randint(1, 4)</span>', '+15'],
+                must=['관문 이름과 이야기를 나만의 모험으로 바꿨어요.', '<code>random.randint()</code>를 쓰는 새 관문을 1개 더 만들었어요.', '마지막에 점수에 따라 칭호가 나와요. (예: 30점 이상 "전설의 탐험가")'],
+                more=['문 개수나 비밀번호 범위를 바꿔 난이도를 조절했어요.', '<code>abs()</code>로 차이에 따라 "뜨거워요 / 따뜻해요 / 차가워요"를 알려 줘요.']),
+    change_example=['if score >= 30:', '    print("👑 전설의 탐험가!")', 'elif score >= 15:', '    print("🗺️ 용감한 탐험가!")', 'else:', '    print("🌱 초보 탐험가")'],
+    new_ideas=['함정 문 (꽝이 하나뿐인 문, 걸리면 -5점)', '행운의 주사위 (보너스 점수가 무작위)'],
+    brag='내 모험에서 친구가 가장 재미있어한 관문은?',
+    challenge=dict(name='피자 가성비 계산기', design='진짜 피자 가게 메뉴(전단지·배달 앱)를 보고 두 피자를 표에 적어요.',
+                   story='크기도 가격도 다른 두 피자, 어느 쪽이 더 이득일까요? 🍕 넓이 1cm²당 가격으로 비교해요. 실행하기 <b>전에</b> 어느 쪽이 이득일지 먼저 예상해 봐요.',
+                   tool=[('새 도구 4가지', '<code>math.pi</code> 원주율 · <code>pow(5, 2)</code> 제곱 · <code>round(3.146, 2)</code> 반올림 · <code>max(3, 8)</code> 더 큰 값', ['import math', 'print(round(math.pi * pow(10, 2), 1))'], '314.2 (반지름 10cm 원의 넓이)')],
+                   body=table(['', '피자 이름', '지름(cm)', '가격(원)', '1cm²당 가격 (실행 결과)'], 0, first=[['<b>A</b>', '', '', '', ''], ['<b>B</b>', '', '', '', '']]) + '<p>내 예상: <span class="blank"></span> 피자가 이득 → 실행 결과: <span class="blank"></span> 피자가 이득</p>',
+                   checks=['피자 이름도 물어봐서 결과에 이름이 나와요.', '<code>max()</code>로 더 큰 피자를 알려 줘요.', '실제 메뉴(지름, 가격)를 넣어 확인했어요.'],
+                   more=['오늘의 할인 쿠폰: random으로 10%·20%·30% 중 하나를 뽑아 한 피자에 적용', '두 피자의 가격 차이를 <code>abs()</code>로 보여 주기', '지름이 2배면 넓이는 몇 배인지 <code>pow()</code>로 확인']),
+    hints=[
+        ('단계 1', '●○○', '<p><code>import random</code>은 맨 위에 써요. 뽑는 도구는 <code>random.randint(처음, 끝)</code>이에요.</p>'),
+        ('단계 2', '●○○', '<p>입력은 글자라서 <code>int()</code>로 숫자로 바꿔야 비교할 수 있어요. 비교는 <code>==</code>, 줄 끝에 <code>:</code>!</p>'),
+        ('단계 3', '●○○', '<p>차이는 <code>abs(guess - secret)</code>. 순서를 바꿔 써도 결과가 같아요.</p>'),
+        ('단계 4', '●○○', '<p><code>if</code> → <code>elif</code> 순서로 써요. "3 이하"는 <code>&lt;= 3</code>이에요.</p>'),
+        ('새로 만들기 · 거의 코드', '●●●', code(['trap = random.randint(1, 3)', 'pick3 = int(input("문 번호: "))', 'if pick3 == trap:', '    print("🕳️ 함정! -5점")', '    score = score - 5'], nonum=True)),
+        ('도전 · 쿠폰 거의 코드', '●●●', code(['coupon = random.randint(1, 3) * 10', 'cut = price_a * coupon // 100', 'price_a = price_a - cut', 'print(f"{coupon}% 할인! {price_a}원")'], nonum=True)),
+    ],
+    key={'warm': [('7', "NameError (`name 'random' is not defined`)", '맨 위에 `import random`'), ('8', "AttributeError (`... has no attribute 'randInt'`)", '`randint` (대소문자)'), ('13', 'SyntaxError (괄호 짝)', '`{abs(dice1 - dice2)}`처럼 `)` 추가')], 'warm_note': 'SyntaxError(13번)를 먼저 고쳐야 실행된다.', 'steps': ['탐험가 이름을 묻고, `(쉿! 테스트용) 보물은 N번 문`이 나온다. 실행할 때마다 N이 1~3 중에서 바뀐다.', '맞히면 `💎 보물을 찾았어요! +10점`, 틀리면 `꽝! 보물은 N번 문에 있었어요.`', '`비밀번호와 N만큼 차이 나요!` (N은 0 이상)', '`비밀번호는 N이었어요.` / `🏆 (이름)님의 점수: N점`. 단계 1의 테스트용 줄은 `#`으로 숨긴다(정답 파일에는 이미 주석 처리됨).'], 'trace': '| 1관문 뒤 score | gap | 마지막 score |\n| --- | --- | --- |\n| 10 (2 == 2) | 2 (abs(10 − 12)) | 15 (gap <= 3 이라 +5) |', 'change': '칭호는 큰 점수부터 `if → elif → else` 순서로 쓴다. 예시는 `mini_solution.py` 맨 아래 주석.', 'challenge': '1cm²당 가격 = 가격 ÷ (math.pi × 반지름²). 지름 30cm·20,000원이면 약 28.29원. 지름이 2배면 넓이는 4배(`pow(2, 2)`). round()는 끝자리 5에서 짝수 쪽으로 맞춘다(round(2.5) → 2).'})

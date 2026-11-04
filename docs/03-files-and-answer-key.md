@@ -8,6 +8,7 @@
 
 | 파일 | 내용 |
 | --- | --- |
+| `lesson_spec.py` | 주차 설계 파일. `python tools/lesson_gen.py`로 lesson.html·README·answer_key·mini 파일을 만든다 ([05-production-workflow.md](05-production-workflow.md)) |
 | `lesson.html` | 교안. 화면에서 보는 교안이자 인쇄하면 학습지 ([01-worksheet-format.md](01-worksheet-format.md)). 예전 형식 주차는 `worksheet.html` |
 | `README.md` | 교안 요약. GitHub에서 바로 읽히는 용도(P11). 교안과 같은 흐름·내용 |
 | `warmup.py` | 오류 3개가 든 코드. 맨 위 주석에 "고쳐 보세요" |

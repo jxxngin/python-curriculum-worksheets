@@ -167,10 +167,9 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
     <h2><span class="tag">단계 1</span> 제목 보여 주기</h2>
     <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
     <div class="tool"><div class="th">🧰 도구 카드 · 보여 주기: print()</div><p>괄호 안의 글자를 화면에 보여 줘요. 글자는 따옴표로 감싸요.</p><pre class="code nonum"><span class="l">print("파티에 와 줘!")</span></pre><p class="muted">→ 파티에 와 줘!</p></div>
-    <div class="label">⌨️ 따라 쓸 코드</div>
-    <pre class="code nonum"><span class="l">print("=================================")</span><span class="l">print("     🎂 생일 파티 초대장 🎂")</span><span class="l">print("=================================")</span></pre>
-    <div class="label">▶️ 실행하고 확인</div>
-    <div class="write small"></div>
+    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l">print("=================================")</span><span class="l">print("     🎂 생일 파티 초대장 🎂")</span><span class="l">print("=================================")</span></pre>
+    
+    <div class="label">▶️ 실행하고 확인</div><div class="write small"></div>
     <ul class="check"><li>화면에 제목 3줄이 나왔어요.</li></ul>
     
   </section>
@@ -179,10 +178,9 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
     <h2><span class="tag">단계 2</span> 질문 4개 물어보기</h2>
     <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 2</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
     <div class="tool"><div class="th">🧰 도구 카드 · 물어보기: input()과 이름표 상자</div><p>질문을 보여 주고 대답을 받아요. 대답은 이름표를 붙인 상자(변수)에 담아요. <code>=</code>는 "오른쪽 대답을 왼쪽 상자에 넣어요"라는 뜻이에요.</p><pre class="code nonum"><span class="l">food = input("좋아하는 간식은? ")</span></pre><p class="muted">→ 대답이 food 상자에 들어가요</p></div>
-    <div class="label">⌨️ 따라 쓸 코드</div>
-    <pre class="code nonum"><span class="l">host = input("생일인 사람의 이름은? ")</span><span class="l">date = input("파티 날짜는? (예: 5월 3일) ")</span><span class="l">place = input("파티 장소는? ")</span><span class="l">guest = input("초대할 친구 이름은? ")</span></pre>
-    <div class="label">▶️ 실행하고 확인</div>
-    <div class="write"></div>
+    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l">host = input("생일인 사람의 이름은? ")</span><span class="l">date = input("파티 날짜는? (예: 5월 3일) ")</span><span class="l">place = input("파티 장소는? ")</span><span class="l">guest = input("초대할 친구 이름은? ")</span></pre>
+    
+    <div class="label">▶️ 실행하고 확인</div><div class="write"></div>
     <ul class="check"><li>질문 4개가 차례로 나오고, 대답을 넣을 수 있었어요.</li></ul>
     
   </section>
@@ -191,10 +189,9 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
     <h2><span class="tag">단계 3</span> 대답을 넣어 초대장 완성하기</h2>
     <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 3</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
     <div class="tool"><div class="th">🧰 도구 카드 · 글자 이어 붙이기: +</div><p>상자에 든 대답과 따옴표 글자를 이어 붙여요. 띄어쓰기도 직접 넣어요.</p><pre class="code nonum"><span class="l">print(food + "가 최고!")</span></pre><p class="muted">→ 떡볶이가 최고!</p></div><div class="tool"><div class="th">🧰 도구 카드 · 메모 남기기: #</div><p># 뒤에 쓴 글은 실행되지 않아요. 나중에 볼 메모예요.</p><pre class="code nonum"><span class="l"><span class="c"># 여기부터 초대장 내용</span></span></pre><p class="muted">→ 화면에는 아무것도 안 나와요</p></div>
-    <div class="label">⌨️ 따라 쓸 코드</div>
-    <pre class="code nonum"><span class="l"><span class="c"># 초대장 내용</span></span><span class="l">print("---------------------------------")</span><span class="l">print(guest + "에게")</span><span class="l">print(host + "의 생일 파티에 초대합니다!")</span><span class="l">print("날짜: " + date + " / 장소: " + place)</span><span class="l">print("꼭 와 줘! - " + host + " 드림")</span></pre>
-    <div class="label">▶️ 실행하고 확인</div>
-    <div class="write"></div>
+    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l"><span class="c"># 초대장 내용</span></span><span class="l">print("---------------------------------")</span><span class="l">print(guest + "에게")</span><span class="l">print(host + "의 생일 파티에 초대합니다!")</span><span class="l">print("날짜: " + date + " / 장소: " + place)</span><span class="l">print("꼭 와 줘! - " + host + " 드림")</span></pre>
+    
+    <div class="label">▶️ 실행하고 확인</div><div class="write"></div>
     <ul class="check"><li>초대장에 친구 이름, 날짜, 장소가 들어갔어요.</li></ul>
     <div class="label">🔍 따라가기: 민지 / 5월 3일 / 우리 집 / 서준을 넣었다면 상자 속에는?</div><table class="fill"><tr><th>host</th><th>date</th><th>place</th><th>guest</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
   </section>
