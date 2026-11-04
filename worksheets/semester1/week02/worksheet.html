@@ -43,6 +43,7 @@ body {
   flex-direction: column;
   gap: 4mm;
 }
+.page > * { flex-shrink: 0; }
 @media print {
   body { background: #fff; }
   .page { margin: 0; box-shadow: none; page-break-after: always; break-after: page; }
@@ -201,7 +202,7 @@ ul.check li::before {
 <!-- ===================== 1쪽: 목표 + 워밍업 ===================== -->
 <section class="page">
   <header class="head">
-    <div class="badge">1학기<br>2주차<small>대답 따라 갈림길</small></div>
+    <div class="badge">1학기<br>2주차<small>갈림길 만들기</small></div>
     <div class="title">
       <h1>밸런스 게임 만들기</h1>
       <p>if · elif · else · 같은지 비교(==) · strip()</p>
@@ -315,7 +316,6 @@ ul.check li::before {
       <table class="fill">
         <tr><th style="width:40%">내 밸런스 질문</th><th>선택지 1</th><th>선택지 2</th><th>선택지 3 (있으면)</th></tr>
         <tr><td class="w">예) 여름 방학에 간다면?</td><td class="w">바다</td><td class="w">산</td><td class="w">놀이공원</td></tr>
-        <tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr>
         <tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr>
         <tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr>
       </table>
@@ -432,15 +432,15 @@ ul.check li::before {
   <div class="hints">
     <div class="hint">
       <div class="hh"><span>힌트 1 · 방향</span><span class="dots">●○○</span></div>
-      <p>소문자로 답하면 코드가 <code>"ab"</code>가 되어 <code>"AB"</code>와 달라요. 소문자 코드도 <b>같은 결과</b>로 보내 주면 돼요.</p>
+      <p>소문자로 답하면 코드가 <code>"ab"</code>가 되어 <code>"AB"</code>와 달라요. 결과 조건을 늘리지 말고, <b>답을 받자마자 대문자로 바꿔</b> 두면 돼요.</p>
     </div>
     <div class="hint">
       <div class="hh"><span>힌트 2 · 쓸 함수</span><span class="dots">●●○</span></div>
-      <p><code>elif code == "ab":</code>처럼 소문자 조건을 <code>elif</code>로 하나씩 더 만들어요. 결과는 <code>result</code> 변수에 담으면 출력은 한 번만 해도 돼요.</p>
+      <p><code>input()</code> 바로 아래에 <code>if q1 == "a":</code> → <code>q1 = "A"</code>처럼 질문마다 두 줄씩만 더해요. 그러면 아래 결과 조건은 그대로 써도 돼요.</p>
     </div>
     <div class="hint">
       <div class="hh"><span>힌트 3 · 거의 코드</span><span class="dots">●●●</span></div>
-      <pre class="code"><span class="l">if code == "AB":</span><span class="l">    result = "📚 준비된 도전자"</span><span class="l">elif code == "ab":</span><span class="l">    result = "📚 준비된 도전자"</span><span class="l">print("결과: " + result)</span></pre>
+      <pre class="code"><span class="l">q1 = input("&gt; ").strip()</span><span class="l">if q1 == "a":</span><span class="l">    q1 = "A"</span><span class="l">elif q1 == "b":</span><span class="l">    q1 = "B"</span><span class="l"><span class="c"># q2, q3도 똑같이!</span></span></pre>
     </div>
   </div>
 

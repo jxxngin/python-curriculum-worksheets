@@ -43,6 +43,7 @@ body {
   flex-direction: column;
   gap: 4mm;
 }
+.page > * { flex-shrink: 0; }
 @media print {
   body { background: #fff; }
   .page { margin: 0; box-shadow: none; page-break-after: always; break-after: page; }
@@ -201,7 +202,7 @@ ul.check li::before {
 <!-- ===================== 1쪽: 목표 + 워밍업 ===================== -->
 <section class="page">
   <header class="head">
-    <div class="badge">1학기<br>4주차<small>글자로 대화하기</small></div>
+    <div class="badge">1학기<br>4주차<small>무작위로 뽑기</small></div>
     <div class="title">
       <h1>비밀의 문</h1>
       <p>import · random.randint() · abs()</p>
@@ -462,7 +463,7 @@ ul.check li::before {
     </div>
     <div class="hint">
       <div class="hh"><span>힌트 3 · 거의 코드</span><span class="dots">●●●</span></div>
-      <pre class="code"><span class="l">import random</span><span class="l">coupon = random.randint(1, 3) * 10</span><span class="l">price_a = price_a -</span><span class="l">  price_a * coupon // 100</span><span class="l">print(f"{coupon}% 할인! {price_a}원")</span><span class="l">diff = abs(price_a - price_b)</span><span class="l">print(f"가격 차이: {diff}원")</span></pre>
+      <pre class="code"><span class="l">import random</span><span class="l">coupon = random.randint(1, 3) * 10</span><span class="l">cut = price_a * coupon // 100</span><span class="l">price_a = price_a - cut</span><span class="l">print(f"{coupon}% 할인! {price_a}원")</span><span class="l">diff = abs(price_a - price_b)</span><span class="l">print(f"가격 차이: {diff}원")</span></pre>
     </div>
   </div>
 

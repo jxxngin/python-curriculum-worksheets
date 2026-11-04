@@ -43,6 +43,7 @@ body {
   flex-direction: column;
   gap: 4mm;
 }
+.page > * { flex-shrink: 0; }
 @media print {
   body { background: #fff; }
   .page { margin: 0; box-shadow: none; page-break-after: always; break-after: page; }
@@ -201,7 +202,7 @@ ul.check li::before {
 <!-- ===================== 1쪽: 목표 + 워밍업 ===================== -->
 <section class="page">
   <header class="head">
-    <div class="badge">1학기<br>8주차<small>글자로 대화하기</small></div>
+    <div class="badge">1학기<br>8주차<small>여러 값 담기</small></div>
     <div class="title">
       <h1>탐정의 용의자 명단</h1>
       <p>리스트 [ ] · 칸 번호 [0] · append() · in · random.choice() (보너스: shuffle())</p>
@@ -417,7 +418,7 @@ ul.check li::before {
     </div>
     <div class="hint">
       <div class="hh"><span>힌트 3 · 거의 코드</span><span class="dots">●●●</span></div>
-      <pre class="code"><span class="l">checked = []</span><span class="l">while tries &lt; 3:</span><span class="l">  guess = input("범인은? ")</span><span class="l">  if guess in checked:</span><span class="l">    print("이미 조사했어요")</span><span class="l">    continue</span><span class="l">  checked.append(guess)</span><span class="l">  tries = tries + 1</span></pre>
+      <pre class="code"><span class="l">checked = []</span><span class="l">while tries &lt; 3:</span><span class="l">    guess = input("범인은? ")</span><span class="l">    if guess in checked:</span><span class="l">        print("이미 조사했어요")</span><span class="l">        continue</span><span class="l">    checked.append(guess)</span><span class="l">    tries = tries + 1</span></pre>
     </div>
   </div>
 
@@ -437,7 +438,7 @@ ul.check li::before {
     </div>
     <div class="hint">
       <div class="hh"><span>힌트 3 · 거의 코드</span><span class="dots">●●●</span></div>
-      <pre class="code"><span class="l">while size &gt; 1:</span><span class="l">  winners = []</span><span class="l">  i = 0</span><span class="l">  while i &lt; size:</span><span class="l">    # (원래 대결 코드)</span><span class="l">    i = i + 2</span><span class="l">  candidates = winners</span><span class="l">  size = size // 2</span></pre>
+      <pre class="code"><span class="l">while size &gt; 1:</span><span class="l">    winners = []</span><span class="l">    i = 0</span><span class="l">    while i &lt; size:</span><span class="l">        # (원래 대결 코드)</span><span class="l">        i = i + 2</span><span class="l">    candidates = winners</span><span class="l">    size = size // 2</span></pre>
     </div>
   </div>
 

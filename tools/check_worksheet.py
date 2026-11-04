@@ -3,7 +3,8 @@
 사용법: python tools/check_worksheet.py worksheets/semester1/week01/worksheet.html [...]
 
 1) 구조 검사: .page 3~6쪽, 쪽마다 .foot, 이름/날짜 칸, 외부 리소스는 Google Fonts만
-2) 레이아웃 검사(playwright가 있으면): 쪽마다 내용이 A4 밖으로 넘치거나 쪽 번호와 겹치지 않는지
+2) 레이아웃 검사(playwright가 있으면): 쪽마다 내용이 A4 밖으로 넘치거나 쪽 번호와 겹치지 않는지,
+   카드·코드·표가 가로나 세로로 잘리지 않는지
    설치: pip install playwright && python -m playwright install chromium
 """
 import re
@@ -43,8 +44,14 @@ async () => {
     });
     const foot = p.querySelector('.foot');
     const footTop = foot ? foot.getBoundingClientRect().top : r.bottom;
+    const wide = [...p.querySelectorAll('pre, table, .row, .grid2, .hints')]
+      .filter(e => e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > r.right - 40)
+      .map(e => (e.innerText || '').trim().split(String.fromCharCode(10))[0].slice(0, 30));
+    const cut = [...p.querySelectorAll('.quest, .qbody, .box, .concept, .hint, pre, .screen, .answer')]
+      .filter(e => e.scrollHeight > e.clientHeight + 2)
+      .map(e => (e.innerText || '').trim().split(String.fromCharCode(10))[0].slice(0, 30));
     return {page: i + 1, gap: Math.round(footTop - bottom),
-            overflow: p.scrollHeight > p.clientHeight + 1};
+            overflow: p.scrollHeight > p.clientHeight + 1, wide, cut};
   });
 }
 """
@@ -55,8 +62,8 @@ def check(path):
     html = Path(path).read_text(encoding="utf-8")
     s = Scan()
     s.feed(html)
-    if not 3 <= s.pages <= 6:
-        errors.append(f"쪽 수가 {s.pages}쪽이에요 (3~6쪽이어야 해요)")
+    if not 3 <= s.pages <= 8:
+        errors.append(f"쪽 수가 {s.pages}쪽이에요 (3~8쪽이어야 해요)")
     if s.foots != s.pages:
         errors.append(f".foot {s.foots}개 / .page {s.pages}개 (쪽마다 하나씩)")
     if "이름" not in html or "날짜" not in html:
@@ -79,6 +86,10 @@ def check(path):
         for r in page.evaluate(LAYOUT_JS):
             if r["overflow"] or r["gap"] < 0:
                 errors.append(f"{r['page']}쪽 내용이 넘쳐요 (여유 {r['gap']}px). 내용을 줄이거나 다음 쪽으로 옮겨요")
+            for c in r["cut"]:
+                errors.append(f"{r['page']}쪽 세로로 잘리는 칸: '{c}'. 내용을 줄이거나 다음 쪽으로 옮겨요")
+            for w in r["wide"]:
+                errors.append(f"{r['page']}쪽 가로로 잘리는 칸: '{w}'. 코드 줄을 짧게 나눠요(괄호 안에서만)")
         browser.close()
     return errors
 

@@ -43,6 +43,7 @@ body {
   flex-direction: column;
   gap: 4mm;
 }
+.page > * { flex-shrink: 0; }
 @media print {
   body { background: #fff; }
   .page { margin: 0; box-shadow: none; page-break-after: always; break-after: page; }
@@ -233,7 +234,7 @@ ul.check li::before {
 
   <div class="box">
     <h3>🐞 디버거 미션: 따옴표가 있나, 없나?</h3>
-    <p class="muted">벌레 버튼(Ctrl+F5) → <b>Step over(F6)</b>. 나이에 <code>3</code>을 넣고 변수 창의 값을 적어요. <code>'3'</code>(따옴표 있음)은 글자, <code>3</code>은 숫자예요.</p>
+    <p class="muted">벌레 버튼(Ctrl+F5) → <b>Step over(F6)</b>. <b>15번 줄 따옴표 오류(SyntaxError)만 먼저 고쳐야</b> 실행돼요. 그다음 나이에 <code>3</code>을 넣고 변수 창의 값을 "고치기 전 값"에, 나머지 오류까지 다 고친 뒤 값을 "다 고친 뒤 값"에 적어요. <code>'3'</code>(따옴표 있음)은 글자, <code>3</code>은 숫자예요.</p>
     <table class="fill" style="margin-top:2mm">
       <tr><th style="width:26mm">변수</th><th>고치기 전 값</th><th style="width:22mm">type</th><th>다 고친 뒤 값</th><th style="width:22mm">type</th></tr>
       <tr><td class="w mono">dog_age</td><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr>

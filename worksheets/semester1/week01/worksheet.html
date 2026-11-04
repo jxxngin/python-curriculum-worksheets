@@ -43,6 +43,7 @@ body {
   flex-direction: column;
   gap: 4mm;
 }
+.page > * { flex-shrink: 0; }
 @media print {
   body { background: #fff; }
   .page { margin: 0; box-shadow: none; page-break-after: always; break-after: page; }
@@ -201,7 +202,7 @@ ul.check li::before {
 <!-- ===================== 1쪽: 목표 + 워밍업 ===================== -->
 <section class="page">
   <header class="head">
-    <div class="badge">1학기<br>1주차<small>글자로 대화하기</small></div>
+    <div class="badge">1학기<br>1주차<small>묻고 답하기</small></div>
     <div class="title">
       <h1>생일 파티 초대장 만들기</h1>
       <p>print() · input() · 변수 · 문자열 합치기(+) · 주석(#)</p>
@@ -221,7 +222,8 @@ ul.check li::before {
 
   <h2><span class="num">1</span>워밍업: 오류를 찾아라! 🔧<span class="time">10분</span></h2>
   <p>아래 코드에는 <b>오류가 3개</b> 숨어 있어요. 먼저 눈으로 찾아 <b>동그라미</b> 치고, Thonny에서 <code>warmup.py</code>를 실행해 확인해 보세요.</p>
-  <pre class="code"><span class="l"><span class="c"># 자기소개 프로그램</span></span><span class="l">print("안녕하세요! 자기소개 프로그램이에요.")</span><span class="l"></span><span class="l">name = input("이름이 뭐예요? ")</span><span class="l">print("반가워요, " + name + "님!"</span><span class="l"></span><span class="l">food = input("좋아하는 음식은 뭐예요? ")</span><span class="l">print(name + "님은 " + foood + "을 좋아하는군요!")</span><span class="l"></span><span class="l">print("오늘도 즐겁게 코딩해요!)</span></pre>
+  <p class="muted">1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실어요.</p>
+  <pre class="code" style="counter-reset: ln 4"><span class="l">print("안녕하세요! 자기소개 프로그램이에요.")</span><span class="l"></span><span class="l">name = input("이름이 뭐예요? ")</span><span class="l">print("반가워요, " + name + "님!"</span><span class="l"></span><span class="l">food = input("좋아하는 음식은 뭐예요? ")</span><span class="l">print(name + "님은 " + foood + "을 좋아하는군요!")</span><span class="l"></span><span class="l">print("오늘도 즐겁게 코딩해요!)</span></pre>
 
   <table class="fill tall">
     <tr><th style="width:16mm">줄 번호</th><th style="width:42mm">오류 이름 (메시지 맨 아래 줄)</th><th>어떻게 고쳤나요?</th></tr>
@@ -313,7 +315,6 @@ ul.check li::before {
       <table class="fill">
         <tr><th style="width:52%">더 물어볼 질문 (화면에 보일 글자)</th><th>담을 변수 이름 (영어)</th></tr>
         <tr><td class="w">예) 파티 시간은?</td><td class="w mono">party_time</td></tr>
-        <tr><td class="w"></td><td class="w"></td></tr>
         <tr><td class="w"></td><td class="w"></td></tr>
         <tr><td class="w"></td><td class="w"></td></tr>
       </table>
