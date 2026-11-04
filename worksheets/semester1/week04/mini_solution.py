@@ -1,65 +1,39 @@
-# 4주 미니 프로젝트: 비밀의 문 (정답)
+# 4주 미니 프로젝트: 비밀의 문 게임 (정답)
+# 교안의 단계 순서대로 이어 쓴 완성본이에요.
 
+# 단계 1: 보물 문을 무작위로 정하기
 import random
-
-# ===== 1단계 따라 하기 완성본 =====
-print("🚪 비밀의 문에 오신 것을 환영합니다 🚪")
 name = input("탐험가 이름: ")
 score = 0
-
-print("")
-print("[1관문] 문이 3개 있어요. 하나 뒤에만 보물이 있어요!")
 treasure_door = random.randint(1, 3)
-pick = int(input("몇 번 문을 열까요? (1~3): "))
+# print(f"(쉿! 테스트용) 보물은 {treasure_door}번 문")
 
+# 단계 2: 1관문: 문을 골라 보물 찾기
+pick = int(input("[1관문] 몇 번 문을 열까요? (1~3): "))
 if pick == treasure_door:
-    print("💎 보물을 찾았어요!")
+    print("💎 보물을 찾았어요! +10점")
     score = score + 10
 else:
     print(f"꽝! 보물은 {treasure_door}번 문에 있었어요.")
 
-print("")
-print("[2관문] 1부터 20 사이의 비밀번호를 맞혀 보세요. 기회는 한 번!")
+# 단계 3: 2관문: 비밀번호가 얼마나 가까운지 알려 주기
 secret = random.randint(1, 20)
-guess = int(input("비밀번호: "))
+guess = int(input("[2관문] 1~20 중 비밀번호는? "))
 gap = abs(guess - secret)
+print(f"비밀번호와 {gap}만큼 차이 나요!")
 
+# 단계 4: 점수를 주고 게임 끝내기
 if gap == 0:
-    print("🔓 딸깍! 문이 열렸어요!")
     score = score + 20
 elif gap <= 3:
-    print(f"아까워요! 비밀번호는 {secret}이었어요. (차이 {gap})")
     score = score + 5
-else:
-    print(f"멀었어요! 비밀번호는 {secret}이었어요. (차이 {gap})")
+print(f"비밀번호는 {secret}이었어요.")
+print(f"🏆 {name}님의 점수: {score}점")
 
-# ===== 2단계 바꾸기 예시 =====
-# 3관문 추가: 함정 문 5개 중 하나에 함정이 있어요. 함정만 피하면 통과!
-print("")
-print("[3관문] 문이 5개! 이번엔 함정 문 하나만 피하면 돼요.")
-trap_door = random.randint(1, 5)
-pick3 = int(input("몇 번 문을 열까요? (1~5): "))
-
-if pick3 == trap_door:
-    print("🕳️ 으악, 함정이에요! 점수 -5")
-    score = score - 5
-else:
-    print(f"휴, 무사 통과! 함정은 {trap_door}번이었어요. 점수 +10")
-    score = score + 10
-
-# 4관문 추가: 행운의 주사위 (보너스 점수가 무작위)
-print("")
-print("[4관문] 행운의 주사위를 굴려요!")
-input("Enter를 누르면 주사위를 굴려요...")
-bonus = random.randint(1, 6)
-print(f"🎲 {bonus}이(가) 나왔어요! 보너스 {bonus * 2}점")
-score = score + bonus * 2
-
-print("")
-print(f"🏆 {name}님의 최종 점수: {score}점")
-if score >= 40:
-    print("전설의 탐험가! 🌟")
-elif score >= 20:
-    print("꽤 실력 있는 탐험가예요!")
-else:
-    print("다음엔 행운이 함께할 거예요!")
+# ----- 바꾸기 예시 (선생님용, 주석을 풀면 실행돼요) -----
+# if score >= 30:
+#     print("👑 전설의 탐험가!")
+# elif score >= 15:
+#     print("🗺️ 용감한 탐험가!")
+# else:
+#     print("🌱 초보 탐험가")

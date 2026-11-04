@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4주차 교안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 교안 공통 스타일: docs/templates/lesson-template.html 과 같아야 한다. 고치지 않는다. ===== */
+:root {
+  --ink: #1f2937;
+  --sub: #6b7280;
+  --line: #d1d5db;
+  --soft: #f3f4f6;
+  --bg: #f6f7fb;
+  --paper: #ffffff;
+  --code-bg: #f8fafc;
+  /* 활동 색: 3색 그룹 (준비 파랑 / 만들기 초록 / 더 하기 주황). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --ready: #2563eb; --ready-soft: #eff6ff;
+  --make: #16a34a;  --make-soft: #f0fdf4;
+  --more: #ea580c;  --more-soft: #fff7ed;
+  --mission: var(--ready);  --mission-soft: var(--ready-soft);
+  --warmup: var(--ready);   --warmup-soft: var(--ready-soft);
+  --step: var(--make);      --step-soft: var(--make-soft);
+  --change: var(--make);    --change-soft: var(--make-soft);
+  --new: var(--make);       --new-soft: var(--make-soft);
+  --challenge: var(--more); --challenge-soft: var(--more-soft);
+  --hint: var(--more);      --hint-soft: var(--more-soft);
+  --tool: #475569;          --tool-soft: #f1f5f9;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.lesson { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; display: flex; flex-direction: column; gap: 28px; }
+code, .mono { font-family: "Nanum Gothic Coding", Consolas, monospace; }
+code { background: var(--soft); padding: 1px 6px; border-radius: 6px; font-size: .92em; }
+p { margin: 0; }
+.muted { color: var(--sub); font-size: .92em; }
+
+/* 머리 */
+.lesson-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.lesson-head .chip { background: var(--mission); color: #fff; border-radius: 999px; padding: 4px 14px; font-weight: 700; font-size: .9em; }
+.lesson-head h1 { margin: 0; font-size: 1.9em; font-weight: 900; letter-spacing: -0.5px; flex: 1 1 320px; }
+.who { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; white-space: nowrap; font-size: .9em; color: var(--sub); }
+.who span { display: inline-block; min-width: 120px; height: 1.4em; border-bottom: 1.5px solid var(--line); margin-right: 8px; }
+
+/* 활동 블록 */
+.block { --c: var(--ink); --cs: var(--soft); background: var(--paper); border-radius: 18px; padding: 24px 26px 26px; border-top: 8px solid var(--c); display: flex; flex-direction: column; gap: 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.block.mission   { --c: var(--mission);   --cs: var(--mission-soft); }
+.block.warmup    { --c: var(--warmup);    --cs: var(--warmup-soft); }
+.block.step      { --c: var(--step);      --cs: var(--step-soft); }
+.block.change    { --c: var(--change);    --cs: var(--change-soft); }
+.block.new       { --c: var(--new);       --cs: var(--new-soft); }
+.block.challenge { --c: var(--challenge); --cs: var(--challenge-soft); }
+.block.hints     { --c: var(--hint);      --cs: var(--hint-soft); }
+.block > h2 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.45em; font-weight: 900; color: var(--c); }
+.block > h2 .tag { background: var(--c); color: #fff; border-radius: 10px; padding: 2px 12px; font-size: .7em; }
+.block > h2 small { color: var(--sub); font-weight: 500; font-size: .6em; }
+h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
+
+/* 할 일 */
+.todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.todo h3 { color: var(--c); margin-bottom: 4px; }
+.todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
+
+/* 도구 카드 */
+.tool { background: var(--tool-soft); border-radius: 12px; padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+.tool .th { font-weight: 900; color: var(--tool); }
+
+/* 코드 */
+pre.code { margin: 0; padding: 14px 16px 14px 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px;
+  font-family: "Nanum Gothic Coding", Consolas, monospace; font-size: 16px; line-height: 1.75; counter-reset: ln; white-space: pre; overflow-x: auto; }
+pre.code > span.l { display: block; padding-left: 46px; position: relative; min-height: 1.75em; }
+pre.code > span.l::before { counter-increment: ln; content: counter(ln); position: absolute; left: 0; width: 32px; text-align: right; color: #9ca3af; font-size: .85em; }
+pre.code.nonum > span.l { padding-left: 16px; }
+pre.code.nonum > span.l::before { content: none; }
+pre.code .c { color: #6b7280; }
+.blank { display: inline-block; min-width: 90px; height: 1.5em; vertical-align: -0.35em; border: 2px dashed var(--c); border-radius: 8px; background: #fff; position: relative; }
+.blank[data-n]::after { content: attr(data-n); position: absolute; top: -10px; left: -10px; width: 18px; height: 18px; border-radius: 50%; background: var(--c); color: #fff; font: 700 11px/18px "Noto Sans KR", sans-serif; text-align: center; }
+
+/* 쓰는 칸 */
+.label { font-weight: 900; color: var(--c); }
+.write { border: 2px solid var(--line); border-radius: 12px; min-height: 160px; background:
+  repeating-linear-gradient(transparent 0 39px, #e5e7eb 39px 40px); background-origin: content-box; padding: 6px 14px; }
+.write.small { min-height: 90px; }
+.screen { border-radius: 12px; overflow: hidden; border: 2px solid var(--ink); }
+.screen .bar { background: var(--ink); color: #fff; font-size: .85em; padding: 4px 12px; }
+.screen .body { padding: 10px 14px; font-family: "Nanum Gothic Coding", monospace; font-size: 15px; line-height: 1.55; white-space: pre; overflow-x: auto; }
+table.fill { width: 100%; border-collapse: collapse; }
+table.fill th, table.fill td { border: 1.5px solid var(--line); padding: 8px 12px; text-align: left; }
+table.fill th { background: var(--cs); color: var(--ink); }
+table.fill td.w { height: 56px; }
+ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+ul.check li { padding-left: 34px; position: relative; }
+ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width: 22px; height: 22px; border: 2.5px solid var(--c); border-radius: 6px; background: #fff; }
+.draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
+
+/* 힌트 카드 */
+.hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.hint .hh { display: flex; justify-content: space-between; font-weight: 900; color: var(--hint); }
+.hint pre.code { font-size: 14px; }
+
+/* 인쇄: 활동 블록마다 새 쪽, 쓰는 칸은 쪽 사이에서 끊지 않는다 */
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .lesson { max-width: none; padding: 0; gap: 0; }
+  .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
+  .lesson-head + .block { break-before: auto; margin-top: 8mm; }
+  .todo, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li { break-inside: avoid; }
+  pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .block { padding: 18px 16px 20px; border-radius: 14px; }
+  pre.code { font-size: 14px; }
+}
+/* ===== 공통 스타일 끝 ===== */
+
+/* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-head">
+    <span class="chip">1학기 · 4주차 · 무작위로 뽑기</span>
+    <h1>비밀의 문 게임 만들기</h1>
+    <div class="who">이름 <span></span> 날짜 <span></span></div>
+  </header>
+
+  <section class="block mission">
+    <h2>🎯 오늘의 미션</h2>
+    <p>보물이 숨은 문은 몇 번일까? 🚪 실행할 때마다 보물 위치와 비밀번호가 <b>바뀌는</b> 모험 게임을 만들어 봐요. 친구가 해도, 내가 다시 해도 매번 새로워요!</p>
+    <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">탐험가 이름: 하린
+[1관문] 몇 번 문을 열까요? (1~3): 2
+💎 보물을 찾았어요! +10점
+[2관문] 1~20 중 비밀번호는? 10
+비밀번호와 2만큼 차이 나요!
+비밀번호는 12이었어요.
+🏆 하린님의 점수: 15점</div></div>
+    <div class="todo"><h3>📋 오늘 할 일</h3><ol><li>🔧 워밍업: 고장 난 코드를 고쳐요.</li><li>🪜 단계 1: 보물 문을 무작위로 정하기</li><li>🪜 단계 2: 1관문: 문을 골라 보물 찾기</li><li>🪜 단계 3: 2관문: 비밀번호가 얼마나 가까운지 알려 주기</li><li>🪜 단계 4: 점수를 주고 게임 끝내기</li><li>⭐ 내 것으로 바꿔요.</li></ol></div>
+  </section>
+
+  <section class="block warmup">
+    <h2>🔧 워밍업 <small>고장 난 주사위 고치기</small></h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>이상한 곳 <b>3개</b>에 동그라미 쳐요.</li><li><code>warmup.py</code>를 실행해서 오류 메시지를 봐요.</li><li>고친 방법을 표에 적어요.</li></ol></div>
+    <p class="muted">1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실어요.</p>
+    <pre class="code" style="counter-reset: ln 4"><span class="l">print("🎲 주사위 두 개를 굴려요!")</span><span class="l"></span><span class="l">dice1 = random.randint(1, 6)</span><span class="l">dice2 = random.randInt(1, 6)</span><span class="l"></span><span class="l">print(f"첫 번째 주사위: {dice1}")</span><span class="l">print(f"두 번째 주사위: {dice2}")</span><span class="l">print(f"합: {dice1 + dice2}")</span><span class="l">print(f"차이: {abs(dice1 - dice2}")</span></pre>
+    <table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
+    <p class="muted"><b>NameError</b> 가져오지(import) 않은 이름 · <b>AttributeError</b> 그런 기능이 없어요(철자·대소문자) · <b>SyntaxError</b> 괄호 짝 확인</p>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 1</span> 보물 문을 무작위로 정하기</h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li><li>3번 실행해서 보물 문 번호가 바뀌는지 봐요.</li></ol></div>
+    <div class="tool"><div class="th">🧰 도구 카드 · 도구 상자 꺼내기: import</div><p>파이썬에 들어 있는 도구 상자를 꺼내 써요. 맨 위에 한 번만!</p><pre class="code nonum"><span class="l">import random</span></pre><p class="muted">→ random 도구 상자를 쓸 수 있어요</p></div><div class="tool"><div class="th">🧰 도구 카드 · 무작위 뽑기: random.randint(a, b)</div><p>a부터 b까지 중 하나를 뽑아요. b도 나와요!</p><pre class="code nonum"><span class="l">dice = random.randint(1, 6)</span><span class="l">print(dice)</span></pre><p class="muted">→ 1~6 중 하나 (실행할 때마다 달라요)</p></div>
+    <div class="label">⌨️ 따라 쓸 코드</div>
+    <pre class="code nonum"><span class="l">import random</span><span class="l">name = input("탐험가 이름: ")</span><span class="l">score = 0</span><span class="l">treasure_door = random.randint(1, 3)</span><span class="l">print(f"(쉿! 테스트용) 보물은 {treasure_door}번 문")</span></pre>
+    <div class="label">▶️ 실행하고 확인</div>
+    <div class="write small"></div>
+    <ul class="check"><li>실행할 때마다 보물 문 번호가 바뀌었어요.</li></ul>
+    
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 2</span> 1관문: 문을 골라 보물 찾기</h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 2</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
+    
+    <div class="label">⌨️ 따라 쓸 코드</div>
+    <pre class="code nonum"><span class="l">pick = int(input("[1관문] 몇 번 문을 열까요? (1~3): "))</span><span class="l">if pick == treasure_door:</span><span class="l">    print("💎 보물을 찾았어요! +10점")</span><span class="l">    score = score + 10</span><span class="l">else:</span><span class="l">    print(f"꽝! 보물은 {treasure_door}번 문에 있었어요.")</span></pre>
+    <div class="label">▶️ 실행하고 확인</div>
+    <div class="write"></div>
+    <ul class="check"><li>맞히면 "보물을 찾았어요", 틀리면 "꽝!"이 나왔어요.</li></ul>
+    
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 3</span> 2관문: 비밀번호가 얼마나 가까운지 알려 주기</h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 3</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
+    <div class="tool"><div class="th">🧰 도구 카드 · 거리 재기: abs()</div><p>두 수가 얼마나 떨어져 있는지 알려 줘요. 누가 더 커도 0 이상이 나와요.</p><pre class="code nonum"><span class="l">print(abs(9 - 12))</span><span class="l">print(abs(12 - 9))</span></pre><p class="muted">→ 둘 다 3</p></div>
+    <div class="label">⌨️ 따라 쓸 코드</div>
+    <pre class="code nonum"><span class="l">secret = random.randint(1, 20)</span><span class="l">guess = int(input("[2관문] 1~20 중 비밀번호는? "))</span><span class="l">gap = abs(guess - secret)</span><span class="l">print(f"비밀번호와 {gap}만큼 차이 나요!")</span></pre>
+    <div class="label">▶️ 실행하고 확인</div>
+    <div class="write small"></div>
+    <ul class="check"><li>비밀번호와의 차이가 화면에 나왔어요. (음수가 아니에요!)</li></ul>
+    
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 4</span> 점수를 주고 게임 끝내기</h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 4</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li><li>게임 완성! 단계 1의 테스트용 <code>print</code> 줄 맨 앞에 <code>#</code>을 붙여 보물 위치를 숨겨요.</li></ol></div>
+    
+    <div class="label">⌨️ 따라 쓸 코드</div>
+    <pre class="code nonum"><span class="l">if gap == 0:</span><span class="l">    score = score + 20</span><span class="l">elif gap &lt;= 3:</span><span class="l">    score = score + 5</span><span class="l">print(f"비밀번호는 {secret}이었어요.")</span><span class="l">print(f"🏆 {name}님의 점수: {score}점")</span></pre>
+    <div class="label">▶️ 실행하고 확인</div>
+    <div class="write"></div>
+    <ul class="check"><li>마지막에 내 점수가 나왔어요.</li><li>테스트용 줄을 #으로 숨겼어요.</li></ul>
+    <div class="label">🔍 따라가기: 보물 문 2, 비밀번호 12가 뽑혔고 하린 / 2 / 10을 넣었다면?</div><table class="fill"><tr><th>1관문 뒤 score</th><th>gap</th><th>마지막 score</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
+  </section>
+
+  <section class="block change">
+    <h2>⭐ 내 것으로 바꾸기 <small>오늘의 완성 기준</small></h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>표에 바꿀 내용을 먼저 적어요.</li><li>코드를 고치고 실행해요.</li><li>★ 꼭 하기 3개를 체크하면 완성!</li></ol></div>
+    <table class="fill"><tr><th>새 관문 이름과 이야기</th><th>무작위 범위 (randint)</th><th>맞히면 점수</th></tr><tr><td class="w">예) 용의 동굴 열쇠 고르기</td><td class="w"><span class="mono">randint(1, 4)</span></td><td class="w">+15</td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
+    <div class="label">★ 꼭 하기 (이 3개를 하면 완성!)</div>
+    <ul class="check"><li>관문 이름과 이야기를 나만의 모험으로 바꿨어요.</li><li><code>random.randint()</code>를 쓰는 새 관문을 1개 더 만들었어요.</li><li>마지막에 점수에 따라 칭호가 나와요. (예: 30점 이상 "전설의 탐험가")</li></ul>
+    <div class="label">➕ 더 해 보기</div>
+    <ul class="check"><li>문 개수나 비밀번호 범위를 바꿔 난이도를 조절했어요.</li><li><code>abs()</code>로 차이에 따라 "뜨거워요 / 따뜻해요 / 차가워요"를 알려 줘요.</li></ul>
+    <div class="label">👀 친구에게 보여 주기: 친구의 한마디</div>
+    <div class="write small"></div>
+  </section>
+
+  <section class="block new">
+    <h2>💡 새로 만들기 <small>하고 싶은 사람</small></h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>아이디어 하나를 골라요.</li><li>무엇을 만들지 적고 만들어요.</li></ol></div>
+    <ul class="check"><li>함정 문 (꽝이 하나뿐인 문, 걸리면 -5점)</li><li>행운의 주사위 (보너스 점수가 무작위)</li><li>내 아이디어</li></ul>
+    <div class="write"></div>
+    <h3>✅ 오늘의 마무리</h3>
+    <ul class="check"><li>워밍업 오류 3개를 고쳤어요.</li><li>단계를 하나씩 실행하며 만들었어요.</li><li>★ 꼭 하기 3개를 완성했어요.</li><li>친구에게 내 프로그램을 보여 줬어요.</li></ul>
+    <div class="label">내 모험에서 친구가 가장 재미있어한 관문은?</div>
+    <div class="write small"></div>
+  </section>
+
+  <section class="block challenge">
+    <h2>🚀 도전 프로젝트 <small>피자 가성비 계산기 · 일찍 끝낸 사람</small></h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li><code>extension_starter.py</code>를 그대로 실행해 봐요.</li><li>진짜 피자 가게 메뉴(전단지·배달 앱)를 보고 두 피자를 표에 적어요.</li><li>코드를 바꾸고 실행해서 체크해요.</li></ol></div>
+    <p>크기도 가격도 다른 두 피자, 어느 쪽이 더 이득일까요? 🍕 넓이 1cm²당 가격으로 비교해요. 실행하기 <b>전에</b> 어느 쪽이 이득일지 먼저 예상해 봐요.</p>
+    <div class="tool"><div class="th">🧰 도구 카드 · 새 도구 4가지</div><p><code>math.pi</code> 원주율 · <code>pow(5, 2)</code> 제곱 · <code>round(3.146, 2)</code> 반올림 · <code>max(3, 8)</code> 더 큰 값</p><pre class="code nonum"><span class="l">import math</span><span class="l">print(round(math.pi * pow(10, 2), 1))</span></pre><p class="muted">→ 314.2 (반지름 10cm 원의 넓이)</p></div>
+    <table class="fill"><tr><th></th><th>피자 이름</th><th>지름(cm)</th><th>가격(원)</th><th>1cm²당 가격 (실행 결과)</th></tr><tr><td class="w"><b>A</b></td><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"><b>B</b></td><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table><p>내 예상: <span class="blank"></span> 피자가 이득 → 실행 결과: <span class="blank"></span> 피자가 이득</p>
+    <ul class="check"><li>피자 이름도 물어봐서 결과에 이름이 나와요.</li><li><code>max()</code>로 더 큰 피자를 알려 줘요.</li><li>실제 메뉴(지름, 가격)를 넣어 확인했어요.</li></ul>
+    <div class="label">➕ 더 해 보기</div>
+    <ul class="check"><li>오늘의 할인 쿠폰: random으로 10%·20%·30% 중 하나를 뽑아 한 피자에 적용</li><li>두 피자의 가격 차이를 <code>abs()</code>로 보여 주기</li><li>지름이 2배면 넓이는 몇 배인지 <code>pow()</code>로 확인</li></ul>
+  </section>
+
+  <section class="block hints">
+    <h2>🃏 힌트 카드 <small>막히면 1번부터 차례로</small></h2>
+    <div class="hints-grid"><div class="hint"><div class="hh"><span>단계 1</span><span>●○○</span></div><p><code>import random</code>은 맨 위에 써요. 뽑는 도구는 <code>random.randint(처음, 끝)</code>이에요.</p></div><div class="hint"><div class="hh"><span>단계 2</span><span>●○○</span></div><p>입력은 글자라서 <code>int()</code>로 숫자로 바꿔야 비교할 수 있어요. 비교는 <code>==</code>, 줄 끝에 <code>:</code>!</p></div><div class="hint"><div class="hh"><span>단계 3</span><span>●○○</span></div><p>차이는 <code>abs(guess - secret)</code>. 순서를 바꿔 써도 결과가 같아요.</p></div><div class="hint"><div class="hh"><span>단계 4</span><span>●○○</span></div><p><code>if</code> → <code>elif</code> 순서로 써요. "3 이하"는 <code>&lt;= 3</code>이에요.</p></div><div class="hint"><div class="hh"><span>새로 만들기 · 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">trap = random.randint(1, 3)</span><span class="l">pick3 = int(input("문 번호: "))</span><span class="l">if pick3 == trap:</span><span class="l">    print("🕳️ 함정! -5점")</span><span class="l">    score = score - 5</span></pre></div><div class="hint"><div class="hh"><span>도전 · 쿠폰 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">coupon = random.randint(1, 3) * 10</span><span class="l">cut = price_a * coupon // 100</span><span class="l">price_a = price_a - cut</span><span class="l">print(f"{coupon}% 할인! {price_a}원")</span></pre></div></div>
+  </section>
+</main>
+</body>
+</html>

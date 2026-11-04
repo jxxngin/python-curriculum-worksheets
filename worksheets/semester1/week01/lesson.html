@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1주차 교안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 교안 공통 스타일: docs/templates/lesson-template.html 과 같아야 한다. 고치지 않는다. ===== */
+:root {
+  --ink: #1f2937;
+  --sub: #6b7280;
+  --line: #d1d5db;
+  --soft: #f3f4f6;
+  --bg: #f6f7fb;
+  --paper: #ffffff;
+  --code-bg: #f8fafc;
+  /* 활동 색: 3색 그룹 (준비 파랑 / 만들기 초록 / 더 하기 주황). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --ready: #2563eb; --ready-soft: #eff6ff;
+  --make: #16a34a;  --make-soft: #f0fdf4;
+  --more: #ea580c;  --more-soft: #fff7ed;
+  --mission: var(--ready);  --mission-soft: var(--ready-soft);
+  --warmup: var(--ready);   --warmup-soft: var(--ready-soft);
+  --step: var(--make);      --step-soft: var(--make-soft);
+  --change: var(--make);    --change-soft: var(--make-soft);
+  --new: var(--make);       --new-soft: var(--make-soft);
+  --challenge: var(--more); --challenge-soft: var(--more-soft);
+  --hint: var(--more);      --hint-soft: var(--more-soft);
+  --tool: #475569;          --tool-soft: #f1f5f9;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.lesson { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; display: flex; flex-direction: column; gap: 28px; }
+code, .mono { font-family: "Nanum Gothic Coding", Consolas, monospace; }
+code { background: var(--soft); padding: 1px 6px; border-radius: 6px; font-size: .92em; }
+p { margin: 0; }
+.muted { color: var(--sub); font-size: .92em; }
+
+/* 머리 */
+.lesson-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.lesson-head .chip { background: var(--mission); color: #fff; border-radius: 999px; padding: 4px 14px; font-weight: 700; font-size: .9em; }
+.lesson-head h1 { margin: 0; font-size: 1.9em; font-weight: 900; letter-spacing: -0.5px; flex: 1 1 320px; }
+.who { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; white-space: nowrap; font-size: .9em; color: var(--sub); }
+.who span { display: inline-block; min-width: 120px; height: 1.4em; border-bottom: 1.5px solid var(--line); margin-right: 8px; }
+
+/* 활동 블록 */
+.block { --c: var(--ink); --cs: var(--soft); background: var(--paper); border-radius: 18px; padding: 24px 26px 26px; border-top: 8px solid var(--c); display: flex; flex-direction: column; gap: 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.block.mission   { --c: var(--mission);   --cs: var(--mission-soft); }
+.block.warmup    { --c: var(--warmup);    --cs: var(--warmup-soft); }
+.block.step      { --c: var(--step);      --cs: var(--step-soft); }
+.block.change    { --c: var(--change);    --cs: var(--change-soft); }
+.block.new       { --c: var(--new);       --cs: var(--new-soft); }
+.block.challenge { --c: var(--challenge); --cs: var(--challenge-soft); }
+.block.hints     { --c: var(--hint);      --cs: var(--hint-soft); }
+.block > h2 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.45em; font-weight: 900; color: var(--c); }
+.block > h2 .tag { background: var(--c); color: #fff; border-radius: 10px; padding: 2px 12px; font-size: .7em; }
+.block > h2 small { color: var(--sub); font-weight: 500; font-size: .6em; }
+h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
+
+/* 할 일 */
+.todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.todo h3 { color: var(--c); margin-bottom: 4px; }
+.todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
+
+/* 도구 카드 */
+.tool { background: var(--tool-soft); border-radius: 12px; padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+.tool .th { font-weight: 900; color: var(--tool); }
+
+/* 코드 */
+pre.code { margin: 0; padding: 14px 16px 14px 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px;
+  font-family: "Nanum Gothic Coding", Consolas, monospace; font-size: 16px; line-height: 1.75; counter-reset: ln; white-space: pre; overflow-x: auto; }
+pre.code > span.l { display: block; padding-left: 46px; position: relative; min-height: 1.75em; }
+pre.code > span.l::before { counter-increment: ln; content: counter(ln); position: absolute; left: 0; width: 32px; text-align: right; color: #9ca3af; font-size: .85em; }
+pre.code.nonum > span.l { padding-left: 16px; }
+pre.code.nonum > span.l::before { content: none; }
+pre.code .c { color: #6b7280; }
+.blank { display: inline-block; min-width: 90px; height: 1.5em; vertical-align: -0.35em; border: 2px dashed var(--c); border-radius: 8px; background: #fff; position: relative; }
+.blank[data-n]::after { content: attr(data-n); position: absolute; top: -10px; left: -10px; width: 18px; height: 18px; border-radius: 50%; background: var(--c); color: #fff; font: 700 11px/18px "Noto Sans KR", sans-serif; text-align: center; }
+
+/* 쓰는 칸 */
+.label { font-weight: 900; color: var(--c); }
+.write { border: 2px solid var(--line); border-radius: 12px; min-height: 160px; background:
+  repeating-linear-gradient(transparent 0 39px, #e5e7eb 39px 40px); background-origin: content-box; padding: 6px 14px; }
+.write.small { min-height: 90px; }
+.screen { border-radius: 12px; overflow: hidden; border: 2px solid var(--ink); }
+.screen .bar { background: var(--ink); color: #fff; font-size: .85em; padding: 4px 12px; }
+.screen .body { padding: 10px 14px; font-family: "Nanum Gothic Coding", monospace; font-size: 15px; line-height: 1.55; white-space: pre; overflow-x: auto; }
+table.fill { width: 100%; border-collapse: collapse; }
+table.fill th, table.fill td { border: 1.5px solid var(--line); padding: 8px 12px; text-align: left; }
+table.fill th { background: var(--cs); color: var(--ink); }
+table.fill td.w { height: 56px; }
+ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+ul.check li { padding-left: 34px; position: relative; }
+ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width: 22px; height: 22px; border: 2.5px solid var(--c); border-radius: 6px; background: #fff; }
+.draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
+
+/* 힌트 카드 */
+.hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.hint .hh { display: flex; justify-content: space-between; font-weight: 900; color: var(--hint); }
+.hint pre.code { font-size: 14px; }
+
+/* 인쇄: 활동 블록마다 새 쪽, 쓰는 칸은 쪽 사이에서 끊지 않는다 */
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .lesson { max-width: none; padding: 0; gap: 0; }
+  .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
+  .lesson-head + .block { break-before: auto; margin-top: 8mm; }
+  .todo, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li { break-inside: avoid; }
+  pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .block { padding: 18px 16px 20px; border-radius: 14px; }
+  pre.code { font-size: 14px; }
+}
+/* ===== 공통 스타일 끝 ===== */
+
+/* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-head">
+    <span class="chip">1학기 · 1주차 · 묻고 답하기</span>
+    <h1>생일 파티 초대장 만들기</h1>
+    <div class="who">이름 <span></span> 날짜 <span></span></div>
+  </header>
+
+  <section class="block mission">
+    <h2>🎯 오늘의 미션</h2>
+    <p>다음 주는 내 생일이에요! 🎂 친구마다 초대장을 손으로 쓰기는 힘들어요. <b>친구 이름만 넣으면 초대장이 뚝딱 나오는 프로그램</b>을 만들어 봐요.</p>
+    <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">=================================
+     🎂 생일 파티 초대장 🎂
+=================================
+생일인 사람의 이름은? 민지
+파티 날짜는? (예: 5월 3일) 5월 3일
+파티 장소는? 우리 집
+초대할 친구 이름은? 서준
+---------------------------------
+서준에게
+민지의 생일 파티에 초대합니다!
+날짜: 5월 3일 / 장소: 우리 집
+꼭 와 줘! - 민지 드림</div></div>
+    <div class="todo"><h3>📋 오늘 할 일</h3><ol><li>🔧 워밍업: 고장 난 코드를 고쳐요.</li><li>🪜 단계 1: 제목 보여 주기</li><li>🪜 단계 2: 질문 4개 물어보기</li><li>🪜 단계 3: 대답을 넣어 초대장 완성하기</li><li>⭐ 내 것으로 바꿔요.</li></ol></div>
+  </section>
+
+  <section class="block warmup">
+    <h2>🔧 워밍업 <small>고장 난 자기소개 고치기</small></h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>이상한 곳 <b>3개</b>에 동그라미 쳐요.</li><li><code>warmup.py</code>를 실행해서 오류 메시지를 봐요.</li><li>고친 방법을 표에 적어요.</li></ol></div>
+    <p class="muted">1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실어요.</p>
+    <pre class="code" style="counter-reset: ln 4"><span class="l">print("안녕하세요! 자기소개 프로그램이에요.")</span><span class="l"></span><span class="l">name = input("이름이 뭐예요? ")</span><span class="l">print("반가워요, " + name + "님!"</span><span class="l"></span><span class="l">food = input("좋아하는 음식은 뭐예요? ")</span><span class="l">print(name + "님은 " + foood + "을 좋아하는군요!")</span><span class="l"></span><span class="l">print("오늘도 즐겁게 코딩해요!)</span></pre>
+    <table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
+    <p class="muted"><b>SyntaxError</b> 문법이 틀렸어요(괄호·따옴표 확인) · <b>NameError</b> 그런 이름의 상자가 없어요(철자 확인)</p>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 1</span> 제목 보여 주기</h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
+    <div class="tool"><div class="th">🧰 도구 카드 · 보여 주기: print()</div><p>괄호 안의 글자를 화면에 보여 줘요. 글자는 따옴표로 감싸요.</p><pre class="code nonum"><span class="l">print("파티에 와 줘!")</span></pre><p class="muted">→ 파티에 와 줘!</p></div>
+    <div class="label">⌨️ 따라 쓸 코드</div>
+    <pre class="code nonum"><span class="l">print("=================================")</span><span class="l">print("     🎂 생일 파티 초대장 🎂")</span><span class="l">print("=================================")</span></pre>
+    <div class="label">▶️ 실행하고 확인</div>
+    <div class="write small"></div>
+    <ul class="check"><li>화면에 제목 3줄이 나왔어요.</li></ul>
+    
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 2</span> 질문 4개 물어보기</h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 2</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
+    <div class="tool"><div class="th">🧰 도구 카드 · 물어보기: input()과 이름표 상자</div><p>질문을 보여 주고 대답을 받아요. 대답은 이름표를 붙인 상자(변수)에 담아요. <code>=</code>는 "오른쪽 대답을 왼쪽 상자에 넣어요"라는 뜻이에요.</p><pre class="code nonum"><span class="l">food = input("좋아하는 간식은? ")</span></pre><p class="muted">→ 대답이 food 상자에 들어가요</p></div>
+    <div class="label">⌨️ 따라 쓸 코드</div>
+    <pre class="code nonum"><span class="l">host = input("생일인 사람의 이름은? ")</span><span class="l">date = input("파티 날짜는? (예: 5월 3일) ")</span><span class="l">place = input("파티 장소는? ")</span><span class="l">guest = input("초대할 친구 이름은? ")</span></pre>
+    <div class="label">▶️ 실행하고 확인</div>
+    <div class="write"></div>
+    <ul class="check"><li>질문 4개가 차례로 나오고, 대답을 넣을 수 있었어요.</li></ul>
+    
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 3</span> 대답을 넣어 초대장 완성하기</h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 3</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
+    <div class="tool"><div class="th">🧰 도구 카드 · 글자 이어 붙이기: +</div><p>상자에 든 대답과 따옴표 글자를 이어 붙여요. 띄어쓰기도 직접 넣어요.</p><pre class="code nonum"><span class="l">print(food + "가 최고!")</span></pre><p class="muted">→ 떡볶이가 최고!</p></div><div class="tool"><div class="th">🧰 도구 카드 · 메모 남기기: #</div><p># 뒤에 쓴 글은 실행되지 않아요. 나중에 볼 메모예요.</p><pre class="code nonum"><span class="l"><span class="c"># 여기부터 초대장 내용</span></span></pre><p class="muted">→ 화면에는 아무것도 안 나와요</p></div>
+    <div class="label">⌨️ 따라 쓸 코드</div>
+    <pre class="code nonum"><span class="l"><span class="c"># 초대장 내용</span></span><span class="l">print("---------------------------------")</span><span class="l">print(guest + "에게")</span><span class="l">print(host + "의 생일 파티에 초대합니다!")</span><span class="l">print("날짜: " + date + " / 장소: " + place)</span><span class="l">print("꼭 와 줘! - " + host + " 드림")</span></pre>
+    <div class="label">▶️ 실행하고 확인</div>
+    <div class="write"></div>
+    <ul class="check"><li>초대장에 친구 이름, 날짜, 장소가 들어갔어요.</li></ul>
+    <div class="label">🔍 따라가기: 민지 / 5월 3일 / 우리 집 / 서준을 넣었다면 상자 속에는?</div><table class="fill"><tr><th>host</th><th>date</th><th>place</th><th>guest</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
+  </section>
+
+  <section class="block change">
+    <h2>⭐ 내 것으로 바꾸기 <small>오늘의 완성 기준</small></h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>표에 바꿀 내용을 먼저 적어요.</li><li>코드를 고치고 실행해요.</li><li>★ 꼭 하기 3개를 체크하면 완성!</li></ol></div>
+    <table class="fill"><tr><th>더 물어볼 질문 (화면에 보일 글자)</th><th>담을 상자 이름 (영어)</th></tr><tr><td class="w">예) 파티 시간은?</td><td class="w"><span class="mono">party_time</span></td></tr><tr><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td></tr></table>
+    <div class="label">★ 꼭 하기 (이 3개를 하면 완성!)</div>
+    <ul class="check"><li>제목과 꾸미기 선(<code>---</code>, <code>***</code>)을 내 스타일로 바꿨어요.</li><li>질문을 1개 더 만들고, 대답을 초대장에 넣었어요.</li><li>띄어쓰기가 자연스러워요.</li></ul>
+    <div class="label">➕ 더 해 보기</div>
+    <ul class="check"><li>질문을 2개 이상 더 만들었어요.</li><li>메모(<code>#</code>)를 1개 이상 남겼어요.</li></ul>
+    <div class="label">👀 친구에게 보여 주기: 친구의 한마디</div>
+    <div class="write small"></div>
+  </section>
+
+  <section class="block new">
+    <h2>💡 새로 만들기 <small>하고 싶은 사람</small></h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li>아이디어 하나를 골라요.</li><li>무엇을 만들지 적고 만들어요.</li></ol></div>
+    <ul class="check"><li>친구의 답장 카드 (친구 이름, 한마디 물어보기)</li><li>파티 메뉴판 (음식 3가지 물어보기)</li><li>내 아이디어</li></ul>
+    <div class="write"></div>
+    <h3>✅ 오늘의 마무리</h3>
+    <ul class="check"><li>워밍업 오류 3개를 고쳤어요.</li><li>단계를 하나씩 실행하며 만들었어요.</li><li>★ 꼭 하기 3개를 완성했어요.</li><li>친구에게 내 프로그램을 보여 줬어요.</li></ul>
+    <div class="label">내 초대장에서 가장 자랑하고 싶은 부분은?</div>
+    <div class="write small"></div>
+  </section>
+
+  <section class="block challenge">
+    <h2>🚀 도전 프로젝트 <small>RPG 파티원 모집 퀘스트 창 · 일찍 끝낸 사람</small></h2>
+    <div class="todo"><h3>📋 할 일</h3><ol><li><code>extension_starter.py</code>를 그대로 실행해 봐요.</li><li>내 퀘스트 창이 화면에 어떻게 보일지 아래 칸에 그려요.</li><li>코드를 바꾸고 실행해서 체크해요.</li></ol></div>
+    <p>모험을 함께 떠날 친구를 모집하는 게시판을 만들어요. 테두리 글자(<code>+ = | *</code>)로 꾸며 봐요.</p>
+    
+    <div class="draw"></div>
+    <ul class="check"><li>게시판 테두리와 제목을 나만의 디자인으로 바꿨어요.</li><li>최소 레벨, 보상, 집합 장소를 물어보고 보여 줬어요.</li><li>파티장 한마디를 따옴표 안에 넣어 보여 줬어요. (바깥은 <code>' '</code>, 안쪽은 <code>" "</code>)</li></ul>
+    <div class="label">➕ 더 해 보기</div>
+    <ul class="check"><li>지원자가 가입하는 <b>[시스템] 메시지</b></li><li>난이도 별점(★★★☆☆)</li><li>파티 이름 자동 만들기 (<code>leader + "와 친구들"</code>)</li></ul>
+  </section>
+
+  <section class="block hints">
+    <h2>🃏 힌트 카드 <small>막히면 1번부터 차례로</small></h2>
+    <div class="hints-grid"><div class="hint"><div class="hh"><span>단계 1</span><span>●○○</span></div><p>print( ) 괄호 안에 <b>따옴표로 감싼 글자</b>를 넣어요. 따옴표는 열고 닫는 두 개!</p></div><div class="hint"><div class="hh"><span>단계 2</span><span>●○○</span></div><p>질문 하나 = <code>input()</code> 하나 = 상자 하나. <code>상자이름 = input("질문")</code> 모양이에요.</p></div><div class="hint"><div class="hh"><span>단계 3</span><span>●○○</span></div><p>상자 이름은 <b>따옴표 밖</b>에 써요. 글자와 상자는 <code>+</code>로 이어요. 단계 2에서 만든 상자 이름을 그대로 써야 해요.</p></div><div class="hint"><div class="hh"><span>새로 만들기 · 방향</span><span>●○○</span></div><p>새 기능에 필요한 정보를 먼저 적어 봐요. 정보 하나마다 질문 하나, 상자 하나예요.</p></div><div class="hint"><div class="hh"><span>새로 만들기 · 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">friend = input("친구 이름: ")</span><span class="l">reply = input("한마디: ")</span><span class="l">print("To. " + host)</span><span class="l">print(reply + " - " + friend)</span></pre></div><div class="hint"><div class="hh"><span>도전 · 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">who = input("지원자: ")</span><span class="l">print("[시스템] " + who + "님이 가입했어요!")</span></pre></div></div>
+  </section>
+</main>
+</body>
+</html>
