@@ -8,14 +8,15 @@
 
 | 파일 | 내용 |
 | --- | --- |
-| `lesson.html` | 교안. 화면에서 보는 교안이자 인쇄하면 학습지 ([01-worksheet-format.md](01-worksheet-format.md)). 예전 형식 주차는 `worksheet.html` + `README.md` |
+| `lesson.html` | 교안. 화면에서 보는 교안이자 인쇄하면 학습지 ([01-worksheet-format.md](01-worksheet-format.md)). 예전 형식 주차는 `worksheet.html` |
+| `README.md` | 교안 요약. GitHub에서 바로 읽히는 용도(P11). 교안과 같은 흐름·내용 |
 | `warmup.py` | 오류 3개가 든 코드. 맨 위 주석에 "고쳐 보세요" |
 | `mini_starter.py` | 아이가 이어 쓸 시작 파일. 코드 없이 단계 표시 주석만 있다(`# 단계 1: 제목 보여 주기` …). 아이는 단계마다 그 아래에 새 줄을 쓴다 ([decisions.md](decisions.md) P8) |
 | `mini_solution.py` | 완성본. `# 단계 N: …` 주석으로 단계를 나눈다. 교안 단계 블록의 "따라 쓸 코드"는 이 파일의 해당 단계 줄과 글자 하나까지 같다. 맨 아래에 바꾸기 예시 |
 | `extension_starter.py` | 도전 프로젝트(커리큘럼의 확장 프로젝트) 시작 코드. 빈칸 없이 그대로 실행된다. 커리큘럼 보완 메모에서 제공하라는 코드는 여기 넣는다 |
 | `extension_solution.py` | 도전 프로젝트 예시 답안 |
 | `answer_key.md` | 교사용 워크시트 정답지 (아래 형식) |
-| `teacher_guide.md` | 교사용: 110분 시간 배분, 핵심 설명 포인트, 자주 나오는 오류와 대처, 진도 차이 대응 |
+| `teacher_guide.md` | 교사용: 110분 시간 배분(기본값 ±5분, [02-content-rules.md](02-content-rules.md)), 핵심 설명 포인트, 자주 나오는 오류와 대처, 진도 차이 대응 |
 
 도전 프로젝트가 택1이면 `extension_<주제>_starter.py`처럼 주제를 붙인다.
 
@@ -33,9 +34,9 @@
 - 워크시트에 실리는 줄은 워크시트와 글자 하나까지 같다([02-content-rules.md](02-content-rules.md) 코드 규칙).
 - 출력 문구는 아이 눈높이 한국어로 쓴다.
 
-## README.md (예전 형식 주차만)
+## README.md (교안 요약)
 
-교안(`lesson.html`)이 화면용 안내를 겸하므로 새 형식 주차에는 만들지 않는다([decisions.md](decisions.md) P11). 예전 형식 주차의 README는 워크시트와 같은 흐름으로 쓴다.
+GitHub에서 바로 읽히는 요약이다(P11). 교안(`lesson.html`)과 같은 흐름으로 쓴다.
 
 1. 미션 브리핑: 이야기, 완성하면 이렇게 돼요(실행 예시), 오늘의 미션
 2. 워밍업: 오류 메시지 읽고 고치기
@@ -44,7 +45,7 @@
 5. 도전 프로젝트: 바꾸기부터, 힌트 3단계
 6. 오늘의 체크리스트
 
-워크시트와 내용이 어긋나지 않게 한다. 워크시트의 힌트·문구를 고치면 README도 같이 고친다.
+교안과 내용이 어긋나지 않게 한다. 교안의 코드·힌트·문구를 고치면 README도 같이 고친다. 쓰는 칸 대신 "무엇을 적는지"만 짧게 쓴다.
 
 ## teacher_guide.md
 

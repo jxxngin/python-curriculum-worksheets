@@ -17,15 +17,18 @@
   --bg: #f6f7fb;
   --paper: #ffffff;
   --code-bg: #f8fafc;
-  /* 활동 색 (색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다) */
-  --mission: #2563eb; --mission-soft: #eff6ff;
-  --warmup: #ea580c;  --warmup-soft: #fff7ed;
-  --step: #16a34a;    --step-soft: #f0fdf4;
-  --change: #7c3aed;  --change-soft: #f5f3ff;
-  --new: #0891b2;     --new-soft: #ecfeff;
-  --challenge: #e11d48; --challenge-soft: #fff1f2;
-  --hint: #d97706;    --hint-soft: #fffbeb;
-  --tool: #4f46e5;    --tool-soft: #eef2ff;
+  /* 활동 색: 3색 그룹 (준비 파랑 / 만들기 초록 / 더 하기 주황). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --ready: #2563eb; --ready-soft: #eff6ff;
+  --make: #16a34a;  --make-soft: #f0fdf4;
+  --more: #ea580c;  --more-soft: #fff7ed;
+  --mission: var(--ready);  --mission-soft: var(--ready-soft);
+  --warmup: var(--ready);   --warmup-soft: var(--ready-soft);
+  --step: var(--make);      --step-soft: var(--make-soft);
+  --change: var(--make);    --change-soft: var(--make-soft);
+  --new: var(--make);       --new-soft: var(--make-soft);
+  --challenge: var(--more); --challenge-soft: var(--more-soft);
+  --hint: var(--more);      --hint-soft: var(--more-soft);
+  --tool: #475569;          --tool-soft: #f1f5f9;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
@@ -211,7 +214,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
       <ol>
         <li>표에 바꿀 내용을 먼저 적어요.</li>
         <li>코드를 고치고 실행해요.</li>
-        <li>아래 체크를 모두 하면 완성!</li>
+        <li>★ 꼭 하기 3개를 체크하면 완성!</li>
       </ol>
     </div>
     <table class="fill">
@@ -220,10 +223,16 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
       <tr><td class="w"></td><td class="w"></td></tr>
       <tr><td class="w"></td><td class="w"></td></tr>
     </table>
+    <div class="label">★ 꼭 하기 (이 3개를 하면 완성!)</div>
     <ul class="check">
-      <li>{{완성 기준 1}}</li>
-      <li>{{완성 기준 2}}</li>
-      <li>{{완성 기준 3}}</li>
+      <li>{{필수 1}}</li>
+      <li>{{필수 2}}</li>
+      <li>{{필수 3}}</li>
+    </ul>
+    <div class="label">➕ 더 해 보기</div>
+    <ul class="check">
+      <li>{{더 해 보기 1}}</li>
+      <li>{{더 해 보기 2}}</li>
     </ul>
     <div class="label">👀 친구에게 보여 주기: 친구의 한마디</div>
     <div class="write small"></div>
