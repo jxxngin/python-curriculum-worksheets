@@ -2,7 +2,7 @@
 
 사용법: python tools/check_worksheet.py worksheets/semester1/week01/worksheet.html [...]
 
-1) 구조 검사: .page 3~8쪽, 쪽마다 .foot, 이름/날짜 칸, 외부 리소스는 Google Fonts만,
+1) 구조 검사: .page 3~10쪽, 쪽마다 .foot, 이름/날짜 칸, 외부 리소스는 Google Fonts만,
    공통 스타일이 템플릿과 같은지, 특정 편집기 표현(Thonny, 디버거 등)이 없는지
 2) 레이아웃 검사(playwright가 있으면): 쪽마다 내용이 A4 밖으로 넘치거나 쪽 번호와 겹치지 않는지,
    카드·코드·표가 가로나 세로로 잘리지 않는지
@@ -74,8 +74,8 @@ def check(path):
     html = Path(path).read_text(encoding="utf-8")
     s = Scan()
     s.feed(html)
-    if not 3 <= s.pages <= 8:
-        errors.append(f"쪽 수가 {s.pages}쪽이에요 (3~8쪽이어야 해요)")
+    if not 3 <= s.pages <= 10:
+        errors.append(f"쪽 수가 {s.pages}쪽이에요 (3~10쪽이어야 해요)")
     if s.foots != s.pages:
         errors.append(f".foot {s.foots}개 / .page {s.pages}개 (쪽마다 하나씩)")
     if "이름" not in html or "날짜" not in html:

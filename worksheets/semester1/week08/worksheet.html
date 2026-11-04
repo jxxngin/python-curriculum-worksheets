@@ -213,9 +213,20 @@ pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-
 .mission .story { font-size: 10.5pt; }
 .mission .screen .body { min-height: 0; font-size: 8pt; line-height: 1.42; background-image: none; white-space: pre; }
 .tool { border: 1.5px dashed var(--ink); border-radius: 2.5mm; padding: 2mm 2.5mm; display: flex; flex-direction: column; gap: 1.2mm; background: #fff; }
-.tool .th { font-weight: 900; font-size: 9.5pt; }
-.tool p { font-size: 9pt; }
-.tool pre.code { font-size: 8.5pt; line-height: 1.5; padding: 1.5mm 2mm; }
+.tool .th { font-weight: 900; font-size: 11pt; }
+.tool p { font-size: 10.5pt; }
+.tool pre.code { font-size: 9.5pt; line-height: 1.6; padding: 1.5mm 2mm; }
+/* 5~6학년 고정 흐름: 단계 머리, 할 일, 큰 칸 */
+.stephead { display: flex; align-items: center; gap: 3mm; border-bottom: 2.5px solid var(--ink); padding-bottom: 2mm; }
+.stephead .n { background: var(--ink); color: #fff; border-radius: 2mm; padding: 1mm 3.5mm; font-weight: 900; font-size: 12pt; }
+.stephead b { font-size: 15pt; font-weight: 900; }
+.todo { background: var(--soft); border-left: 5px solid var(--ink); border-radius: 0 2.5mm 2.5mm 0; padding: 3mm 4mm; }
+.todo h3 { margin: 0 0 1mm; font-size: 11pt; }
+.todo ol { margin: 0; padding-left: 6mm; font-size: 11pt; line-height: 1.8; }
+.label { font-weight: 900; font-size: 11pt; }
+.screen.big .body { min-height: 40mm; }
+.lines.big span { height: 10mm; }
+.mission h2 { margin-bottom: 1mm; }
 /* ===== 공통 스타일 끝 ===== */
 
 /* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
