@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2학기 2주차 · 바람개비</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 교안 공통 스타일: docs/templates/lesson-template.html 과 같아야 한다. 고치지 않는다. ===== */
+:root {
+  --ink: #1f2937;
+  --sub: #6b7280;
+  --line: #d1d5db;
+  --soft: #f3f4f6;
+  --bg: #f6f7fb;
+  --paper: #ffffff;
+  --code-bg: #f8fafc;
+  /* 활동 색: 3색 그룹 (준비 파랑 / 만들기 초록 / 더 하기 주황). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --ready: #2563eb; --ready-soft: #eff6ff;
+  --make: #16a34a;  --make-soft: #f0fdf4;
+  --more: #ea580c;  --more-soft: #fff7ed;
+  --mission: var(--ready);  --mission-soft: var(--ready-soft);
+  --warmup: var(--ready);   --warmup-soft: var(--ready-soft);
+  --step: var(--make);      --step-soft: var(--make-soft);
+  --change: var(--make);    --change-soft: var(--make-soft);
+  --new: var(--make);       --new-soft: var(--make-soft);
+  --challenge: var(--more); --challenge-soft: var(--more-soft);
+  --hint: var(--more);      --hint-soft: var(--more-soft);
+  --tool: #475569;          --tool-soft: #f1f5f9;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.lesson { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; display: flex; flex-direction: column; gap: 28px; }
+code, .mono { font-family: "Nanum Gothic Coding", Consolas, monospace; }
+code { background: var(--soft); padding: 1px 6px; border-radius: 6px; font-size: .92em; }
+p { margin: 0; }
+.muted { color: var(--sub); font-size: .92em; }
+
+/* 머리 */
+.lesson-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.lesson-head .chip { background: var(--mission); color: #fff; border-radius: 999px; padding: 4px 14px; font-weight: 700; font-size: .9em; }
+.lesson-head h1 { margin: 0; font-size: 1.9em; font-weight: 900; letter-spacing: -0.5px; flex: 1 1 320px; }
+.who { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; white-space: nowrap; font-size: .9em; color: var(--sub); }
+.who span { display: inline-block; min-width: 120px; height: 1.4em; border-bottom: 1.5px solid var(--line); margin-right: 8px; }
+
+/* 활동 블록 */
+.block { --c: var(--ink); --cs: var(--soft); background: var(--paper); border-radius: 18px; padding: 24px 26px 26px; border-top: 8px solid var(--c); display: flex; flex-direction: column; gap: 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.block.mission   { --c: var(--mission);   --cs: var(--mission-soft); }
+.block.warmup    { --c: var(--warmup);    --cs: var(--warmup-soft); }
+.block.step      { --c: var(--step);      --cs: var(--step-soft); }
+.block.change    { --c: var(--change);    --cs: var(--change-soft); }
+.block.new       { --c: var(--new);       --cs: var(--new-soft); }
+.block.challenge { --c: var(--challenge); --cs: var(--challenge-soft); }
+.block.hints     { --c: var(--hint);      --cs: var(--hint-soft); }
+.block > h2 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.45em; font-weight: 900; color: var(--c); }
+.block > h2 .tag { background: var(--c); color: #fff; border-radius: 10px; padding: 2px 12px; font-size: .7em; }
+.block > h2 small { color: var(--sub); font-weight: 500; font-size: .6em; }
+h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
+
+/* 할 일 */
+.todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.todo h3 { color: var(--c); margin-bottom: 4px; }
+.todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
+
+/* 도구 카드 */
+.tool { background: var(--tool-soft); border-radius: 12px; padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+.tool .th { font-weight: 900; color: var(--tool); }
+
+/* 코드 */
+pre.code { margin: 0; padding: 14px 16px 14px 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px;
+  font-family: "Nanum Gothic Coding", Consolas, monospace; font-size: 16px; line-height: 1.75; counter-reset: ln; white-space: pre; overflow-x: auto; }
+pre.code > span.l { display: block; padding-left: 46px; position: relative; min-height: 1.75em; }
+pre.code > span.l::before { counter-increment: ln; content: counter(ln); position: absolute; left: 0; width: 32px; text-align: right; color: #9ca3af; font-size: .85em; }
+pre.code.nonum > span.l { padding-left: 16px; }
+pre.code.nonum > span.l::before { content: none; }
+pre.code .c { color: #6b7280; }
+.blank { display: inline-block; min-width: 90px; height: 1.5em; vertical-align: -0.35em; border: 2px dashed var(--c); border-radius: 8px; background: #fff; position: relative; }
+.blank[data-n]::after { content: attr(data-n); position: absolute; top: -10px; left: -10px; width: 18px; height: 18px; border-radius: 50%; background: var(--c); color: #fff; font: 700 11px/18px "Noto Sans KR", sans-serif; text-align: center; }
+
+/* 쓰는 칸 */
+.label { font-weight: 900; color: var(--c); }
+.write { border: 2px solid var(--line); border-radius: 12px; min-height: 160px; background:
+  repeating-linear-gradient(transparent 0 39px, #e5e7eb 39px 40px); background-origin: content-box; padding: 6px 14px; }
+.write.small { min-height: 90px; }
+.screen { border-radius: 12px; overflow: hidden; border: 2px solid var(--ink); }
+.screen .bar { background: var(--ink); color: #fff; font-size: .85em; padding: 4px 12px; }
+.screen .body { padding: 10px 14px; font-family: "Nanum Gothic Coding", monospace; font-size: 15px; line-height: 1.55; white-space: pre; overflow-x: auto; }
+table.fill { width: 100%; border-collapse: collapse; }
+table.fill th, table.fill td { border: 1.5px solid var(--line); padding: 8px 12px; text-align: left; }
+table.fill th { background: var(--cs); color: var(--ink); }
+table.fill td.w { height: 56px; }
+ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+ul.check li { padding-left: 34px; position: relative; }
+ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width: 22px; height: 22px; border: 2.5px solid var(--c); border-radius: 6px; background: #fff; }
+.draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
+
+/* 힌트 카드 */
+.hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.hint .hh { display: flex; justify-content: space-between; font-weight: 900; color: var(--hint); }
+.hint pre.code { font-size: 14px; }
+
+/* 인쇄: 활동 블록마다 새 쪽, 쓰는 칸은 쪽 사이에서 끊지 않는다 */
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .lesson { max-width: none; padding: 0; gap: 0; }
+  .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
+  .lesson-head + .block { break-before: auto; margin-top: 8mm; }
+  .todo, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li { break-inside: avoid; }
+  pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .block { padding: 18px 16px 20px; border-radius: 14px; }
+  pre.code { font-size: 14px; }
+}
+/* ===== 공통 스타일 끝 ===== */
+
+/* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
+/* 주차별 추가: 힌트를 한 열로 읽어요. */
+.hints-grid {grid-template-columns:minmax(0,1fr);}
+.hint {min-width:0;}
+.result-preview {display:block;width:100%;max-height:260px;background:white;}
+@media print { body {font-size:10.5pt;} .block {gap:8px;padding:12px 16px;} .tool {padding:10px 14px;gap:5px;} .todo {padding:10px 14px;} pre.code {font-size:13px;line-height:1.5;} .block > h2 {font-size:1.3em;} .block.step {gap:6px;} .block.change {gap:6px;line-height:1.45;} }
+</style>
+</head>
+<body><main class="lesson"><header class="lesson-head"><span class="chip">2학기 · 2주차 · 같은 모양 반복하기</span><h1>바람개비</h1><div class="who">이름 <span></span> 날짜 <span></span></div></header>
+<section class="block mission"><h2>🎯 오늘의 미션</h2><div class="todo"><h3>📋 할 일</h3><ol><li>완성 모습을 살펴봐요.</li><li>워밍업 뒤 4단계를 만들어요.</li><li>내 것으로 바꾸고 친구에게 보여 줘요.</li></ol></div><p>바람이 없어도 멋진 바람개비를 그릴 수 있어요. 삼각 날개를 그리고 방향을 바꾸어 네 날개를 완성해요.</p><div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">한 중심에서 네 방향으로 펼쳐진 청록색 삼각 날개</div></div><svg class="result-preview" xmlns="http://www.w3.org/2000/svg" viewBox="-260 -190 520 380" role="img" aria-label="바람개비"><title>바람개비</title><path d="M0,0 L90.0,-0.0" fill="none" stroke="teal" stroke-width="1"/><path d="M90.0,-0.0 L45.00000000000002,-77.94228634059948" fill="none" stroke="teal" stroke-width="1"/><path d="M45.00000000000002,-77.94228634059948 L-2.1316282072803006e-14,-2.842170943040401e-14" fill="none" stroke="teal" stroke-width="1"/><path d="M-2.1316282072803006e-14,-2.842170943040401e-14 L6.238270908012444e-15,-90.00000000000003" fill="none" stroke="teal" stroke-width="1"/><path d="M6.238270908012444e-15,-90.00000000000003 L-77.94228634059952,-45.00000000000011" fill="none" stroke="teal" stroke-width="1"/><path d="M-77.94228634059952,-45.00000000000011 L-4.263256414560601e-14,-1.1368683772161603e-13" fill="none" stroke="teal" stroke-width="1"/><path d="M-4.263256414560601e-14,-1.1368683772161603e-13 L-90.00000000000004,-1.6879594368324692e-13" fill="none" stroke="teal" stroke-width="1"/><path d="M-90.00000000000004,-1.6879594368324692e-13 L-45.0,77.94228634059928" fill="none" stroke="teal" stroke-width="1"/><path d="M-45.0,77.94228634059928 L1.4921397450962104e-13,-1.1368683772161603e-13" fill="none" stroke="teal" stroke-width="1"/><path d="M1.4921397450962104e-13,-1.1368683772161603e-13 L2.2642243111319723e-13,89.99999999999989" fill="none" stroke="teal" stroke-width="1"/><path d="M2.2642243111319723e-13,89.99999999999989 L77.94228634059978,45.000000000000014" fill="none" stroke="teal" stroke-width="1"/><path d="M77.94228634059978,45.000000000000014 L3.268496584496461e-13,-2.842170943040401e-14" fill="none" stroke="teal" stroke-width="1"/></svg></section>
+<section class="block warmup"><h2>🔧 워밍업</h2><div class="todo"><h3>📋 할 일</h3><ol><li>코드에서 이상한 곳 세 개를 찾아요.</li><li>warmup.py를 실행하고 오류 메시지를 읽어요.</li><li>고친 방법을 표에 적어요.</li></ol></div><p>1~4번 줄은 설명 주석이라 생략했어요.</p><pre class="code" style="counter-reset: ln 4"><span class="l">import turtle as t</span><span class="l">for side in range(3)</span><span class="l">    t.forward(60)</span><span class="l">    t.Left(120)</span><span class="l">t.forward("20")</span></pre><table class="fill"><tr><th>줄 번호</th><th>오류 이름</th><th>고친 방법</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table><p class="muted">SyntaxError는 문법, AttributeError는 도구 이름, IndentationError는 들여쓰기를 확인해요.</p></section>
+<section class="block step"><h2><span class="tag">단계 1</span> 첫 삼각 날개 그리기</h2><div class="todo"><h3>📋 할 일</h3><ol><li>도구 카드를 읽어요.</li><li>mini_starter.py의 단계 표시 아래에 새 코드를 써요.</li><li>실행하고 달라진 모습을 기록해요.</li></ol></div><div class="tool"><div class="th">🧰 도구 카드 · 같은 일을 여러 번</div><p>for 아래 들여쓴 줄을 range()에 적은 횟수만큼 반복해요.</p><pre class="code nonum"><span class="l">for turn in range(2):</span><span class="l">    print("빙글")</span></pre><p class="muted">→ 빙글이 두 번 나와요. 정삼각형은 한 바퀴 360도를 3으로 나눈 120도씩 돌아요.</p></div><pre class="code nonum"><span class="l">import turtle as t</span><span class="l">t.color("teal")</span><span class="l">for side in range(3):</span><span class="l">    t.forward(90)</span><span class="l">    t.left(120)</span></pre><p>그림 창을 유지하려면 맨 아래에 <code>t.done()</code>을 한 번 써요. 다음 단계는 그 줄 바로 위에 이어 써요. 실행을 마친 창은 닫고 다시 실행해요.</p><div class="label">▶️ 실행하고 확인: 달라진 모습을 적거나 그려요.</div><div class="write"></div><ul class="check"><li>삼각형 하나를 그렸어요.</li></ul></section>
+<section class="block step"><h2><span class="tag">단계 2</span> 두 번째 날개 더하기</h2><div class="todo"><h3>📋 할 일</h3><ol><li>도구 카드를 읽어요.</li><li>mini_starter.py의 단계 표시 아래에 새 코드를 써요.</li><li>실행하고 달라진 모습을 기록해요.</li></ol></div><div class="tool"><div class="th">🧰 도구 카드 · 날개 사이의 각도</div><p>네 방향으로 벌어지려면 360 ÷ 4만큼 돌아요.</p><pre class="code nonum"><span class="l">t.left(45)</span><span class="l">t.forward(20)</span></pre><p class="muted">→ 보던 방향에서 왼쪽으로 45도 돌아 20 움직여요.</p></div><pre class="code nonum"><span class="l"><span class="c"># 단계 1 코드 아래에 이어서 써요.</span></span><span class="l">t.left(90)</span><span class="l">for side in range(3):</span><span class="l">    t.forward(90)</span><span class="l">    t.left(120)</span></pre><p><code>t.done()</code> 바로 위에 이어 써요. 그림 창을 닫고 다시 실행해요.</p><div class="label">▶️ 실행하고 확인: 달라진 모습을 적거나 그려요.</div><div class="write"></div><ul class="check"><li>첫 날개에서 90도 돌아 두 번째 날개가 생겼어요.</li></ul></section>
+<section class="block step"><h2><span class="tag">단계 3</span> 세 번째 날개 더하기</h2><div class="todo"><h3>📋 할 일</h3><ol><li>앞 단계의 결과를 살펴봐요.</li><li>mini_starter.py의 단계 표시 아래에 새 코드를 써요.</li><li>실행하고 달라진 모습을 기록해요.</li></ol></div><pre class="code nonum"><span class="l"><span class="c"># 단계 2 코드 아래에 이어서 써요.</span></span><span class="l">t.left(90)</span><span class="l">for side in range(3):</span><span class="l">    t.forward(90)</span><span class="l">    t.left(120)</span></pre><p><code>t.done()</code> 바로 위에 이어 써요. 그림 창을 닫고 다시 실행해요.</p><div class="label">▶️ 실행하고 확인: 달라진 모습을 적거나 그려요.</div><div class="write"></div><ul class="check"><li>세 번째 방향에 날개가 생겼어요.</li></ul></section>
+<section class="block step"><h2><span class="tag">단계 4</span> 네 번째 날개 완성하기</h2><div class="todo"><h3>📋 할 일</h3><ol><li>앞 단계의 결과를 살펴봐요.</li><li>mini_starter.py의 단계 표시 아래에 새 코드를 써요.</li><li>실행하고 달라진 모습을 기록해요.</li></ol></div><pre class="code nonum"><span class="l"><span class="c"># 단계 3 코드 아래에 이어서 써요.</span></span><span class="l">t.left(90)</span><span class="l">for side in range(3):</span><span class="l">    t.forward(90)</span><span class="l">    t.left(120)</span></pre><p><code>t.done()</code> 바로 위에 이어 써요. 그림 창을 닫고 다시 실행해요.</p><div class="label">▶️ 실행하고 확인: 달라진 모습을 적거나 그려요.</div><div class="write"></div><ul class="check"><li>네 방향으로 날개가 펼쳐졌어요.</li></ul><div class="label">🔍 따라가기: 단계 1의 range(3)을 따라가요. side는 0부터 시작해요.</div><table class="fill"><tr><th>side 차례</th><th>forward 횟수</th><th>left로 돈 각도 합</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></section>
+<section class="block change"><h2>⭐ 내 것으로 바꾸기</h2><div class="todo"><h3>📋 할 일</h3><ol><li>계획을 표에 적어요.</li><li>코드를 바꾸고 실행해요.</li><li>꼭 하기 세 가지를 체크하고 친구에게 보여 줘요.</li></ol></div><table class="fill"><tr><th>바꿀 부분</th><th>내 계획</th></tr><tr><td class="w">예) 네 날개의 길이</td><td class="w">90을 모두 70으로 바꾸기</td></tr><tr><td class="w"></td><td class="w"></td></tr></table><p>네 곳의 forward(90)을 같은 길이로 바꿔요. 각 날개의 for 바로 위에서 pencolor()로 다른 색을 정해요. 삼각형 안의 회전은 120도, 날개 사이는 90도예요.</p><div class="label">★ 꼭 하기 · 세 가지가 오늘의 완성 기준이에요.</div><ul class="check"><li>날개 길이를 바꿨어요.</li><li>날개마다 색을 다르게 바꿨어요.</li><li>네 날개 사이에서 90도씩 도는 이유를 설명하고 완성했어요.</li></ul><div class="label">➕ 더 해 보기</div><ul class="check"><li>막대를 더해요.</li><li>360 ÷ 날개 수로 각도를 계산해 여섯 날개로 바꿔요.</li></ul><div class="label">친구의 한마디</div><div class="write small"></div></section>
+<section class="block new"><h2>💡 새로 만들기 · 선택</h2><div class="todo"><h3>📋 할 일</h3><ol><li>아이디어 하나를 골라요.</li><li>만들 모습을 그리고 코드를 바꿔요.</li></ol></div><ul class="check"><li>세 날개 바람개비</li><li>네모 날개 바람개비</li><li>내 아이디어</li></ul><div class="draw"></div><h3>✅ 오늘의 마무리</h3><ul class="check"><li>오류 세 개를 고쳤어요.</li><li>단계를 실행하며 만들었어요.</li><li>꼭 하기 세 가지를 완성했어요.</li></ul><div class="label">내가 자랑하고 싶은 부분은?</div><div class="write small"></div></section>
+<section class="block challenge"><h2>🚀 도전 프로젝트 · 스피로그래프 만다라</h2><div class="todo"><h3>📋 할 일</h3><ol><li>extension_starter.py를 그대로 실행해요.</li><li>바꿀 모습을 먼저 그려요.</li><li>코드를 바꾸고 완성 기준을 체크해요.</li></ol></div><p>원을 조금씩 돌려 겹치면 꽃 같은 무늬가 생겨요. 원의 수와 회전 각도를 함께 바꿔 나만의 무늬를 만들어요.</p><div class="draw"></div><ul class="check"><li>원의 수와 회전 각도를 바꿨어요.</li><li>반지름을 바꿔 무늬 크기를 조절했어요.</li><li>한 바퀴를 채우는 각도를 설명했어요.</li></ul><div class="label">➕ 더 해 보기</div><ul class="check"><li>같은 반복을 한 번 더 써서 안쪽 무늬를 더해요.</li></ul></section>
+<section class="block hints"><h2>🃏 힌트 카드</h2><div class="todo"><h3>📋 할 일</h3><ol><li>막힌 활동의 힌트 1부터 읽어요.</li><li>부족하면 2, 3을 차례로 읽고 다시 해요.</li></ol></div><div class="hints-grid"><div class="hint"><div class="hh"><span>단계 1</span><span>●○○</span></div><p>for 줄 끝의 :와 아래 두 줄의 4칸 들여쓰기를 확인해요. range(3)은 변 세 개예요.</p></div><div class="hint"><div class="hh"><span>단계 2</span><span>●○○</span></div><p>삼각형을 그린 뒤 left(90)을 한 번 쓰고 같은 삼각형 반복을 이어 써요.</p></div><div class="hint"><div class="hh"><span>단계 3</span><span>●○○</span></div><p>세 번째 날개도 새 삼각형을 그리기 전에 left(90)으로 방향을 바꿔요.</p></div><div class="hint"><div class="hh"><span>단계 4</span><span>●○○</span></div><p>네 번째 날개는 앞의 삼각형 반복을 다시 써요. 삼각형 안의 120도는 그대로 둬요.</p></div><div class="hint"><div class="hh"><span>바꾸기·새로 만들기 1</span><span>●○○</span></div><p>바꿀 위치나 값을 먼저 찾아요. 한 번에 하나만 바꿔 실행해요.</p></div><div class="hint"><div class="hh"><span>바꾸기·새로 만들기 2</span><span>●●○</span></div><p>삼각형 안에서는 left(120), 날개 사이에서는 left(90)을 써요.</p></div><div class="hint"><div class="hh"><span>바꾸기·새로 만들기 3</span><span>●●●</span></div><p>기존 첫 번째 날개 부분을 아래처럼 바꿔요. 다른 날개도 길이와 색을 각각 고쳐요.</p><pre class="code nonum"><span class="l">t.pencolor("orange")</span><span class="l">for side in range(3):</span><span class="l">    t.forward(70)</span><span class="l">    t.left(120)</span></pre></div><div class="hint"><div class="hh"><span>도전 1</span><span>●○○</span></div><p>시작 코드를 실행하고 어떤 숫자를 바꿀지 골라요.</p></div><div class="hint"><div class="hh"><span>도전 2</span><span>●●○</span></div><p>원의 수 × 돌리는 각도가 360이 되도록 골라요.</p></div><div class="hint"><div class="hh"><span>도전 3</span><span>●●●</span></div><p>기존 도전 반복문 세 줄을 아래로 바꿔요.</p><pre class="code nonum"><span class="l">for turn in range(18):</span><span class="l">    t.circle(55)</span><span class="l">    t.left(20)</span></pre></div></div></section></main></body></html>
