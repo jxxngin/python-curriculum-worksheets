@@ -2,15 +2,26 @@
 
 사용법: python tools/check_worksheet.py worksheets/semester1/week01/worksheet.html [...]
 
-1) 구조 검사: .page 3~6쪽, 쪽마다 .foot, 이름/날짜 칸, 외부 리소스는 Google Fonts만
+1) 구조 검사: .page 3~8쪽, 쪽마다 .foot, 이름/날짜 칸, 외부 리소스는 Google Fonts만
 2) 레이아웃 검사(playwright가 있으면): 쪽마다 내용이 A4 밖으로 넘치거나 쪽 번호와 겹치지 않는지,
    카드·코드·표가 가로나 세로로 잘리지 않는지
    설치: pip install playwright && python -m playwright install chromium
 """
 import re
 import sys
-from html.parser import HTMLParser
 from pathlib import Path
+
+TEMPLATE = Path(__file__).resolve().parent.parent / "docs" / "templates" / "worksheet-template.html"
+MARK = "/* ===== 주차별 추가"
+
+
+def common_css(html):
+    m = re.search(r"<style>\s*(.*?)</style>", html, re.S)
+    css = m.group(1) if m else ""
+    return css.split(MARK)[0]
+
+
+from html.parser import HTMLParser  # noqa: E402
 
 
 class Scan(HTMLParser):
@@ -70,6 +81,9 @@ def check(path):
         errors.append("머리글에 이름/날짜 칸이 없어요")
     if s.external:
         errors.append(f"허용되지 않은 외부 리소스: {s.external}")
+    if TEMPLATE.exists() and Path(path).resolve() != TEMPLATE:
+        if common_css(html) != common_css(TEMPLATE.read_text(encoding="utf-8")):
+            errors.append("공통 스타일이 템플릿(docs/templates/worksheet-template.html)과 달라요. 덧붙일 스타일은 '주차별 추가' 표시 아래에만 써요")
     if not re.search(r"@page\s*\{\s*size:\s*A4", html):
         errors.append("@page { size: A4 } 가 없어요")
 

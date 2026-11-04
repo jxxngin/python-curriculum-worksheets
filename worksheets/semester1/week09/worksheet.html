@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ===== A4 워크시트 공통 스타일 (모든 주차가 이 블록을 그대로 복사해 쓴다) ===== */
+/* ===== A4 워크시트 공통 스타일: docs/templates/worksheet-template.html 과 같아야 한다. 고치지 않는다. ===== */
 :root {
   --ink: #1a1a1a;
   --sub: #555;
@@ -195,12 +195,22 @@ ul.check li::before {
 
 .tip { font-size: 8.5pt; color: var(--sub); border-left: 3px solid var(--line); padding-left: 2.5mm; }
 .spacer { flex: 1; }
+
+/* 코드 변형: 줄 번호 없는 조각 / 긴 코드용 촘촘한 상자 */
+pre.code.nonum > span.l { padding-left: 3mm; }
+pre.code.nonum > span.l::before { content: none; }
+pre.code.tight { font-size: 8.5pt; line-height: 1.55; padding-top: 2mm; padding-bottom: 2mm; }
+
+/* 화면 흐름(① → ② → ③)과 2단 목록 */
 .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 2mm; align-items: stretch; }
 .flow .arrow { display: flex; align-items: center; font-size: 14pt; font-weight: 900; }
 .flow .draw { min-height: 92mm; position: relative; padding-top: 6mm; }
 .flow .draw > .tag { position: absolute; top: 1mm; left: 2mm; background: #fff; padding: 0 1.5mm; font-size: 8pt; font-weight: 700; border: 1px solid var(--ink); border-radius: 1mm; }
 .cols2 { columns: 2; column-gap: 6mm; }
 .cols2 li { break-inside: avoid; }
+/* ===== 공통 스타일 끝 ===== */
+
+/* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
 </style>
 </head>
 <body>
