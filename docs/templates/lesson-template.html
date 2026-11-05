@@ -63,7 +63,7 @@ p { margin: 0; }
 .block > h2 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.45em; font-weight: 900; color: var(--c); }
 .block > h2 .tag { background: var(--c); color: #fff; border-radius: 10px; padding: 2px 12px; font-size: .7em; }
 .block > h2 small { color: var(--sub); font-weight: 500; font-size: .6em; }
-h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
+h3 { margin: 0; font-size: 1.05em; font-weight: 900; color: var(--c, var(--ink)); }   /* 블록 안 작은 제목은 블록 색 */
 
 /* 할 일 */
 /* 목표 한 줄 (할 일 목록 대신) */
@@ -164,9 +164,8 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
   <section class="block mission">
     <h2>🎯 오늘의 미션</h2>
     <p>{{한두 문장: 만들 프로그램과 쓰임}}</p>
-    <div class="goals"><h3>🎯 오늘의 목표</h3><ul><li>{{오늘 만들 것}}</li><li>{{완성하면 할 수 있는 것}}</li></ul></div>
+    <div class="goals"><h3>📌 오늘의 목표</h3><ul><li>{{오늘 만들 것}}</li><li>{{완성하면 할 수 있는 것}}</li></ul></div>
     <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">{{solution 실행 화면}}</div></div>
-    <p class="order">만드는 순서: 단계 1 {{기능}} → 단계 2 {{기능}} → 단계 3 {{기능}}</p>
   </section>
 
   <section class="block warmup">
@@ -176,7 +175,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
     <pre class="code" style="counter-reset: ln 4"><span class="l">{{warmup.py 5번 줄}}</span></pre></div>
     <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how">오류 메시지를 보고 표에 적기</span></div>
     <table class="fill"><tr><th>줄 번호</th><th>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
-    <div class="muted"><p><b>{{오류 이름}}</b> {{뜻·확인할 곳}}</p><p><b>{{오류 이름}}</b> {{뜻·확인할 곳}}</p><p>고치는 모양: {{그 주 개념이면 한 줄}}</p></div>
+    <div class="muted"><p>- <b>{{오류 이름}}</b> {{뜻·확인할 곳}}</p><p>- <b>{{오류 이름}}</b> {{뜻·확인할 곳}}</p><p>고치는 모양: {{그 주 개념이면 한 줄}}</p></div>
   </section>
 
   <section class="block step">

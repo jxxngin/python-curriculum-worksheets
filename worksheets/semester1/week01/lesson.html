@@ -63,7 +63,7 @@ p { margin: 0; }
 .block > h2 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.45em; font-weight: 900; color: var(--c); }
 .block > h2 .tag { background: var(--c); color: #fff; border-radius: 10px; padding: 2px 12px; font-size: .7em; }
 .block > h2 small { color: var(--sub); font-weight: 500; font-size: .6em; }
-h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
+h3 { margin: 0; font-size: 1.05em; font-weight: 900; color: var(--c, var(--ink)); }   /* 블록 안 작은 제목은 블록 색 */
 
 /* 할 일 */
 /* 목표 한 줄 (할 일 목록 대신) */
@@ -158,7 +158,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
   <section class="block mission">
     <h2>🎯 오늘의 미션</h2>
     <p>친구 이름을 넣으면 생일 초대장이 나오는 프로그램을 만들어요.</p>
-    <div class="goals"><h3>🎯 오늘의 목표</h3><ul><li>질문을 하고 대답을 받아 상자(변수)에 담을 수 있다.</li><li>대답을 글자와 이어 붙여 나만의 초대장을 화면에 보여 줄 수 있다.</li></ul></div>
+    <div class="goals"><h3>📌 오늘의 목표</h3><ul><li>질문을 하고 대답을 받아 상자(변수)에 담을 수 있다.</li><li>대답을 글자와 이어 붙여 나만의 초대장을 화면에 보여 줄 수 있다.</li></ul></div>
     <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">=================================
         생일 파티 초대장
 =================================
@@ -171,7 +171,6 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 민지의 생일 파티에 초대합니다!
 날짜: 5월 3일 / 장소: 우리 집
 꼭 와 줘! - 민지 드림</div></div>
-    <p class="order">만드는 순서: 단계 1 제목 보여 주기 → 단계 2 질문 4개 물어보기 → 단계 3 대답을 넣어 초대장 완성하기</p>
   </section>
 
   <section class="block warmup">
@@ -179,7 +178,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
     <div class="goal">📌 목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
     <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시 · 1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실었어요.</span></div><pre class="code" style="counter-reset: ln 4"><span class="l">print("안녕하세요! 자기소개 프로그램이에요.")</span><span class="l"></span><span class="l">name = input("이름이 뭐예요? ")</span><span class="l">print("반가워요, " + name + "님!"</span><span class="l"></span><span class="l">food = input("좋아하는 음식은 뭐예요? ")</span><span class="l">print(name + "님은 " + foood + "을 좋아하는군요!")</span><span class="l"></span><span class="l">print("오늘도 즐겁게 코딩해요!)</span></pre></div>
     <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how"><code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기</span></div><table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
-    <div class="muted"><p><b>SyntaxError</b> 문법 오류(괄호·따옴표 짝 확인)</p><p><b>NameError</b> 없는 이름(철자 확인)</p></div>
+    <div class="muted"><p>- <b>SyntaxError</b> 문법 오류(괄호·따옴표 짝 확인)</p><p>- <b>NameError</b> 없는 이름(철자 확인)</p></div>
   </section>
 
   <section class="block step">

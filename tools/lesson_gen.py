@@ -160,13 +160,11 @@ def lesson(w, d, complete):
     <div class="who">이름 <span></span> 날짜 <span></span></div>
   </header>''')
     goals = ''.join(f'<li>{g}</li>' for g in w['goals'])
-    order = ' → '.join(f"단계 {i} {s['name']}" for i, s in enumerate(w['steps'], 1))
     B.append(f'''  <section class="block mission">
     <h2>🎯 오늘의 미션</h2>
     <p>{w['story']}</p>
-    <div class="goals"><h3>🎯 오늘의 목표</h3><ul>{goals}</ul></div>
+    <div class="goals"><h3>📌 오늘의 목표</h3><ul>{goals}</ul></div>
     <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">{E(complete)}</div></div>
-    <p class="order">만드는 순서: {order}</p>
   </section>''')
     skip_note = f'1~{skip}번 줄은 설명 주석이라 생략했어요. {skip + 1}번 줄부터 실었어요.'
     B.append(f'''  <section class="block warmup">
@@ -174,7 +172,7 @@ def lesson(w, d, complete):
     {goal('오류 메시지를 읽고 오류 3개를 고친다.')}
     {act('①', '코드 읽기', '이상한 곳 3개 표시 · ' + skip_note, warm_code)}
     {act('②', '실행하고 고치기', '<code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기', table(['줄 번호', '오류 이름', '어떻게 고쳤나요?'], 3, widths=['20%', '30%', None]))}
-    <div class="muted">{''.join(f'<p>{x}</p>' for x in tip_lines(w['warm_tip']))}</div>
+    <div class="muted">{''.join(f'<p>{x}</p>' if x.startswith('고치는 모양') else f'<p>- {x}</p>' for x in tip_lines(w['warm_tip']))}</div>
   </section>''')
     for i, s in enumerate(w['steps'], 1):
         tools = ''.join(tool(*t) for t in s.get('tool', []))
