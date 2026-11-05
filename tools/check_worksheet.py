@@ -56,7 +56,7 @@ class Scan(HTMLParser):
             kind = next((c for c in classes if c in ORDER), "?")
             self.blocks.append(kind)
             self.todo_in_block.append(False)
-        if "todo" in classes and self.todo_in_block:
+        if ("todo" in classes or "goal" in classes or "goals" in classes) and self.todo_in_block:
             self.todo_in_block[-1] = True
         for key in ("src", "href"):
             url = a.get(key) or ""
@@ -113,7 +113,28 @@ def check_lesson(path, html, s):
         errors.append(f"활동 블록 순서가 고정 흐름과 달라요: {kinds} (docs/01-worksheet-format.md)")
     for k, has in zip(kinds, s.todo_in_block):
         if not has and k != "hints":
-            errors.append(f"'{k}' 블록에 📋 할 일 상자가 없어요")
+            errors.append(f"'{k}' 블록에 🎯 목표 한 줄이 없어요")
+    # 2차 피드백 규칙
+    if 'class="todo"' in html:
+        errors.append("할 일 목록(.todo)이 남아 있어요. 목표 한 줄 + 제자리 번호 지시로 바꿔요")
+    if "따라 쓸 코드" in html:
+        errors.append("'따라 쓸 코드'라는 말이 있어요. '🧩 기능 추가하기'로 써요")
+    emoji = re.compile("[\U0001F300-\U0001FAFF\u2600-\u27BF]")
+    for m in re.finditer(r'기능 추가하기.*?<pre[^>]*>(.*?)</pre>', html, re.S):
+        if emoji.search(re.sub(r"<[^>]+>", "", m.group(1))):
+            errors.append("기능 추가하기 코드에 이모지가 있어요. 따라 치기 어려우니 빼요")
+            break
+    hints = re.findall(r'<div class="hint" data-group="(\w+)"><div class="hh"><span>(.*?)</span><span>(.*?)</span>', html)
+    for g, title, dots in hints:
+        if re.fullmatch(r"\s*단계\s*\d+\s*", re.sub(r"<[^>]+>", "", title)):
+            errors.append(f"힌트 제목이 '{title}'처럼 번호만 있어요. '하려는 일 · 막힌 상황'으로 써요")
+    for g in ("new", "challenge"):
+        levels = {d for gg, _, d in hints if gg == g}
+        if levels and levels != {"●○○", "●●○", "●●●"}:
+            errors.append(f"'{g}' 힌트가 3단계(●○○ ●●○ ●●●)가 아니에요: {sorted(levels)}")
+    readme = Path(path).with_name("README.md")
+    if readme.exists() and re.search(r"&(lt|gt|amp);", readme.read_text(encoding="utf-8")):
+        errors.append("README.md에 HTML 기호(&lt; 등)가 남아 있어요")
 
     sp = playwright()
     if not sp:

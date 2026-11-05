@@ -17,17 +17,17 @@
   --bg: #f6f7fb;
   --paper: #ffffff;
   --code-bg: #f8fafc;
-  /* 활동 색: 3색 그룹 (준비 파랑 / 만들기 초록 / 더 하기 주황). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
-  --ready: #2563eb; --ready-soft: #eff6ff;
-  --make: #16a34a;  --make-soft: #f0fdf4;
+  /* 활동 색: 파랑(미션~마무리) / 주황(도전) / 회색(힌트). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --main: #2563eb;  --main-soft: #eff6ff;
   --more: #ea580c;  --more-soft: #fff7ed;
-  --mission: var(--ready);  --mission-soft: var(--ready-soft);
-  --warmup: var(--ready);   --warmup-soft: var(--ready-soft);
-  --step: var(--make);      --step-soft: var(--make-soft);
-  --change: var(--make);    --change-soft: var(--make-soft);
-  --new: var(--make);       --new-soft: var(--make-soft);
+  --gray: #6b7280;  --gray-soft: #f3f4f6;
+  --mission: var(--main);   --mission-soft: var(--main-soft);
+  --warmup: var(--main);    --warmup-soft: var(--main-soft);
+  --step: var(--main);      --step-soft: var(--main-soft);
+  --change: var(--main);    --change-soft: var(--main-soft);
+  --new: var(--main);       --new-soft: var(--main-soft);
   --challenge: var(--more); --challenge-soft: var(--more-soft);
-  --hint: var(--more);      --hint-soft: var(--more-soft);
+  --hint: var(--gray);      --hint-soft: var(--gray-soft);
   --tool: #475569;          --tool-soft: #f1f5f9;
 }
 * { box-sizing: border-box; }
@@ -66,6 +66,17 @@ p { margin: 0; }
 h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
 
 /* 할 일 */
+/* 목표 한 줄 (할 일 목록 대신) */
+.goal { background: var(--cs); color: var(--c); border-radius: 12px; padding: 12px 18px; font-weight: 700; }
+.goals { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.goals h3 { color: var(--c); margin-bottom: 4px; }
+.goals ul { margin: 0; padding-left: 22px; }
+.order { color: var(--sub); font-size: .92em; }
+.label .n { display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--c); color: #fff; font-size: .85em; margin-right: 6px; }
+.label .how { color: var(--ink); font-weight: 500; }
+.keep { display: flex; flex-direction: column; gap: 10px; }
+.why { border-left: 5px solid var(--c); padding: 4px 0 4px 14px; }
+/* (예전) 할 일 상자 */
 .todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
 .todo h3 { color: var(--c); margin-bottom: 4px; }
 .todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
@@ -103,6 +114,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 .draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
 
 /* 힌트 카드 */
+.hints-list { display: flex; flex-direction: column; gap: 12px; }
 .hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 .hint .hh { display: flex; justify-content: space-between; font-weight: 900; color: var(--hint); }
@@ -115,7 +127,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
   .lesson { max-width: none; padding: 0; gap: 0; }
   .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
   .lesson-head + .block { break-before: auto; margin-top: 8mm; }
-  .todo, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li { break-inside: avoid; }
+  .todo, .goal, .goals, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li, .keep { break-inside: avoid; }
   pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
 }
 @media (max-width: 560px) {
@@ -130,169 +142,70 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 </head>
 <body>
 <!--
-  교안 틀 (웹 우선, 인쇄 가능). 규칙은 docs/01-worksheet-format.md
-  - 화면: 위에서 아래로 읽는 한 장. 인쇄: 활동 블록(.block)마다 새 쪽에서 시작
-  - 활동 블록 순서와 색은 매주 같다: 🎯 mission → 🔧 warmup → 🪜 step ×N → ⭐ change → 💡 new → 🚀 challenge → 🃏 hints
-  - 블록 안 순서: 제목 → 📋 할 일 → (도구 카드) → (코드) → (쓰는 칸 / 체크)
-  - {{ }} 안을 바꾼다.
+  교안 틀 (웹 우선, 인쇄 가능). 규칙: docs/01-worksheet-format.md, docs/02-content-rules.md
+  - 할 일 목록은 두지 않는다. 블록마다 🎯 목표 한 줄(.goal) + 행동 자리마다 번호 지시(.label .n)
+  - 색: 파랑(미션~마무리) · 주황(도전) · 회색(힌트)
+  - 실제 교안은 tools/lesson_gen.py 가 lesson_spec.py 로 만든다. 이 파일은 모양 확인용 뼈대다.
 -->
 <main class="lesson">
-
   <header class="lesson-head">
     <span class="chip">{{N}}학기 · {{N}}주차 · {{부제}}</span>
     <h1>{{미니 프로젝트 이름}}</h1>
     <div class="who">이름 <span></span> 날짜 <span></span></div>
   </header>
 
-  <!-- 🎯 미션 -->
   <section class="block mission">
     <h2>🎯 오늘의 미션</h2>
-    <p>{{2~3문장 이야기: 왜 이 프로그램이 필요할까?}}</p>
-    <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">{{mini_solution.py 를 실제로 실행한 화면}}</div></div>
-    <div class="todo">
-      <h3>📋 오늘 할 일</h3>
-      <ol>
-        <li>🔧 워밍업: 고장 난 코드를 고쳐요.</li>
-        <li>🪜 단계 1: {{기능 1}}</li>
-        <li>🪜 단계 2: {{기능 2}}</li>
-        <li>⭐ 내 것으로 바꿔요.</li>
-      </ol>
-    </div>
+    <p>{{한두 문장: 만들 프로그램과 쓰임}}</p>
+    <div class="goals"><h3>🎯 오늘의 목표</h3><ul><li>{{오늘 만들 것}}</li><li>{{완성하면 할 수 있는 것}}</li></ul></div>
+    <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">{{solution 실행 화면}}</div></div>
+    <p class="order">만드는 순서: 단계 1 {{기능}} → 단계 2 {{기능}} → 단계 3 {{기능}}</p>
   </section>
 
-  <!-- 🔧 워밍업 -->
   <section class="block warmup">
     <h2>🔧 워밍업 <small>{{고장 난 ○○ 고치기}}</small></h2>
-    <div class="todo">
-      <h3>📋 할 일</h3>
-      <ol>
-        <li>이상한 곳 <b>3개</b>에 동그라미 쳐요.</li>
-        <li><code>warmup.py</code>를 실행해서 오류 메시지를 봐요.</li>
-        <li>고친 방법을 표에 적어요.</li>
-      </ol>
-    </div>
-    <!-- 줄 번호는 warmup.py 와 같게. 앞 4줄을 생략했으면 counter-reset: ln 4 -->
-    <pre class="code" style="counter-reset: ln 4"><span class="l">{{warmup.py 5번 줄}}</span><span class="l">{{6번 줄}}</span></pre>
-    <table class="fill">
-      <tr><th style="width:20%">줄 번호</th><th style="width:30%">오류 이름</th><th>어떻게 고쳤나요?</th></tr>
-      <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
-      <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
-      <tr><td class="w"></td><td class="w"></td><td class="w"></td></tr>
-    </table>
+    <div class="goal">목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시</span></div>
+    <pre class="code" style="counter-reset: ln 4"><span class="l">{{warmup.py 5번 줄}}</span></pre></div>
+    <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how">오류 메시지를 보고 표에 적기</span></div>
+    <table class="fill"><tr><th>줄 번호</th><th>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
+    <p class="muted">{{오류 이름 팁 · 그 주 개념이면 고치는 모양 한 줄}}</p>
   </section>
 
-  <!-- 🪜 단계 (기능 하나 = 단계 하나). 필요한 만큼 복사한다 -->
   <section class="block step">
-    <h2><span class="tag">단계 1</span> {{만들 기능: 예) 제목 보여 주기}}</h2>
-    <div class="todo">
-      <h3>📋 할 일</h3>
-      <ol>
-        <li>🧰 도구 카드를 읽어요.</li>
-        <li>⌨️ 코드를 <code>{{my_project}}.py</code>에 따라 써요.</li>
-        <li>▶️ 실행하고, 화면에 나온 것을 적어요.</li>
-      </ol>
-    </div>
-    <div class="tool">
-      <div class="th">🧰 도구 카드 · {{도구 이름 (아이 말로)}}</div>
-      <p>{{언제 쓰나요? 한 줄}}</p>
-      <pre class="code nonum"><span class="l">{{예시 2~3줄}}</span></pre>
-      <p class="muted">→ {{예시 결과}}</p>
-    </div>
-    <div class="label">⌨️ 따라 쓸 코드</div>
-    <!-- 이 단계에서 새로 쓰는 3~6줄만. 2단계부터는 첫 줄에 회색 주석으로 "# … 단계 1 코드 아래에 이어서 써요" -->
-    <pre class="code"><span class="l">{{새로 쓰는 줄}}</span></pre>
-    <div class="label">▶️ 실행하고 확인</div>
-    <div class="write"></div>
-    <ul class="check"><li>화면에 {{○○}}가 나왔어요.</li></ul>
+    <h2><span class="tag">단계 1</span> {{만들 기능}}</h2>
+    <div class="goal">목표: {{이 단계가 끝나면 되는 것}}</div>
+    <div class="tool"><div class="th">🧰 도구 카드 · {{도구 이름}}</div><p>{{언제 쓰나요}}</p><pre class="code nonum"><span class="l">{{예시}}</span></pre><p class="muted">→ {{결과}}</p></div>
+    <div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 입력</span></div>
+    <pre class="code nonum"><span class="l">{{새로 쓰는 3~6줄}}</span></pre></div>
+    <div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">{{적을 양: 예) 마지막 줄 적기}}</span></div>
+    <div class="write small"></div></div>
+    <ul class="check"><li>{{성공 체크}}</li></ul>
   </section>
 
-  <!-- ⭐ 내 것으로 바꾸기 -->
   <section class="block change">
     <h2>⭐ 내 것으로 바꾸기 <small>오늘의 완성 기준</small></h2>
-    <div class="todo">
-      <h3>📋 할 일</h3>
-      <ol>
-        <li>표에 바꿀 내용을 먼저 적어요.</li>
-        <li>코드를 고치고 실행해요.</li>
-        <li>★ 꼭 하기 3개를 체크하면 완성!</li>
-      </ol>
-    </div>
-    <table class="fill">
-      <tr><th style="width:50%">{{설계 항목}}</th><th>{{설계 항목}}</th></tr>
-      <tr><td class="w">예) {{예시}}</td><td class="w mono">{{예시}}</td></tr>
-      <tr><td class="w"></td><td class="w"></td></tr>
-      <tr><td class="w"></td><td class="w"></td></tr>
-    </table>
-    <div class="label">★ 꼭 하기 (이 3개를 하면 완성!)</div>
-    <ul class="check">
-      <li>{{필수 1}}</li>
-      <li>{{필수 2}}</li>
-      <li>{{필수 3}}</li>
-    </ul>
-    <div class="label">➕ 더 해 보기</div>
-    <ul class="check">
-      <li>{{더 해 보기 1}}</li>
-      <li>{{더 해 보기 2}}</li>
-    </ul>
-    <div class="label">👀 친구에게 보여 주기: 친구의 한마디</div>
-    <div class="write small"></div>
+    <div class="goal">목표: {{무엇을 내 것으로 바꾸는지}}</div>
+    <div class="keep"><div class="label"><span class="n">①</span>설계하기 <span class="how">바꿀 내용 적기</span></div>
+    <table class="fill"><tr><th>{{항목}}</th><th>{{항목}}</th></tr><tr><td class="w"></td><td class="w"></td></tr></table></div>
+    <div class="keep"><div class="label"><span class="n">②</span>고치고 실행하기 <span class="how">★ 3개를 하면 완성</span></div>
+    <ul class="check"><li>★ {{필수 1}}</li><li>★ {{필수 2}}</li><li>★ {{필수 3}}</li></ul></div>
+    <div class="label">➕ 더 해 보기</div><ul class="check"><li>{{더 해 보기}}</li></ul>
+    <div class="keep"><div class="label">👀 친구에게 보여 주기 <span class="how">친구의 한마디</span></div><div class="write small"></div></div>
   </section>
 
-  <!-- 💡 새로 만들기 + ✅ 마무리 -->
-  <section class="block new">
-    <h2>💡 새로 만들기 <small>하고 싶은 사람</small></h2>
-    <div class="todo">
-      <h3>📋 할 일</h3>
-      <ol>
-        <li>아이디어 하나를 골라요.</li>
-        <li>무엇을 만들지 적고 만들어요.</li>
-      </ol>
-    </div>
-    <ul class="check">
-      <li>{{아이디어 1}}</li>
-      <li>{{아이디어 2}}</li>
-      <li>내 아이디어</li>
-    </ul>
-    <div class="write"></div>
-    <h3>✅ 오늘의 마무리</h3>
-    <ul class="check">
-      <li>워밍업 오류 3개를 고쳤어요.</li>
-      <li>단계를 하나씩 실행하며 만들었어요.</li>
-      <li>내 것으로 바꾸기를 완성했어요.</li>
-    </ul>
-    <div class="label">내 프로그램에서 가장 자랑하고 싶은 부분은?</div>
-    <div class="write small"></div>
-  </section>
-
-  <!-- 🚀 도전 프로젝트 -->
   <section class="block challenge">
-    <h2>🚀 도전 프로젝트 <small>{{도전 프로젝트 이름}} · 일찍 끝낸 사람</small></h2>
-    <div class="todo">
-      <h3>📋 할 일</h3>
-      <ol>
-        <li><code>extension_starter.py</code>를 그대로 실행해 봐요.</li>
-        <li>{{무엇을 설계하고 그릴지}}</li>
-        <li>코드를 바꾸고 실행해서 체크해요.</li>
-      </ol>
-    </div>
-    <p>{{이야기 한두 문장}}</p>
-    <div class="draw"></div>
-    <ul class="check">
-      <li>{{도전 기준 1}}</li>
-      <li>{{도전 기준 2}}</li>
-    </ul>
+    <h2>🚀 도전 프로젝트 <small>{{이름}} · 일찍 끝낸 사람</small></h2>
+    <p class="why"><b>왜 만들까?</b> {{쓰임 · 무엇을 더 연습하는지}}</p>
+    <div class="goal">목표: {{도전 목표}}</div>
   </section>
 
-  <!-- 🃏 힌트 카드 -->
   <section class="block hints">
-    <h2>🃏 힌트 카드 <small>막히면 1번부터 차례로</small></h2>
-    <div class="hints-grid">
-      <div class="hint"><div class="hh"><span>단계 1</span><span>●○○</span></div><p>{{어디를 보면 되는지}}</p></div>
-      <div class="hint"><div class="hh"><span>새로 만들기 · 방향</span><span>●○○</span></div><p>{{ }}</p></div>
-      <div class="hint"><div class="hh"><span>새로 만들기 · 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">{{ }}</span></pre></div>
+    <h2>🃏 힌트 카드 <small>막히면 해당 카드를 찾아 1번부터</small></h2>
+    <div class="hints-list">
+      <div class="hint" data-group="step"><div class="hh"><span>{{하려는 일}} · {{막힌 상황}}</span><span>●○○</span></div><p>{{어디를 보면 되는지}}</p></div>
     </div>
   </section>
-
 </main>
 </body>
 </html>
