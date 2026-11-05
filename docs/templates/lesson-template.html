@@ -114,7 +114,9 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 .draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
 
 /* 힌트 카드 */
-.hints-list { display: flex; flex-direction: column; gap: 12px; }
+.hints-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hints-list > .hint { min-width: 0; }
+.hints-list > .hint:has(pre) { grid-column: 1 / -1; }   /* 코드가 든 카드(●●● 거의 코드)는 한 줄 전체 */
 .hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 .hint .hh { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-weight: 900; color: var(--hint); }
@@ -138,6 +140,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
   body { font-size: 16px; }
   .block { padding: 18px 16px 20px; border-radius: 14px; }
   pre.code { font-size: 14px; }
+  .hints-list { grid-template-columns: 1fr; }
 }
 /* ===== 공통 스타일 끝 ===== */
 
