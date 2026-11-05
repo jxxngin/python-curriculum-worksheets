@@ -108,6 +108,8 @@ table.fill { width: 100%; border-collapse: collapse; }
 table.fill th, table.fill td { border: 1.5px solid var(--line); padding: 8px 12px; text-align: left; }
 table.fill th { background: var(--cs); color: var(--ink); }
 table.fill td.w { height: 56px; }
+table.fill.ref th { background: var(--soft); }
+table.fill.ref td { height: auto; padding: 6px 12px; font-size: .92em; }
 ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 ul.check li { padding-left: 34px; position: relative; }
 ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width: 22px; height: 22px; border: 2.5px solid var(--c); border-radius: 6px; background: #fff; }
@@ -177,8 +179,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
     <h2>🔧 워밍업 <small>고장 난 자기소개 고치기</small></h2>
     <div class="goal">📌 목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
     <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시 · 1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실었어요.</span></div><pre class="code" style="counter-reset: ln 4"><span class="l">print("안녕하세요! 자기소개 프로그램이에요.")</span><span class="l"></span><span class="l">name = input("이름이 뭐예요? ")</span><span class="l">print("반가워요, " + name + "님!"</span><span class="l"></span><span class="l">food = input("좋아하는 음식은 뭐예요? ")</span><span class="l">print(name + "님은 " + foood + "을 좋아하는군요!")</span><span class="l"></span><span class="l">print("오늘도 즐겁게 코딩해요!)</span></pre></div>
-    <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how"><code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기</span></div><table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
-    <div class="muted"><p>- <b>SyntaxError</b> 문법 오류(괄호·따옴표 짝 확인)</p><p>- <b>NameError</b> 없는 이름(철자 확인)</p></div>
+    <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how"><code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기</span></div><table class="fill ref"><tr><th style=width:24%>오류 이름</th><th>뜻</th><th>확인할 곳</th></tr><tr><td><b>SyntaxError</b></td><td>문법이 틀림</td><td>괄호·따옴표 짝</td></tr><tr><td><b>NameError</b></td><td>없는 이름을 씀</td><td>이름의 철자</td></tr></table><table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
   </section>
 
   <section class="block step">

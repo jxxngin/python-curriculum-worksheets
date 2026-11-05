@@ -9,7 +9,7 @@ SPEC = dict(week=2, title='밸런스 게임', badge='갈림길 만들기',
     goals=['대답이 무엇인지 비교해서(<code>==</code>) 갈림길을 만들 수 있다.', '<code>if</code> · <code>elif</code> · <code>else</code>로 답마다 다른 말을 보여 줄 수 있다.'],
     demo_inputs=['하린', '1', '2'],
     warm_title='고장 난 간식 고르기 고치기',
-    warm_tip='<b>SyntaxError</b> 문법 오류(<code>==</code>, 줄 끝 <code>:</code> 확인) · <b>메시지 없는 오류</b> 실행은 되는데 결과가 틀림',
+    warm_errors=[('SyntaxError', '문법이 틀림', '<code>==</code>, 줄 끝 <code>:</code>'), ('메시지 없는 오류', '실행은 되는데 결과가 틀림', '무엇과 비교하는지')],
     warm_hint=('1을 골라도 다른 말이 나올 때', '<p><code>input()</code>으로 받은 대답은 글자예요. 글자 "1"과 비교하려면 따옴표로 감싸요: <code>if snack == "1":</code></p>'),
     steps=[
         dict(name='첫 번째 질문 보여 주기', goal='이름과 1번 질문을 묻고 대답을 상자에 담는다.', small=True,

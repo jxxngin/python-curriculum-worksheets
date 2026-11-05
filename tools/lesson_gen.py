@@ -126,11 +126,10 @@ def hint_badges(w):
     return out
 
 
-def tip_lines(tip):
-    """워밍업 팁을 오류별 한 줄씩 나눈다(4차 피드백). 고치는 모양은 팁이 아니라 워밍업 힌트 카드에 둔다(5차)."""
-    if '고치는 모양' in tip:
-        raise SystemExit("warm_tip에 고치는 모양이 있어요. warm_hint=(막힌 상황, 내용)로 옮겨요")
-    return [x.strip() for x in tip.split(' · ')]
+def err_table(errors):
+    """워밍업 오류 사전 표(5차 피드백): 오류 이름 | 뜻 | 확인할 곳."""
+    rows = ''.join(f'<tr><td><b>{n}</b></td><td>{m}</td><td>{c}</td></tr>' for n, m, c in errors)
+    return f'<table class="fill ref"><tr><th style=width:24%>오류 이름</th><th>뜻</th><th>확인할 곳</th></tr>{rows}</table>'
 
 
 def goal(text):
@@ -153,7 +152,11 @@ def record_box(s):
 
 def lesson(w, d, complete):
     wl = (d / 'warmup.py').read_text(encoding='utf-8').splitlines()
-    skip = w.get('warm_skip', 4)
+    skip = w.get('warm_skip')
+    if skip is None:   # 맨 앞 주석과 그 뒤 빈 줄은 생략하고 코드가 있는 첫 줄부터(5차 피드백)
+        skip = 0
+        while skip < len(wl) and (not wl[skip].strip() or wl[skip].lstrip().startswith('#')):
+            skip += 1
     warm_code = code(wl[skip:], start=skip)
     f = w.get('file', 'mini_starter.py')
     B = []
@@ -174,8 +177,7 @@ def lesson(w, d, complete):
     <h2>🔧 워밍업 <small>{w['warm_title']}</small></h2>
     {goal('오류 메시지를 읽고 오류 3개를 고친다.')}
     {act('①', '코드 읽기', '이상한 곳 3개 표시 · ' + skip_note, warm_code)}
-    {act('②', '실행하고 고치기', '<code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기', table(['줄 번호', '오류 이름', '어떻게 고쳤나요?'], 3, widths=['20%', '30%', None]))}
-    <div class="muted">{''.join(f'<p>- {x}</p>' for x in tip_lines(w['warm_tip']))}</div>
+    {act('②', '실행하고 고치기', '<code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기', err_table(w['warm_errors']) + table(['줄 번호', '오류 이름', '어떻게 고쳤나요?'], 3, widths=['20%', '30%', None]))}
   </section>''')
     for i, s in enumerate(w['steps'], 1):
         tools = ''.join(tool(*t) for t in s.get('tool', []))
@@ -274,7 +276,7 @@ def docs(w, complete):
     f = w.get('file', 'mini_starter.py')
     r = [f"# {w['week_label']}: {w.get('h1', w['title'] + ' 만들기')}", '', '> 교안 요약이다. 활동은 `lesson.html`에서 한다(인쇄하면 학습지).', '',
          '## 🎯 오늘의 미션', '', md(w['story']), '', '**오늘의 목표**', ''] + [f'- {md(g)}' for g in w['goals']] + ['', '완성하면 이렇게 돼요:', '', '```', complete, '```', '',
-         '## 🔧 워밍업', '', f"📌 목표: 오류 메시지를 읽고 오류 3개를 고친다. ({w['warm_title']})", '', "`warmup.py`를 실행하고 고친다. 팁:", ''] + [f'- {md(x)}' for x in tip_lines(w['warm_tip'])] + ['']
+         '## 🔧 워밍업', '', f"📌 목표: 오류 메시지를 읽고 오류 3개를 고친다. ({w['warm_title']})", '', "`warmup.py`를 실행하고 고친다.", '', '| 오류 이름 | 뜻 | 확인할 곳 |', '| --- | --- | --- |'] + [f'| {md(n)} | {md(m)} | {md(c)} |' for n, m, c in w['warm_errors']] + ['']
     for i, s in enumerate(w['steps'], 1):
         r += [f"## 🪜 단계 {i}: {s['name']}", '', f"📌 목표: {md(s['goal'])}", '']
         for t in s.get('tool', []):

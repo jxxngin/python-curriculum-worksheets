@@ -9,7 +9,7 @@ SPEC = dict(week=3, title='인생 숫자 계산기', badge='숫자로 계산하�
     goals=['대답을 숫자로 바꿔(<code>int()</code>) 계산할 수 있다.', '계산 결과를 문장 속에 넣어(f-string) 보여 줄 수 있다.', '나머지(<code>%</code>)와 크기 비교로 결과를 나눌 수 있다.'],
     demo_inputs=['하린', '2015', '2026', '5', '3'],
     warm_title='고장 난 강아지 나이 변환기 고치기',
-    warm_tip='<b>SyntaxError</b> 따옴표 짝 확인 · <b>TypeError</b> 글자와 숫자를 <code>+</code>로 이을 수 없음 · <b>메시지 없는 오류</b> 계산이 이상하면 <code>type()</code>으로 글자(str)인지 숫자(int)인지 확인',
+    warm_errors=[('SyntaxError', '문법이 틀림', '따옴표 짝'), ('TypeError', '글자와 숫자를 <code>+</code>로 이을 수 없음', '이어 붙이는 값의 종류'), ('메시지 없는 오류', '계산 결과가 이상함', '<code>type()</code>으로 글자(str)인지 숫자(int)인지')],
     warm_hint=('계산이 이상하거나 TypeError가 날 때', '<p>숫자로 받기: <code>int(input("질문"))</code><br>글자와 숫자를 함께 보여 주기: <code>print(f"{dog_name}는 {human_age}살")</code></p>'),
     steps=[
         dict(name='나이 계산하기', goal='태어난 해와 올해를 숫자로 받아 나이를 계산한다.', small=True,

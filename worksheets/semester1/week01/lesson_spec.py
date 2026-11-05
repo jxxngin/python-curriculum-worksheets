@@ -9,7 +9,7 @@ SPEC = dict(week=1, title='생일 파티 초대장', badge='묻고 답하기',
     goals=['질문을 하고 대답을 받아 상자(변수)에 담을 수 있다.', '대답을 글자와 이어 붙여 나만의 초대장을 화면에 보여 줄 수 있다.'],
     demo_inputs=['민지', '5월 3일', '우리 집', '서준'],
     warm_title='고장 난 자기소개 고치기',
-    warm_tip='<b>SyntaxError</b> 문법 오류(괄호·따옴표 짝 확인) · <b>NameError</b> 없는 이름(철자 확인)',
+    warm_errors=[('SyntaxError', '문법이 틀림', '괄호·따옴표 짝'), ('NameError', '없는 이름을 씀', '이름의 철자')],
     steps=[
         dict(name='제목 보여 주기', goal='화면에 초대장 제목 3줄이 나온다.', small=True,
              tool=[('보여 주기: print()', '괄호 안의 글자를 화면에 보여 줘요. 글자는 따옴표로 감싸요.', ['print("파티에 와 줘")'], '파티에 와 줘')],

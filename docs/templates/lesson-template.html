@@ -108,6 +108,8 @@ table.fill { width: 100%; border-collapse: collapse; }
 table.fill th, table.fill td { border: 1.5px solid var(--line); padding: 8px 12px; text-align: left; }
 table.fill th { background: var(--cs); color: var(--ink); }
 table.fill td.w { height: 56px; }
+table.fill.ref th { background: var(--soft); }
+table.fill.ref td { height: auto; padding: 6px 12px; font-size: .92em; }
 ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 ul.check li { padding-left: 34px; position: relative; }
 ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width: 22px; height: 22px; border: 2.5px solid var(--c); border-radius: 6px; background: #fff; }
@@ -174,8 +176,8 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
     <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시</span></div>
     <pre class="code" style="counter-reset: ln 4"><span class="l">{{warmup.py 5번 줄}}</span></pre></div>
     <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how">오류 메시지를 보고 표에 적기</span></div>
+    <table class="fill ref"><tr><th>오류 이름</th><th>뜻</th><th>확인할 곳</th></tr><tr><td><b>{{오류 이름}}</b></td><td>{{뜻}}</td><td>{{어디를 볼지}}</td></tr></table>
     <table class="fill"><tr><th>줄 번호</th><th>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
-    <div class="muted"><p>- <b>{{오류 이름}}</b> {{뜻·확인할 곳}}</p><p>- <b>{{오류 이름}}</b> {{뜻·확인할 곳}}</p></div>
   </section>
 
   <section class="block step">

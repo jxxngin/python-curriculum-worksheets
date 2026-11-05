@@ -28,11 +28,13 @@
 
 📌 목표: 오류 메시지를 읽고 오류 3개를 고친다. (고장 난 주사위 고치기)
 
-`warmup.py`를 실행하고 고친다. 팁:
+`warmup.py`를 실행하고 고친다.
 
-- NameError 가져오지(import) 않은 이름
-- AttributeError 그런 기능이 없음(철자·대소문자)
-- SyntaxError 괄호 짝 확인
+| 오류 이름 | 뜻 | 확인할 곳 |
+| --- | --- | --- |
+| NameError | 가져오지(import) 않은 이름을 씀 | 그 이름을 어디서 가져오는지 |
+| AttributeError | 그런 기능이 없음 | 철자·대소문자 |
+| SyntaxError | 문법이 틀림 | 괄호 짝 |
 
 ## 🪜 단계 1: 보물 문을 무작위로 정하기
 

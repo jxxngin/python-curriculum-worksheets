@@ -9,7 +9,7 @@ SPEC = dict(week=4, title='비밀의 문 게임', badge='무작위로 뽑기',
     goals=['무작위 수(<code>random.randint()</code>)로 매번 다른 게임을 만들 수 있다.', '두 수의 차이(<code>abs()</code>)로 얼마나 가까운지 알려 줄 수 있다.', '관문을 지날 때마다 점수를 쌓을 수 있다.'],
     demo_inputs=['하린', '2', '10'], demo_randoms=[2, 12], demo_random_note='무작위 값은 보물 문 2, 비밀번호 12로 고정',
     warm_title='고장 난 주사위 고치기',
-    warm_tip='<b>NameError</b> 가져오지(import) 않은 이름 · <b>AttributeError</b> 그런 기능이 없음(철자·대소문자) · <b>SyntaxError</b> 괄호 짝 확인',
+    warm_errors=[('NameError', '가져오지(import) 않은 이름을 씀', '그 이름을 어디서 가져오는지'), ('AttributeError', '그런 기능이 없음', '철자·대소문자'), ('SyntaxError', '문법이 틀림', '괄호 짝')],
     warm_hint=('random이 없다고 나올 때', '<p>random 도구 상자를 꺼내야 써요. 파일 맨 위에 <code>import random</code>을 넣어요.</p>'),
     steps=[
         dict(name='보물 문을 무작위로 정하기', goal='실행할 때마다 보물 문 번호(1~3)를 새로 뽑는다.', small=True,
