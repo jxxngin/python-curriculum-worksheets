@@ -12,4 +12,4 @@ human_age = dog_age * 7
 print(type(human_age))
 
 print(dog_name + "는 사람 나이로 " + human_age + "살이에요!")
-print(f"{dog_name}는 내년에 사람 나이로 {human_age + 7}살이 돼요.)
+print(dog_name + "야, 오래오래 건강해!)
