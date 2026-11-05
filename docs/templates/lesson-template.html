@@ -117,7 +117,11 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 .hints-list { display: flex; flex-direction: column; gap: 12px; }
 .hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
-.hint .hh { display: flex; justify-content: space-between; font-weight: 900; color: var(--hint); }
+.hint .hh { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-weight: 900; color: var(--hint); }
+.hint .ht { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
+.hint .hb { font-size: .78em; font-weight: 700; color: #fff; background: var(--main); border-radius: 999px; padding: 1px 10px; white-space: nowrap; }
+.hint[data-group="challenge"] .hb { background: var(--more); }
+.hint .hd { white-space: nowrap; }
 .hint pre.code { font-size: 14px; }
 
 /* 인쇄: 활동 블록마다 새 쪽, 쓰는 칸은 쪽 사이에서 끊지 않는다 */
@@ -143,7 +147,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 <body>
 <!--
   교안 틀 (웹 우선, 인쇄 가능). 규칙: docs/01-worksheet-format.md, docs/02-content-rules.md
-  - 할 일 목록은 두지 않는다. 블록마다 🎯 목표 한 줄(.goal) + 행동 자리마다 번호 지시(.label .n)
+  - 할 일 목록은 두지 않는다. 블록마다 📌 목표 한 줄(.goal) + 행동 자리마다 번호 지시(.label .n, 이모지 없음)
   - 색: 파랑(미션~마무리) · 주황(도전) · 회색(힌트)
   - 실제 교안은 tools/lesson_gen.py 가 lesson_spec.py 로 만든다. 이 파일은 모양 확인용 뼈대다.
 -->
@@ -164,28 +168,28 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 
   <section class="block warmup">
     <h2>🔧 워밍업 <small>{{고장 난 ○○ 고치기}}</small></h2>
-    <div class="goal">목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
+    <div class="goal">📌 목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
     <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시</span></div>
     <pre class="code" style="counter-reset: ln 4"><span class="l">{{warmup.py 5번 줄}}</span></pre></div>
     <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how">오류 메시지를 보고 표에 적기</span></div>
     <table class="fill"><tr><th>줄 번호</th><th>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
-    <p class="muted">{{오류 이름 팁 · 그 주 개념이면 고치는 모양 한 줄}}</p>
+    <div class="muted"><p><b>{{오류 이름}}</b> {{뜻·확인할 곳}}</p><p><b>{{오류 이름}}</b> {{뜻·확인할 곳}}</p><p>고치는 모양: {{그 주 개념이면 한 줄}}</p></div>
   </section>
 
   <section class="block step">
     <h2><span class="tag">단계 1</span> {{만들 기능}}</h2>
-    <div class="goal">목표: {{이 단계가 끝나면 되는 것}}</div>
-    <div class="tool"><div class="th">🧰 도구 카드 · {{도구 이름}}</div><p>{{언제 쓰나요}}</p><pre class="code nonum"><span class="l">{{예시}}</span></pre><p class="muted">→ {{결과}}</p></div>
-    <div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 입력</span></div>
+    <div class="goal">📌 목표: {{이 단계가 끝나면 되는 것}}</div>
+    <div class="tool"><div class="th">🧰 {{도구 이름}}</div><p>{{언제 쓰나요}}</p><pre class="code nonum"><span class="l">{{예시}}</span></pre><p class="muted">→ {{결과}}</p></div>
+    <div class="keep"><div class="label"><span class="n">①</span>기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 입력</span></div>
     <pre class="code nonum"><span class="l">{{새로 쓰는 3~6줄}}</span></pre></div>
-    <div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">{{적을 양: 예) 마지막 줄 적기}}</span></div>
+    <div class="keep"><div class="label"><span class="n">②</span>실행하고 확인 <span class="how">{{적을 양: 예) 마지막 줄 적기}}</span></div>
     <div class="write small"></div></div>
     <ul class="check"><li>{{성공 체크}}</li></ul>
   </section>
 
   <section class="block change">
     <h2>⭐ 내 것으로 바꾸기 <small>오늘의 완성 기준</small></h2>
-    <div class="goal">목표: {{무엇을 내 것으로 바꾸는지}}</div>
+    <div class="goal">📌 목표: {{무엇을 내 것으로 바꾸는지}}</div>
     <div class="keep"><div class="label"><span class="n">①</span>설계하기 <span class="how">바꿀 내용 적기</span></div>
     <table class="fill"><tr><th>{{항목}}</th><th>{{항목}}</th></tr><tr><td class="w"></td><td class="w"></td></tr></table></div>
     <div class="keep"><div class="label"><span class="n">②</span>고치고 실행하기 <span class="how">★ 3개를 하면 완성</span></div>
@@ -197,13 +201,13 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
   <section class="block challenge">
     <h2>🚀 도전 프로젝트 <small>{{이름}} · 일찍 끝낸 사람</small></h2>
     <p class="why"><b>왜 만들까?</b> {{쓰임 · 무엇을 더 연습하는지}}</p>
-    <div class="goal">목표: {{도전 목표}}</div>
+    <div class="goal">📌 목표: {{도전 목표}}</div>
   </section>
 
   <section class="block hints">
     <h2>🃏 힌트 카드 <small>막히면 해당 카드를 찾아 1번부터</small></h2>
     <div class="hints-list">
-      <div class="hint" data-group="step"><div class="hh"><span>{{하려는 일}} · {{막힌 상황}}</span><span>●○○</span></div><p>{{어디를 보면 되는지}}</p></div>
+      <div class="hint" data-group="step"><div class="hh"><span class="ht"><span class="hb">단계 {{N}}</span><span>{{막힌 상황}}</span></span><span class="hd">●○○</span></div><p>{{어디를 보면 되는지}}</p></div>
     </div>
   </section>
 </main>
