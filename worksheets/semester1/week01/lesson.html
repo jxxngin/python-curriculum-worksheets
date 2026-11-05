@@ -17,17 +17,17 @@
   --bg: #f6f7fb;
   --paper: #ffffff;
   --code-bg: #f8fafc;
-  /* 활동 색: 3색 그룹 (준비 파랑 / 만들기 초록 / 더 하기 주황). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
-  --ready: #2563eb; --ready-soft: #eff6ff;
-  --make: #16a34a;  --make-soft: #f0fdf4;
+  /* 활동 색: 파랑(미션~마무리) / 주황(도전) / 회색(힌트). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --main: #2563eb;  --main-soft: #eff6ff;
   --more: #ea580c;  --more-soft: #fff7ed;
-  --mission: var(--ready);  --mission-soft: var(--ready-soft);
-  --warmup: var(--ready);   --warmup-soft: var(--ready-soft);
-  --step: var(--make);      --step-soft: var(--make-soft);
-  --change: var(--make);    --change-soft: var(--make-soft);
-  --new: var(--make);       --new-soft: var(--make-soft);
+  --gray: #6b7280;  --gray-soft: #f3f4f6;
+  --mission: var(--main);   --mission-soft: var(--main-soft);
+  --warmup: var(--main);    --warmup-soft: var(--main-soft);
+  --step: var(--main);      --step-soft: var(--main-soft);
+  --change: var(--main);    --change-soft: var(--main-soft);
+  --new: var(--main);       --new-soft: var(--main-soft);
   --challenge: var(--more); --challenge-soft: var(--more-soft);
-  --hint: var(--more);      --hint-soft: var(--more-soft);
+  --hint: var(--gray);      --hint-soft: var(--gray-soft);
   --tool: #475569;          --tool-soft: #f1f5f9;
 }
 * { box-sizing: border-box; }
@@ -66,6 +66,17 @@ p { margin: 0; }
 h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
 
 /* 할 일 */
+/* 목표 한 줄 (할 일 목록 대신) */
+.goal { background: var(--cs); color: var(--c); border-radius: 12px; padding: 12px 18px; font-weight: 700; }
+.goals { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.goals h3 { color: var(--c); margin-bottom: 4px; }
+.goals ul { margin: 0; padding-left: 22px; }
+.order { color: var(--sub); font-size: .92em; }
+.label .n { display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--c); color: #fff; font-size: .85em; margin-right: 6px; }
+.label .how { color: var(--ink); font-weight: 500; }
+.keep { display: flex; flex-direction: column; gap: 10px; }
+.why { border-left: 5px solid var(--c); padding: 4px 0 4px 14px; }
+/* (예전) 할 일 상자 */
 .todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
 .todo h3 { color: var(--c); margin-bottom: 4px; }
 .todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
@@ -103,6 +114,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 .draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
 
 /* 힌트 카드 */
+.hints-list { display: flex; flex-direction: column; gap: 12px; }
 .hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 .hint .hh { display: flex; justify-content: space-between; font-weight: 900; color: var(--hint); }
@@ -115,7 +127,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
   .lesson { max-width: none; padding: 0; gap: 0; }
   .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
   .lesson-head + .block { break-before: auto; margin-top: 8mm; }
-  .todo, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li { break-inside: avoid; }
+  .todo, .goal, .goals, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li, .keep { break-inside: avoid; }
   pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
 }
 @media (max-width: 560px) {
@@ -138,9 +150,10 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 
   <section class="block mission">
     <h2>🎯 오늘의 미션</h2>
-    <p>다음 주는 내 생일이에요! 🎂 친구마다 초대장을 손으로 쓰기는 힘들어요. <b>친구 이름만 넣으면 초대장이 뚝딱 나오는 프로그램</b>을 만들어 봐요.</p>
+    <p>친구 이름을 넣으면 생일 초대장이 나오는 프로그램을 만들어요.</p>
+    <div class="goals"><h3>🎯 오늘의 목표</h3><ul><li>질문을 하고 대답을 받아 상자(변수)에 담을 수 있다.</li><li>대답을 글자와 이어 붙여 나만의 초대장을 화면에 보여 줄 수 있다.</li></ul></div>
     <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">=================================
-     🎂 생일 파티 초대장 🎂
+        생일 파티 초대장
 =================================
 생일인 사람의 이름은? 민지
 파티 날짜는? (예: 5월 3일) 5월 3일
@@ -151,88 +164,67 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 민지의 생일 파티에 초대합니다!
 날짜: 5월 3일 / 장소: 우리 집
 꼭 와 줘! - 민지 드림</div></div>
-    <div class="todo"><h3>📋 오늘 할 일</h3><ol><li>🔧 워밍업: 고장 난 코드를 고쳐요.</li><li>🪜 단계 1: 제목 보여 주기</li><li>🪜 단계 2: 질문 4개 물어보기</li><li>🪜 단계 3: 대답을 넣어 초대장 완성하기</li><li>⭐ 내 것으로 바꿔요.</li></ol></div>
+    <p class="order">만드는 순서: 단계 1 제목 보여 주기 → 단계 2 질문 4개 물어보기 → 단계 3 대답을 넣어 초대장 완성하기</p>
   </section>
 
   <section class="block warmup">
     <h2>🔧 워밍업 <small>고장 난 자기소개 고치기</small></h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>이상한 곳 <b>3개</b>에 동그라미 쳐요.</li><li><code>warmup.py</code>를 실행해서 오류 메시지를 봐요.</li><li>고친 방법을 표에 적어요.</li></ol></div>
-    <p class="muted">1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실어요.</p>
-    <pre class="code" style="counter-reset: ln 4"><span class="l">print("안녕하세요! 자기소개 프로그램이에요.")</span><span class="l"></span><span class="l">name = input("이름이 뭐예요? ")</span><span class="l">print("반가워요, " + name + "님!"</span><span class="l"></span><span class="l">food = input("좋아하는 음식은 뭐예요? ")</span><span class="l">print(name + "님은 " + foood + "을 좋아하는군요!")</span><span class="l"></span><span class="l">print("오늘도 즐겁게 코딩해요!)</span></pre>
-    <table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
-    <p class="muted"><b>SyntaxError</b> 문법이 틀렸어요(괄호·따옴표 확인) · <b>NameError</b> 그런 이름의 상자가 없어요(철자 확인)</p>
+    <div class="goal">목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시 · 1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실었어요.</span></div><pre class="code" style="counter-reset: ln 4"><span class="l">print("안녕하세요! 자기소개 프로그램이에요.")</span><span class="l"></span><span class="l">name = input("이름이 뭐예요? ")</span><span class="l">print("반가워요, " + name + "님!"</span><span class="l"></span><span class="l">food = input("좋아하는 음식은 뭐예요? ")</span><span class="l">print(name + "님은 " + foood + "을 좋아하는군요!")</span><span class="l"></span><span class="l">print("오늘도 즐겁게 코딩해요!)</span></pre></div>
+    <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how"><code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기</span></div><table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
+    <p class="muted"><b>SyntaxError</b> 문법 오류(괄호·따옴표 짝 확인) · <b>NameError</b> 없는 이름(철자 확인)</p>
   </section>
 
   <section class="block step">
     <h2><span class="tag">단계 1</span> 제목 보여 주기</h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
-    <div class="tool"><div class="th">🧰 도구 카드 · 보여 주기: print()</div><p>괄호 안의 글자를 화면에 보여 줘요. 글자는 따옴표로 감싸요.</p><pre class="code nonum"><span class="l">print("파티에 와 줘!")</span></pre><p class="muted">→ 파티에 와 줘!</p></div>
-    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l">print("=================================")</span><span class="l">print("     🎂 생일 파티 초대장 🎂")</span><span class="l">print("=================================")</span></pre>
-    
-    <div class="label">▶️ 실행하고 확인</div><div class="write small"></div>
-    <ul class="check"><li>화면에 제목 3줄이 나왔어요.</li></ul>
-    
+    <div class="goal">목표: 화면에 초대장 제목 3줄이 나온다.</div><div class="tool"><div class="th">🧰 도구 카드 · 보여 주기: print()</div><p>괄호 안의 글자를 화면에 보여 줘요. 글자는 따옴표로 감싸요.</p><pre class="code nonum"><span class="l">print("파티에 와 줘")</span></pre><p class="muted">→ 파티에 와 줘</p></div><div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">print("=================================")</span><span class="l">print("        생일 파티 초대장")</span><span class="l">print("=================================")</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">가운데 제목 줄 적기</span></div><div class="write small"></div></div><ul class="check"><li>제목 3줄이 나왔어요.</li></ul>
   </section>
 
   <section class="block step">
     <h2><span class="tag">단계 2</span> 질문 4개 물어보기</h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 2</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
-    <div class="tool"><div class="th">🧰 도구 카드 · 물어보기: input()과 이름표 상자</div><p>질문을 보여 주고 대답을 받아요. 대답은 이름표를 붙인 상자(변수)에 담아요. <code>=</code>는 "오른쪽 대답을 왼쪽 상자에 넣어요"라는 뜻이에요.</p><pre class="code nonum"><span class="l">food = input("좋아하는 간식은? ")</span></pre><p class="muted">→ 대답이 food 상자에 들어가요</p></div>
-    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l">host = input("생일인 사람의 이름은? ")</span><span class="l">date = input("파티 날짜는? (예: 5월 3일) ")</span><span class="l">place = input("파티 장소는? ")</span><span class="l">guest = input("초대할 친구 이름은? ")</span></pre>
-    
-    <div class="label">▶️ 실행하고 확인</div><div class="write"></div>
-    <ul class="check"><li>질문 4개가 차례로 나오고, 대답을 넣을 수 있었어요.</li></ul>
-    
+    <div class="goal">목표: 질문 4개에 대답하면 대답이 상자에 담긴다.</div><div class="tool"><div class="th">🧰 도구 카드 · 물어보기: input()과 이름표 상자</div><p>질문을 보여 주고 대답을 받아요. 대답은 이름표를 붙인 상자(변수)에 담아요. <code>=</code>는 오른쪽 대답을 왼쪽 상자에 넣는다는 뜻이에요.</p><pre class="code nonum"><span class="l">food = input("좋아하는 간식은? ")</span></pre><p class="muted">→ 대답이 food 상자에 들어가요</p></div><div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 2</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">host = input("생일인 사람의 이름은? ")</span><span class="l">date = input("파티 날짜는? (예: 5월 3일) ")</span><span class="l">place = input("파티 장소는? ")</span><span class="l">guest = input("초대할 친구 이름은? ")</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">넣은 대답 4개를 표에 적기</span></div><table class="fill"><tr><th>질문</th><th>내가 넣은 대답</th></tr><tr><td class="w">생일인 사람</td><td class="w"></td></tr><tr><td class="w">날짜</td><td class="w"></td></tr><tr><td class="w">장소</td><td class="w"></td></tr><tr><td class="w">친구</td><td class="w"></td></tr></table></div><ul class="check"><li>질문 4개가 차례로 나왔어요.</li></ul>
   </section>
 
   <section class="block step">
     <h2><span class="tag">단계 3</span> 대답을 넣어 초대장 완성하기</h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 3</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
-    <div class="tool"><div class="th">🧰 도구 카드 · 글자 이어 붙이기: +</div><p>상자에 든 대답과 따옴표 글자를 이어 붙여요. 띄어쓰기도 직접 넣어요.</p><pre class="code nonum"><span class="l">print(food + "가 최고!")</span></pre><p class="muted">→ 떡볶이가 최고!</p></div><div class="tool"><div class="th">🧰 도구 카드 · 메모 남기기: #</div><p># 뒤에 쓴 글은 실행되지 않아요. 나중에 볼 메모예요.</p><pre class="code nonum"><span class="l"><span class="c"># 여기부터 초대장 내용</span></span></pre><p class="muted">→ 화면에는 아무것도 안 나와요</p></div>
-    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l"><span class="c"># 초대장 내용</span></span><span class="l">print("---------------------------------")</span><span class="l">print(guest + "에게")</span><span class="l">print(host + "의 생일 파티에 초대합니다!")</span><span class="l">print("날짜: " + date + " / 장소: " + place)</span><span class="l">print("꼭 와 줘! - " + host + " 드림")</span></pre>
-    
-    <div class="label">▶️ 실행하고 확인</div><div class="write"></div>
-    <ul class="check"><li>초대장에 친구 이름, 날짜, 장소가 들어갔어요.</li></ul>
-    <div class="label">🔍 따라가기: 민지 / 5월 3일 / 우리 집 / 서준을 넣었다면 상자 속에는?</div><table class="fill"><tr><th>host</th><th>date</th><th>place</th><th>guest</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
+    <div class="goal">목표: 대답이 들어간 초대장이 화면에 나온다.</div><div class="tool"><div class="th">🧰 도구 카드 · 글자 이어 붙이기: +</div><p>상자에 든 대답과 따옴표 글자를 이어 붙여요. 띄어쓰기도 직접 넣어요.</p><pre class="code nonum"><span class="l">print(food + "가 최고")</span></pre><p class="muted">→ 떡볶이가 최고</p></div><div class="tool"><div class="th">🧰 도구 카드 · 메모 남기기: #</div><p># 뒤에 쓴 글은 실행되지 않아요. 나중에 볼 메모예요.</p><pre class="code nonum"><span class="l"><span class="c"># 여기부터 초대장 내용</span></span></pre><p class="muted">→ 화면에는 아무것도 안 나와요</p></div><div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 3</b> 아래에 입력</span></div><pre class="code nonum"><span class="l"><span class="c"># 초대장 내용</span></span><span class="l">print("---------------------------------")</span><span class="l">print(guest + "에게")</span><span class="l">print(host + "의 생일 파티에 초대합니다!")</span><span class="l">print("날짜: " + date + " / 장소: " + place)</span><span class="l">print("꼭 와 줘! - " + host + " 드림")</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">친구 이름이 들어간 줄 적기</span></div><div class="write small"></div></div><ul class="check"><li>초대장에 친구 이름, 날짜, 장소가 들어갔어요.</li></ul><div class="keep"><div class="label"><span class="n">③</span>🔍 따라가기 <span class="how">하준 / 6월 1일 / 놀이터 / 지우를 넣으면 상자에 든 값은?</span></div><table class="fill"><tr><th>host</th><th>date</th><th>place</th><th>guest</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
   </section>
 
   <section class="block change">
     <h2>⭐ 내 것으로 바꾸기 <small>오늘의 완성 기준</small></h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>표에 바꿀 내용을 먼저 적어요.</li><li>코드를 고치고 실행해요.</li><li>★ 꼭 하기 3개를 체크하면 완성!</li></ol></div>
-    <table class="fill"><tr><th>더 물어볼 질문 (화면에 보일 글자)</th><th>담을 상자 이름 (영어)</th></tr><tr><td class="w">예) 파티 시간은?</td><td class="w"><span class="mono">party_time</span></td></tr><tr><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td></tr></table>
-    <div class="label">★ 꼭 하기 (이 3개를 하면 완성!)</div>
-    <ul class="check"><li>제목과 꾸미기 선(<code>---</code>, <code>***</code>)을 내 스타일로 바꿨어요.</li><li>질문을 1개 더 만들고, 대답을 초대장에 넣었어요.</li><li>띄어쓰기가 자연스러워요.</li></ul>
+    <div class="goal">목표: 질문을 더하고 꾸며서 내 초대장으로 만든다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>설계하기 <span class="how">바꿀 내용을 표에 먼저 적기</span></div><table class="fill"><tr><th>더 물어볼 질문 (화면에 보일 글자)</th><th>담을 상자 이름 (영어)</th></tr><tr><td class="w">예) 파티 시간은?</td><td class="w"><span class="mono">party_time</span></td></tr><tr><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td></tr></table></div>
+    <div class="keep"><div class="label"><span class="n">②</span>고치고 실행하기 <span class="how">★ 3개를 하면 완성</span></div><ul class="check"><li>★ 제목과 꾸미기 선(<code>---</code>, <code>***</code>)을 내 스타일로 바꿨어요.</li><li>★ 질문을 1개 더 만들고, 대답을 초대장에 넣었어요.</li><li>★ 띄어쓰기가 자연스러워요.</li></ul></div>
     <div class="label">➕ 더 해 보기</div>
-    <ul class="check"><li>질문을 2개 이상 더 만들었어요.</li><li>메모(<code>#</code>)를 1개 이상 남겼어요.</li></ul>
-    <div class="label">👀 친구에게 보여 주기: 친구의 한마디</div>
-    <div class="write small"></div>
+    <ul class="check"><li>질문을 2개 이상 더 만들기</li><li>이모지로 제목 꾸미기</li><li>메모(<code>#</code>) 1개 이상 남기기</li></ul>
+    <div class="keep"><div class="label">👀 친구에게 보여 주기 <span class="how">친구의 한마디</span></div><div class="write small"></div></div>
   </section>
 
   <section class="block new">
     <h2>💡 새로 만들기 <small>하고 싶은 사람</small></h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>아이디어 하나를 골라요.</li><li>무엇을 만들지 적고 만들어요.</li></ol></div>
-    <ul class="check"><li>친구의 답장 카드 (친구 이름, 한마디 물어보기)</li><li>파티 메뉴판 (음식 3가지 물어보기)</li><li>내 아이디어</li></ul>
-    <div class="write"></div>
+    <div class="goal">목표: 오늘 만든 프로그램에 내 아이디어 기능을 하나 더한다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>아이디어 고르기 <span class="how">하나에 표시</span></div><ul class="check"><li>친구의 답장 카드: 친구 이름과 한마디 묻기</li><li>파티 메뉴판: 음식 3가지 묻기</li><li>내 아이디어</li></ul></div>
+    <div class="keep"><div class="label"><span class="n">②</span>계획 적고 만들기 <span class="how">무엇을 묻고 무엇을 보여 줄지</span></div><div class="write"></div></div>
     <h3>✅ 오늘의 마무리</h3>
-    <ul class="check"><li>워밍업 오류 3개를 고쳤어요.</li><li>단계를 하나씩 실행하며 만들었어요.</li><li>★ 꼭 하기 3개를 완성했어요.</li><li>친구에게 내 프로그램을 보여 줬어요.</li></ul>
-    <div class="label">내 초대장에서 가장 자랑하고 싶은 부분은?</div>
-    <div class="write small"></div>
+    <ul class="check"><li>워밍업 오류 3개를 고쳤다.</li><li>단계마다 실행하며 완성했다.</li><li>★ 3개를 완성했다.</li><li>친구에게 보여 줬다.</li></ul>
+    <div class="keep"><div class="label">내 초대장에서 가장 자랑하고 싶은 부분</div><div class="write small"></div></div>
   </section>
 
   <section class="block challenge">
     <h2>🚀 도전 프로젝트 <small>RPG 파티원 모집 퀘스트 창 · 일찍 끝낸 사람</small></h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li><code>extension_starter.py</code>를 그대로 실행해 봐요.</li><li>내 퀘스트 창이 화면에 어떻게 보일지 아래 칸에 그려요.</li><li>코드를 바꾸고 실행해서 체크해요.</li></ol></div>
-    <p>모험을 함께 떠날 친구를 모집하는 게시판을 만들어요. 테두리 글자(<code>+ = | *</code>)로 꾸며 봐요.</p>
+    <p class="why"><b>왜 만들까?</b> 게임 속 파티 모집 게시판처럼 여러 정보를 한눈에 보이게 정리하는 연습이에요. 오늘 배운 이어 붙이기를 더 길게, 더 보기 좋게 써요.</p>
+    <div class="goal">목표: 최소 레벨, 보상, 집합 장소가 들어간 모집 게시판을 만든다.</div>
     
-    <div class="draw"></div>
-    <ul class="check"><li>게시판 테두리와 제목을 나만의 디자인으로 바꿨어요.</li><li>최소 레벨, 보상, 집합 장소를 물어보고 보여 줬어요.</li><li>파티장 한마디를 따옴표 안에 넣어 보여 줬어요. (바깥은 <code>' '</code>, 안쪽은 <code>" "</code>)</li></ul>
+    <div class="keep"><div class="label"><span class="n">①</span>실행해 보기 <span class="how"><code>extension_starter.py</code>를 그대로 실행</span></div></div>
+    <div class="keep"><div class="label"><span class="n">②</span>설계하기 <span class="how">게시판이 화면에 어떻게 보일지 칸에 그리기</span></div><div class="draw"></div></div>
+    <div class="keep"><div class="label"><span class="n">③</span>바꾸고 체크하기</div><ul class="check"><li>게시판 테두리와 제목을 내 디자인으로 바꿨어요.</li><li>최소 레벨, 보상, 집합 장소를 물어보고 보여 줬어요.</li><li>파티장 한마디를 따옴표 안에 넣어 보여 줬어요. (바깥은 <code>' '</code>, 안쪽은 <code>" "</code>)</li></ul></div>
     <div class="label">➕ 더 해 보기</div>
-    <ul class="check"><li>지원자가 가입하는 <b>[시스템] 메시지</b></li><li>난이도 별점(★★★☆☆)</li><li>파티 이름 자동 만들기 (<code>leader + "와 친구들"</code>)</li></ul>
+    <ul class="check"><li>지원자가 가입하는 <b>[시스템] 메시지</b></li><li>난이도 별점(★★★☆☆)</li><li>파티 이름 자동 만들기 (<code>"파티장: " + leader</code>)</li></ul>
   </section>
 
   <section class="block hints">
-    <h2>🃏 힌트 카드 <small>막히면 1번부터 차례로</small></h2>
-    <div class="hints-grid"><div class="hint"><div class="hh"><span>단계 1</span><span>●○○</span></div><p>print( ) 괄호 안에 <b>따옴표로 감싼 글자</b>를 넣어요. 따옴표는 열고 닫는 두 개!</p></div><div class="hint"><div class="hh"><span>단계 2</span><span>●○○</span></div><p>질문 하나 = <code>input()</code> 하나 = 상자 하나. <code>상자이름 = input("질문")</code> 모양이에요.</p></div><div class="hint"><div class="hh"><span>단계 3</span><span>●○○</span></div><p>상자 이름은 <b>따옴표 밖</b>에 써요. 글자와 상자는 <code>+</code>로 이어요. 단계 2에서 만든 상자 이름을 그대로 써야 해요.</p></div><div class="hint"><div class="hh"><span>새로 만들기 · 방향</span><span>●○○</span></div><p>새 기능에 필요한 정보를 먼저 적어 봐요. 정보 하나마다 질문 하나, 상자 하나예요.</p></div><div class="hint"><div class="hh"><span>새로 만들기 · 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">friend = input("친구 이름: ")</span><span class="l">reply = input("한마디: ")</span><span class="l">print("To. " + host)</span><span class="l">print(reply + " - " + friend)</span></pre></div><div class="hint"><div class="hh"><span>도전 · 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">who = input("지원자: ")</span><span class="l">print("[시스템] " + who + "님이 가입했어요!")</span></pre></div></div>
+    <h2>🃏 힌트 카드 <small>막힌 상황에 맞는 카드를 찾아 ●○○부터</small></h2>
+    <div class="hints-list"><div class="hint" data-group="step"><div class="hh"><span>제목 보여 주기 · 오류가 나거나 글자가 안 나올 때</span><span>●○○</span></div><p>글자를 따옴표 두 개로 감쌌는지, 괄호를 열고 닫았는지 봐요.</p></div><div class="hint" data-group="step"><div class="hh"><span>질문 물어보기 · 질문이 화면에 안 나올 때</span><span>●○○</span></div><p><code>상자이름 = input("질문")</code> 모양인지 봐요. 질문 하나에 <code>input()</code> 하나예요.</p></div><div class="hint" data-group="step"><div class="hh"><span>초대장 완성하기 · 대답이 초대장에 안 들어갈 때</span><span>●○○</span></div><p>상자 이름은 따옴표 밖에 써요. 단계 2에서 만든 이름과 같아야 해요. 글자와 상자는 <code>+</code>로 이어요.</p></div><div class="hint" data-group="new"><div class="hh"><span>답장 카드 만들기 · 무엇부터 할지 모를 때</span><span>●○○</span></div><p>필요한 정보를 먼저 적어요: 친구 이름, 한마디. 정보 하나에 질문 하나예요.</p></div><div class="hint" data-group="new"><div class="hh"><span>답장 카드 만들기 · 쓸 도구가 떠오르지 않을 때</span><span>●●○</span></div><p>새 상자 두 개를 만들어요: <code>friend</code>(친구 이름), <code>reply</code>(한마디). <code>input()</code>으로 받고 <code>print()</code>와 <code>+</code>로 보여 줘요.</p></div><div class="hint" data-group="new"><div class="hh"><span>답장 카드 만들기 · 거의 다 됐는데 안 될 때</span><span>●●●</span></div><p>단계 3 코드 아래에 이어서 입력해요.</p><pre class="code nonum"><span class="l">friend = input("친구 이름: ")</span><span class="l">reply = input("한마디: ")</span><span class="l">print("To. " + host)</span><span class="l">print(reply + " - " + friend)</span></pre></div><div class="hint" data-group="challenge"><div class="hh"><span>모집 게시판 만들기 · 무엇부터 할지 모를 때</span><span>●○○</span></div><p><code>extension_starter.py</code>를 먼저 실행하고, 더 물어볼 정보(레벨, 보상, 장소)를 정해요.</p></div><div class="hint" data-group="challenge"><div class="hh"><span>모집 게시판 만들기 · 쓸 도구가 떠오르지 않을 때</span><span>●●○</span></div><p>정보마다 상자를 하나씩 만들어요: <code>level</code>, <code>reward</code>, <code>meet</code>. 질문은 <code>input()</code>, 보여 주기는 <code>print()</code>와 <code>+</code>예요.</p></div><div class="hint" data-group="challenge"><div class="hh"><span>모집 게시판 만들기 · 거의 다 됐는데 안 될 때</span><span>●●●</span></div><p>파일 맨 아래에 이어서 입력해요.</p><pre class="code nonum"><span class="l">level = input("최소 레벨: ")</span><span class="l">print("[ 최소 레벨 ] " + level)</span></pre></div></div>
   </section>
 </main>
 </body>
