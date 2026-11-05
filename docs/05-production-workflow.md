@@ -80,7 +80,7 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 ## 1학기 전체 수정 (P5)
 
 - 1학기 주차는 새 교안 형식(`lesson.html`)으로 다시 만든다. 파이썬 파일도 단계별 쓰기 방식(단계 표시 starter, 단계 주석 solution)에 맞게 고친다.
-- 예전 `worksheet.html`을 지울지 보관할지는 그때 저장소 주인에게 확인한다.
+- `lesson.html`을 만든 주차는 예전 `worksheet.html`을 지운다(저장소 주인 결정, 2026-11-05). 필요하면 git 기록에서 꺼낸다.
 - 순서는 위 "학기 제작 순서"와 같다(1주차 샘플 승인 → 나머지).
 
 ## 이미 만든 워크시트를 고칠 때
