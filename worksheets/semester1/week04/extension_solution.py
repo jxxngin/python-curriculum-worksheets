@@ -45,10 +45,10 @@ print(f"💸 두 피자의 가격 차이: {diff}원")
 
 print("")
 if per_a < per_b:
-    print(f"👉 {name_a}가 더 이득이에요!")
+    print(f"👉 이득인 피자: {name_a}")
     best_area = area_a
 elif per_b < per_a:
-    print(f"👉 {name_b}가 더 이득이에요!")
+    print(f"👉 이득인 피자: {name_b}")
     best_area = area_b
 else:
     print("👉 가성비가 똑같아요!")

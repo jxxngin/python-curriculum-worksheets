@@ -42,16 +42,20 @@
 
 ## 워밍업 정답
 
-1. 맨 위에 `import random` 추가 (NameError)
-2. 8번째 줄: `random.randInt` → `random.randint` (AttributeError)
-3. 13번째 줄: `{abs(dice1 - dice2}` → `{abs(dice1 - dice2)}` (SyntaxError, 가장 먼저 보고됨)
+순서: 13번(SyntaxError) → 7번(NameError) → 8번(AttributeError). 맨 위에 `import random`을 넣으면 아래 줄 번호가 하나씩 밀려 AttributeError는 9번으로 보고된다.
 
-## 미니 따라 하기 정답
+1. 13번째 줄: `{abs(dice1 - dice2}` → `{abs(dice1 - dice2)}` (SyntaxError, 가장 먼저 보고됨)
+2. 맨 위에 `import random` 추가 (NameError, 워밍업 팁에 고치는 모양이 있다)
+3. 8번째 줄: `random.randInt` → `random.randint` (AttributeError)
 
-빈칸 1 `import`, 빈칸 2 `randint`, 빈칸 3 `abs`, 빈칸 4 `<=`
+## 단계별 확인
+
+- 단계 1: 실행마다 테스트용 줄의 보물 문 번호가 바뀜 / 단계 2: 맞히면 "보물을 찾았어요", 틀리면 "꽝!" / 단계 3: 비밀번호와의 차이 / 단계 4: 마지막 점수. 자세한 답은 `answer_key.md`.
 
 ## 진도 차이 대응
 
-- 빠른 학생: 새로 만들기(뜨거움 세 단계) → 도전 더 해 보기.
-- 느린 학생: 따라 하기 + 관문 이야기 바꾸기 + 관문 1개 추가(1관문 복사)를 최소 목표로.
+- 빠른 학생: 새로 만들기(함정 문, 행운의 주사위) → 도전 프로젝트.
+- 느린 학생: 단계 4까지 실행 + ★ 1~2개(관문 이야기 바꾸기, 관문 1개 추가)를 최소 목표로.
+- 숫자 대신 글자를 넣으면 ValueError로 멈춘다. 질문 문구의 "(숫자만)"을 가리키고 다시 실행하게 한다.
+- 인쇄: 양면 인쇄를 권장한다.
 - 다음 주는 중간 프로젝트. 1~4주 개념(print/input/변수/if/int/f-string/random/abs)만 쓴다는 점을 예고하고, 지난 미니 프로젝트 중 교과 주제로 바꾸고 싶은 것을 생각해 오게 한다.
