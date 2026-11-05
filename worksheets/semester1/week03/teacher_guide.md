@@ -47,7 +47,7 @@
 2. 14번째 줄: 1번을 고치면 `TypeError`(글자 + 숫자) 발생 → `print(f"{dog_name}는 사람 나이로 {human_age}살이에요!")`
 3. 15번째 줄: 닫는 따옴표 누락(SyntaxError) → `print(dog_name + "야, 오래오래 건강해!")`
 
-순서: 15번(SyntaxError) → 7번(메시지 없음, `3333333살`) → 14번(TypeError). 14번은 워밍업 팁에 적힌 f-string 모양으로 고친다(f-string은 단계 1 도구 카드에서 다시 배운다).
+순서: 15번(SyntaxError) → 7번(메시지 없음, `3333333살`) → 14번(TypeError). 14번은 힌트 블록의 `워밍업` 카드에 적힌 f-string 모양으로 고친다(f-string은 단계 1 도구 카드에서 다시 배운다).
 
 ## 단계별 확인
 

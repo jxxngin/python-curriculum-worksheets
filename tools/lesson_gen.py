@@ -111,12 +111,15 @@ def make_py(w, d):
 def hint_badges(w):
     """힌트마다 뱃지를 붙인다. 단계 힌트는 나온 차례대로 단계 1, 2, …(단계마다 한 칸), 나머지는 활동 이름."""
     n, out = 0, []
-    for h, dots, body, g in w['hints']:
+    hints = list(w['hints'])
+    if w.get('warm_hint'):
+        hints.insert(0, (w['warm_hint'][0], '●○○', w['warm_hint'][1], 'warmup'))
+    for h, dots, body, g in hints:
         if g == 'step':
             n += 1
             b = f'단계 {n}'
         else:
-            b = {'change': '바꾸기', 'new': '새로 만들기', 'challenge': '도전'}[g]
+            b = {'warmup': '워밍업', 'change': '바꾸기', 'new': '새로 만들기', 'challenge': '도전'}[g]
         out.append((b, h, dots, body, g))
     if n and n != len(w['steps']):
         raise SystemExit(f"단계 힌트 {n}개 / 단계 {len(w['steps'])}개: 단계마다 한 칸씩 둬요")
@@ -124,10 +127,10 @@ def hint_badges(w):
 
 
 def tip_lines(tip):
-    """워밍업 팁을 오류별 한 줄씩 나눈다(4차 피드백). ' · '로 오류를 나누고, '고치는 모양:'은 따로 한 줄."""
-    tip, _, fix = tip.partition('. 고치는 모양:')
-    lines = [x.strip() for x in tip.split(' · ')]
-    return lines + (['고치는 모양:' + fix] if fix else [])
+    """워밍업 팁을 오류별 한 줄씩 나눈다(4차 피드백). 고치는 모양은 팁이 아니라 워밍업 힌트 카드에 둔다(5차)."""
+    if '고치는 모양' in tip:
+        raise SystemExit("warm_tip에 고치는 모양이 있어요. warm_hint=(막힌 상황, 내용)로 옮겨요")
+    return [x.strip() for x in tip.split(' · ')]
 
 
 def goal(text):
@@ -172,7 +175,7 @@ def lesson(w, d, complete):
     {goal('오류 메시지를 읽고 오류 3개를 고친다.')}
     {act('①', '코드 읽기', '이상한 곳 3개 표시 · ' + skip_note, warm_code)}
     {act('②', '실행하고 고치기', '<code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기', table(['줄 번호', '오류 이름', '어떻게 고쳤나요?'], 3, widths=['20%', '30%', None]))}
-    <div class="muted">{''.join(f'<p>{x}</p>' if x.startswith('고치는 모양') else f'<p>- {x}</p>' for x in tip_lines(w['warm_tip']))}</div>
+    <div class="muted">{''.join(f'<p>- {x}</p>' for x in tip_lines(w['warm_tip']))}</div>
   </section>''')
     for i, s in enumerate(w['steps'], 1):
         tools = ''.join(tool(*t) for t in s.get('tool', []))

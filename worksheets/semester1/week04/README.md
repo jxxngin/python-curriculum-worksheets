@@ -33,7 +33,6 @@
 - NameError 가져오지(import) 않은 이름
 - AttributeError 그런 기능이 없음(철자·대소문자)
 - SyntaxError 괄호 짝 확인
-- 고치는 모양: 맨 위에 `import random`
 
 ## 🪜 단계 1: 보물 문을 무작위로 정하기
 
@@ -206,6 +205,13 @@ print(f"{name}님의 점수: {score}점")
 - 지름이 2배면 넓이는 몇 배인지 `pow()`로 확인
 
 ## 🃏 힌트
+
+<details>
+<summary>[워밍업] random이 없다고 나올 때 ●○○</summary>
+
+random 도구 상자를 꺼내야 써요. 파일 맨 위에 `import random`을 넣어요.
+
+</details>
 
 <details>
 <summary>[단계 1] random에서 오류가 날 때 ●○○</summary>

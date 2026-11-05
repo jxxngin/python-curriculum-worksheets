@@ -37,7 +37,6 @@
 - SyntaxError 따옴표 짝 확인
 - TypeError 글자와 숫자를 `+`로 이을 수 없음
 - 메시지 없는 오류 계산이 이상하면 `type()`으로 글자(str)인지 숫자(int)인지 확인
-- 고치는 모양: `int(input("질문"))`, `print(f"{dog_name}는 {human_age}살")`
 
 ## 🪜 단계 1: 나이 계산하기
 
@@ -218,6 +217,13 @@ else:
 - 올해 내 생일 요일도 알려 주기
 
 ## 🃏 힌트
+
+<details>
+<summary>[워밍업] 계산이 이상하거나 TypeError가 날 때 ●○○</summary>
+
+숫자로 받기: `int(input("질문"))` 글자와 숫자를 함께 보여 주기: `print(f"{dog_name}는 {human_age}살")`
+
+</details>
 
 <details>
 <summary>[단계 1] 계산에서 TypeError가 날 때 ●○○</summary>

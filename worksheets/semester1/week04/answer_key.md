@@ -11,7 +11,7 @@
 | 나타나는 순서 | 줄 | 오류 이름 (실제 메시지) | 고친 방법 |
 | --- | --- | --- | --- |
 | 1 | 13 | SyntaxError (`f-string: closing parenthesis '}' does not match opening parenthesis '('`) | `{abs(dice1 - dice2)}`처럼 `)` 추가 |
-| 2 | 7 | NameError (`name 'random' is not defined`) | 맨 위에 `import random` (팁 줄의 모양) |
+| 2 | 7 | NameError (`name 'random' is not defined`) | 맨 위에 `import random` (워밍업 힌트 카드) |
 | 3 | 8 | AttributeError (`module 'random' has no attribute 'randInt'`) | `randint` (대소문자) |
 
 - SyntaxError(13번)를 먼저 고쳐야 실행된다. 맨 위에 `import random`을 넣으면 아래 줄 번호가 하나씩 밀려 AttributeError는 9번으로 보고된다.

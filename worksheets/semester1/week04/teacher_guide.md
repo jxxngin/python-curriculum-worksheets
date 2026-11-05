@@ -45,7 +45,7 @@
 순서: 13번(SyntaxError) → 7번(NameError) → 8번(AttributeError). 맨 위에 `import random`을 넣으면 아래 줄 번호가 하나씩 밀려 AttributeError는 9번으로 보고된다.
 
 1. 13번째 줄: `{abs(dice1 - dice2}` → `{abs(dice1 - dice2)}` (SyntaxError, 가장 먼저 보고됨)
-2. 맨 위에 `import random` 추가 (NameError, 워밍업 팁에 고치는 모양이 있다)
+2. 맨 위에 `import random` 추가 (NameError, 힌트 블록의 `워밍업` 카드에 고치는 모양이 있다)
 3. 8번째 줄: `random.randInt` → `random.randint` (AttributeError)
 
 ## 단계별 확인
