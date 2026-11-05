@@ -19,6 +19,7 @@ python tools/check_worksheet.py worksheets/semesterN/weekNN/lesson.html
 파이썬 파일:
 - 모든 `.py`가 `python -m py_compile`을 통과한다. 단, `warmup.py`와 빈칸이 있는 starter는 일부러 실행되지 않는다.
 - solution과 확장 starter에 입력을 파이프로 넣어 끝까지 실행한다. random이 있으면 여러 번 실행한다.
+- (2차 피드백으로 추가) 할 일 상자 항목 수 1~3개, 따라 쓸 코드에 이모지 없음, 새로 만들기·도전 힌트 3단계, README에 HTML 기호(`&lt;` `&gt;`)가 남지 않음
 
 ## 2. 코드와 워크시트 대조
 
