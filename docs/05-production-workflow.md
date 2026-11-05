@@ -41,7 +41,7 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 | --- | --- |
 | `week`, `title`, `badge`, `story` | 주차, 프로젝트 이름, 부제("~하기"), 미션 이야기 |
 | `demo_inputs`, `demo_randoms` | 완성 화면을 만들 때 넣을 입력, 고정할 무작위 값 |
-| `warm_title`, `warm_tip` | 워밍업 제목, 오류 이름 팁 (`warmup.py`는 따로 쓴다) |
+| `warm_title`, `warm_errors`, `warm_hint` | 워밍업 제목, 오류 사전 표 `[(이름, 뜻, 확인할 곳)]`, 워밍업 힌트 카드 `(막힌 상황, 내용)` (`warmup.py`는 따로 쓴다. 맨 앞 주석과 빈 줄은 자동으로 생략) |
 | `steps` | 단계 목록. 단계마다 `name`, `tool`(도구 카드: 이름, 언제 쓰나요, 예시 줄, 결과), `lines`(새로 쓰는 3~6줄), `sol_lines`(solution에서만 다를 때), `ok`(성공 체크), `trace`(따라가기), `extra_todo`, `small` |
 | `change` | 바꾸기: 표 머리, 예시 행, `must`(★ 최대 3개), `more`(더 해 보기) |
 | `change_example` | solution 맨 아래에 주석으로 넣을 바꾸기 예시 |
@@ -80,7 +80,7 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 ## 1학기 전체 수정 (P5)
 
 - 1학기 주차는 새 교안 형식(`lesson.html`)으로 다시 만든다. 파이썬 파일도 단계별 쓰기 방식(단계 표시 starter, 단계 주석 solution)에 맞게 고친다.
-- 예전 `worksheet.html`을 지울지 보관할지는 그때 저장소 주인에게 확인한다.
+- `lesson.html`을 만든 주차는 예전 `worksheet.html`을 지운다(저장소 주인 결정, 2026-11-05). 필요하면 git 기록에서 꺼낸다.
 - 순서는 위 "학기 제작 순서"와 같다(1주차 샘플 승인 → 나머지).
 
 ## 이미 만든 워크시트를 고칠 때
