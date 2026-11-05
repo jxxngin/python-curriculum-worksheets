@@ -17,17 +17,17 @@
   --bg: #f6f7fb;
   --paper: #ffffff;
   --code-bg: #f8fafc;
-  /* 활동 색: 3색 그룹 (준비 파랑 / 만들기 초록 / 더 하기 주황). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
-  --ready: #2563eb; --ready-soft: #eff6ff;
-  --make: #16a34a;  --make-soft: #f0fdf4;
+  /* 활동 색: 파랑(미션~마무리) / 주황(도전) / 회색(힌트). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --main: #2563eb;  --main-soft: #eff6ff;
   --more: #ea580c;  --more-soft: #fff7ed;
-  --mission: var(--ready);  --mission-soft: var(--ready-soft);
-  --warmup: var(--ready);   --warmup-soft: var(--ready-soft);
-  --step: var(--make);      --step-soft: var(--make-soft);
-  --change: var(--make);    --change-soft: var(--make-soft);
-  --new: var(--make);       --new-soft: var(--make-soft);
+  --gray: #6b7280;  --gray-soft: #f3f4f6;
+  --mission: var(--main);   --mission-soft: var(--main-soft);
+  --warmup: var(--main);    --warmup-soft: var(--main-soft);
+  --step: var(--main);      --step-soft: var(--main-soft);
+  --change: var(--main);    --change-soft: var(--main-soft);
+  --new: var(--main);       --new-soft: var(--main-soft);
   --challenge: var(--more); --challenge-soft: var(--more-soft);
-  --hint: var(--more);      --hint-soft: var(--more-soft);
+  --hint: var(--gray);      --hint-soft: var(--gray-soft);
   --tool: #475569;          --tool-soft: #f1f5f9;
 }
 * { box-sizing: border-box; }
@@ -66,6 +66,17 @@ p { margin: 0; }
 h3 { margin: 0; font-size: 1.05em; font-weight: 900; }
 
 /* 할 일 */
+/* 목표 한 줄 (할 일 목록 대신) */
+.goal { background: var(--cs); color: var(--c); border-radius: 12px; padding: 12px 18px; font-weight: 700; }
+.goals { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.goals h3 { color: var(--c); margin-bottom: 4px; }
+.goals ul { margin: 0; padding-left: 22px; }
+.order { color: var(--sub); font-size: .92em; }
+.label .n { display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--c); color: #fff; font-size: .85em; margin-right: 6px; }
+.label .how { color: var(--ink); font-weight: 500; }
+.keep { display: flex; flex-direction: column; gap: 10px; }
+.why { border-left: 5px solid var(--c); padding: 4px 0 4px 14px; }
+/* (예전) 할 일 상자 */
 .todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
 .todo h3 { color: var(--c); margin-bottom: 4px; }
 .todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
@@ -103,6 +114,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 .draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
 
 /* 힌트 카드 */
+.hints-list { display: flex; flex-direction: column; gap: 12px; }
 .hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 .hint .hh { display: flex; justify-content: space-between; font-weight: 900; color: var(--hint); }
@@ -115,7 +127,7 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
   .lesson { max-width: none; padding: 0; gap: 0; }
   .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
   .lesson-head + .block { break-before: auto; margin-top: 8mm; }
-  .todo, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li { break-inside: avoid; }
+  .todo, .goal, .goals, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li, .keep { break-inside: avoid; }
   pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
 }
 @media (max-width: 560px) {
@@ -138,8 +150,9 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 
   <section class="block mission">
     <h2>🎯 오늘의 미션</h2>
-    <p>치킨이냐 피자냐, 그것이 문제로다! ⚖️ 둘 중 하나만 골라야 하는 밸런스 게임은 친구들과 하면 정말 재밌어요. <b>내가 고른 답에 따라 다른 말을 해 주는 프로그램</b>을 만들어 봐요.</p>
-    <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">⚖️ 밸런스 게임을 시작합니다! ⚖️
+    <p>고른 답에 따라 다른 말을 해 주는 밸런스 게임을 만들어요.</p>
+    <div class="goals"><h3>🎯 오늘의 목표</h3><ul><li>대답이 무엇인지 비교해서(<code>==</code>) 갈림길을 만들 수 있다.</li><li><code>if</code> · <code>elif</code> · <code>else</code>로 답마다 다른 말을 보여 줄 수 있다.</li></ul></div>
+    <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">밸런스 게임을 시작합니다!
 플레이어 이름: 하린
 [1번 질문] 평생 한 가지만 먹어야 한다면?
 1. 치킨   2. 피자
@@ -149,100 +162,73 @@ ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width
 [2번 질문] 하나만 고른다면?
 1. 하늘을 나는 능력   2. 순간 이동 능력
 선택 (1 또는 2): 2
-🏅 오늘의 칭호: [순간 이동하는] 하린</div></div>
-    <div class="todo"><h3>📋 오늘 할 일</h3><ol><li>🔧 워밍업: 고장 난 코드를 고쳐요.</li><li>🪜 단계 1: 첫 번째 질문 보여 주기</li><li>🪜 단계 2: 고른 답에 따라 다른 말 하기</li><li>🪜 단계 3: 두 번째 질문 보여 주기</li><li>🪜 단계 4: 오늘의 칭호 붙여 주기</li><li>⭐ 내 것으로 바꿔요.</li></ol></div>
+오늘의 칭호: [순간 이동하는] 하린</div></div>
+    <p class="order">만드는 순서: 단계 1 첫 번째 질문 보여 주기 → 단계 2 고른 답에 따라 다른 말 하기 → 단계 3 두 번째 질문 보여 주기 → 단계 4 오늘의 칭호 붙여 주기</p>
   </section>
 
   <section class="block warmup">
     <h2>🔧 워밍업 <small>고장 난 간식 고르기 고치기</small></h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>이상한 곳 <b>3개</b>에 동그라미 쳐요.</li><li><code>warmup.py</code>를 실행해서 오류 메시지를 봐요.</li><li>고친 방법을 표에 적어요.</li></ol></div>
-    <p class="muted">1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실어요.</p>
-    <pre class="code" style="counter-reset: ln 4"><span class="l">print("오늘의 간식을 골라 주세요!")</span><span class="l">print("1. 떡볶이  2. 아이스크림")</span><span class="l">snack = input("번호 입력: ").strip()</span><span class="l"></span><span class="l">if snack = "1":</span><span class="l">    print("매콤한 떡볶이! 물 준비하세요.")</span><span class="l">elif snack == 2:</span><span class="l">    print("시원한 아이스크림! 머리가 띵할 수 있어요.")</span><span class="l">else</span><span class="l">    print("1이나 2를 입력해 주세요.")</span></pre>
-    <table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
-    <p class="muted"><b>SyntaxError</b> 문법이 틀렸어요(<code>==</code>, 줄 끝 <code>:</code> 확인) · <b>메시지 없는 오류</b> 실행은 되는데 결과가 틀려요(글자 <code>"2"</code>와 숫자 <code>2</code>는 달라요)</p>
+    <div class="goal">목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시 · 1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실었어요.</span></div><pre class="code" style="counter-reset: ln 4"><span class="l">print("오늘의 간식을 골라 주세요!")</span><span class="l">print("1. 떡볶이  2. 아이스크림")</span><span class="l">snack = input("번호 입력: ").strip()</span><span class="l"></span><span class="l">if snack = "1":</span><span class="l">    print("매콤한 떡볶이! 물 준비하세요.")</span><span class="l">elif snack == 2:</span><span class="l">    print("시원한 아이스크림! 머리가 띵할 수 있어요.")</span><span class="l">else</span><span class="l">    print("1이나 2를 입력해 주세요.")</span></pre></div>
+    <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how"><code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기</span></div><table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
+    <p class="muted"><b>SyntaxError</b> 문법 오류(<code>==</code>, 줄 끝 <code>:</code> 확인) · <b>메시지 없는 오류</b> 실행은 되는데 결과가 틀림. 고치는 모양: <code>if snack == "1":</code> (input() 대답은 글자라 따옴표)</p>
   </section>
 
   <section class="block step">
     <h2><span class="tag">단계 1</span> 첫 번째 질문 보여 주기</h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
-    <div class="tool"><div class="th">🧰 도구 카드 · 앞뒤 빈칸 지우기: strip()</div><p>대답 앞뒤에 실수로 넣은 빈칸(스페이스)을 지워 줘요. <code>input()</code> 뒤에 점(<code>.</code>)을 찍고 붙여요.</p><pre class="code nonum"><span class="l">pet = input("키우고 싶은 동물은? ").strip()</span></pre><p class="muted">→ " 강아지 "라고 넣어도 pet 상자에는 "강아지"가 들어가요</p></div>
-    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l">print("⚖️ 밸런스 게임을 시작합니다! ⚖️")</span><span class="l">name = input("플레이어 이름: ")</span><span class="l">print("[1번 질문] 평생 한 가지만 먹어야 한다면?")</span><span class="l">print("1. 치킨   2. 피자")</span><span class="l">answer1 = input("선택 (1 또는 2): ").strip()</span></pre>
-    
-    <div class="label">▶️ 실행하고 확인</div><div class="write"></div>
-    <ul class="check"><li>제목과 1번 질문, 선택지가 나오고 번호를 넣을 수 있었어요.</li></ul>
-    
+    <div class="goal">목표: 이름과 1번 질문을 묻고 대답을 상자에 담는다.</div><div class="tool"><div class="th">🧰 도구 카드 · 앞뒤 빈칸 지우기: strip()</div><p>대답 앞뒤에 실수로 넣은 빈칸(스페이스)을 지워요. <code>input()</code> 뒤에 점(<code>.</code>)을 찍고 붙여요.</p><pre class="code nonum"><span class="l">pet = input("키우고 싶은 동물은? ").strip()</span></pre><p class="muted">→ " 강아지 "라고 넣어도 "강아지"가 들어가요</p></div><div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">print("밸런스 게임을 시작합니다!")</span><span class="l">name = input("플레이어 이름: ")</span><span class="l">print("[1번 질문] 평생 한 가지만 먹어야 한다면?")</span><span class="l">print("1. 치킨   2. 피자")</span><span class="l">answer1 = input("선택 (1 또는 2): ").strip()</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">화면에 나온 질문 줄 적기</span></div><div class="write small"></div></div><ul class="check"><li>1번 질문이 나오고 번호를 넣을 수 있었어요.</li></ul>
   </section>
 
   <section class="block step">
     <h2><span class="tag">단계 2</span> 고른 답에 따라 다른 말 하기</h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>🧰 도구 카드를 읽어요.</li><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 2</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
-    <div class="tool"><div class="th">🧰 도구 카드 · 갈림길 만들기: if / else와 ==</div><p><code>==</code>는 "두 값이 같나요?"라고 묻는 기호예요(<code>=</code>는 상자에 넣기). 맞으면 <code>if</code> 아래 줄, 아니면 <code>else</code> 아래 줄을 실행해요. 줄 끝에 <code>:</code>, 안쪽 줄은 4칸 들여 써요.</p><pre class="code nonum"><span class="l">if weather == "비":</span><span class="l">    print("우산 챙겨요!")</span><span class="l">else:</span><span class="l">    print("신나게 놀아요!")</span></pre><p class="muted">→ weather가 "비"면 우산 챙겨요!, 아니면 신나게 놀아요!</p></div><div class="tool"><div class="th">🧰 도구 카드 · 갈림길 더하기: elif</div><p><code>if</code>가 아니면 다음 조건을 또 물어봐요. 위에서부터 처음 맞는 <b>하나만</b> 실행돼요.</p><pre class="code nonum"><span class="l">if pick == "1":</span><span class="l">    print("1번을 골랐어요")</span><span class="l">elif pick == "2":</span><span class="l">    print("2번을 골랐어요")</span></pre><p class="muted">→ pick이 "2"면 2번을 골랐어요</p></div>
-    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l">if answer1 == "1":</span><span class="l">    print("치킨파 " + name + "! 바삭바삭 최고!")</span><span class="l">elif answer1 == "2":</span><span class="l">    print("피자파 " + name + "! 치즈가 쭈욱~")</span><span class="l">else:</span><span class="l">    print("앗, 1이나 2만 골라 주세요.")</span></pre>
-    
-    <div class="label">▶️ 실행하고 확인</div><div class="write"></div>
-    <ul class="check"><li>1, 2, 3을 하나씩 넣어 3번 실행했어요.</li><li>넣을 때마다 다른 말이 나왔어요.</li></ul>
-    
+    <div class="goal">목표: 1을 넣으면 치킨파, 2를 넣으면 피자파, 그 밖에는 안내가 나온다.</div><div class="tool"><div class="th">🧰 도구 카드 · 갈림길: if / else와 ==</div><p><code>==</code>는 "두 값이 같나요?"라고 묻는 기호예요(<code>=</code>는 상자에 넣기). 맞으면 <code>if</code> 아래 줄, 아니면 <code>else</code> 아래 줄을 실행해요. 줄 끝에 <code>:</code>, 안쪽 줄은 4칸 들여 써요.</p><pre class="code nonum"><span class="l">if weather == "비":</span><span class="l">    print("우산 챙기기")</span><span class="l">else:</span><span class="l">    print("밖에서 놀기")</span></pre><p class="muted">→ weather가 "비"면 우산 챙기기</p></div><div class="tool"><div class="th">🧰 도구 카드 · 갈림길 더하기: elif</div><p><code>if</code>가 아니면 다음 조건을 물어요. 위에서부터 처음 맞는 <b>하나만</b> 실행돼요.</p><pre class="code nonum"><span class="l">if pick == "1":</span><span class="l">    print("1번")</span><span class="l">elif pick == "2":</span><span class="l">    print("2번")</span></pre><p class="muted">→ pick이 "2"면 2번</p></div><div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 2</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">if answer1 == "1":</span><span class="l">    print("치킨파 " + name + "! 바삭바삭 최고!")</span><span class="l">elif answer1 == "2":</span><span class="l">    print("피자파 " + name + "! 치즈가 쭈욱~")</span><span class="l">else:</span><span class="l">    print("1이나 2만 골라 주세요.")</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">1, 2, 3을 하나씩 넣어 3번 실행하고 나온 말 적기</span></div><table class="fill"><tr><th>넣은 값</th><th>나온 말</th></tr><tr><td class="w">1</td><td class="w"></td></tr><tr><td class="w">2</td><td class="w"></td></tr><tr><td class="w">3</td><td class="w"></td></tr></table></div><ul class="check"><li>넣을 때마다 다른 말이 나왔어요.</li></ul>
   </section>
 
   <section class="block step">
     <h2><span class="tag">단계 3</span> 두 번째 질문 보여 주기</h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 3</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li></ol></div>
-    
-    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l">print("")</span><span class="l">print("[2번 질문] 하나만 고른다면?")</span><span class="l">print("1. 하늘을 나는 능력   2. 순간 이동 능력")</span><span class="l">answer2 = input("선택 (1 또는 2): ").strip()</span></pre>
-    
-    <div class="label">▶️ 실행하고 확인</div><div class="write small"></div>
-    <ul class="check"><li>한 줄 띄고 2번 질문이 나왔어요.</li></ul>
-    
+    <div class="goal">목표: 한 줄 띄고 2번 질문을 묻는다.</div><div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 3</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">print("")</span><span class="l">print("[2번 질문] 하나만 고른다면?")</span><span class="l">print("1. 하늘을 나는 능력   2. 순간 이동 능력")</span><span class="l">answer2 = input("선택 (1 또는 2): ").strip()</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">2번 질문 줄 적기</span></div><div class="write small"></div></div><ul class="check"><li>한 줄 띄고 2번 질문이 나왔어요.</li></ul>
   </section>
 
   <section class="block step">
     <h2><span class="tag">단계 4</span> 오늘의 칭호 붙여 주기</h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>⌨️ 코드를 <code>mini_starter.py</code>의 <b># 단계 4</b> 아래에 따라 써요.</li><li>▶️ 실행하고, 화면에 나온 것을 적어요.</li><li>2번 질문에 1, 2, 3을 넣어 보고 칭호가 바뀌는지 봐요.</li></ol></div>
-    
-    <div class="label">⌨️ 따라 쓸 코드</div><pre class="code nonum"><span class="l">title = "엉뚱한"</span><span class="l">if answer2 == "1":</span><span class="l">    title = "구름 위를 나는"</span><span class="l">elif answer2 == "2":</span><span class="l">    title = "순간 이동하는"</span><span class="l">print("🏅 오늘의 칭호: [" + title + "] " + name)</span></pre>
-    
-    <div class="label">▶️ 실행하고 확인</div><div class="write"></div>
-    <ul class="check"><li>마지막에 내 칭호가 나왔어요.</li><li>1·2가 아닌 답이면 "엉뚱한" 칭호가 나왔어요.</li></ul>
-    <div class="label">🔍 따라가기: 2번 질문에 이렇게 넣었다면 마지막에 title 상자에는?</div><table class="fill"><tr><th>"1"을 넣으면</th><th>"2"를 넣으면</th><th>"3"을 넣으면</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
+    <div class="goal">목표: 2번 질문의 답에 따라 칭호가 정해져 마지막 줄에 나온다.</div><div class="keep"><div class="label"><span class="n">①</span>🧩 기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 4</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">title = "엉뚱한"</span><span class="l">if answer2 == "1":</span><span class="l">    title = "구름 위를 나는"</span><span class="l">elif answer2 == "2":</span><span class="l">    title = "순간 이동하는"</span><span class="l">print("오늘의 칭호: [" + title + "] " + name)</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>▶️ 실행하고 확인 <span class="how">2번 질문에 1, 2, 3을 넣어 보고 마지막 줄 적기</span></div><table class="fill"><tr><th>2번 질문에 넣은 값</th><th>마지막 줄</th></tr><tr><td class="w">1</td><td class="w"></td></tr><tr><td class="w">2</td><td class="w"></td></tr><tr><td class="w">3</td><td class="w"></td></tr></table></div><ul class="check"><li>답에 따라 칭호가 바뀌었어요.</li></ul><div class="keep"><div class="label"><span class="n">③</span>🔍 따라가기 <span class="how">지우 / 스페이스+2+스페이스 / 5를 넣으면?</span></div><table class="fill"><tr><th>answer1 상자</th><th>1번 질문 반응</th><th>title 상자</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
   </section>
 
   <section class="block change">
     <h2>⭐ 내 것으로 바꾸기 <small>오늘의 완성 기준</small></h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>표에 바꿀 내용을 먼저 적어요.</li><li>코드를 고치고 실행해요.</li><li>★ 꼭 하기 3개를 체크하면 완성!</li></ol></div>
-    <table class="fill"><tr><th>내 질문 (화면에 보일 글자)</th><th>선택지 1 / 2 / 3</th><th>고르면 나올 말</th></tr><tr><td class="w">예) 방학 때 딱 하루를 보낸다면?</td><td class="w">바다 / 놀이공원 / 집</td><td class="w">모래성 쌓기! / 롤러코스터! / 이불 밖은 위험해!</td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table>
-    <div class="label">★ 꼭 하기 (이 3개를 하면 완성!)</div>
-    <ul class="check"><li>1번·2번 질문과 선택지를 내 밸런스 질문으로 바꿨어요.</li><li>선택지가 3개인 질문을 1개 더 만들었어요. (<code>elif</code> 2번)</li><li>1·2·3이 아닌 답을 넣으면 <code>else</code>가 안내해 줘요.</li></ul>
+    <div class="goal">목표: 질문과 선택지를 내 밸런스 질문으로 바꾼다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>설계하기 <span class="how">바꿀 내용을 표에 먼저 적기</span></div><table class="fill"><tr><th>내 질문 (화면에 보일 글자)</th><th>선택지 1 / 2 / 3</th><th>고르면 나올 말</th></tr><tr><td class="w">예) 방학 때 딱 하루를 보낸다면?</td><td class="w">바다 / 놀이공원 / 집</td><td class="w">모래성 쌓기 / 롤러코스터 / 집에서 쉬기</td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
+    <div class="keep"><div class="label"><span class="n">②</span>고치고 실행하기 <span class="how">★ 3개를 하면 완성</span></div><ul class="check"><li>★ 1번·2번 질문과 선택지를 내 밸런스 질문으로 바꿨어요.</li><li>★ 선택지가 3개인 질문을 1개 더 만들었어요. (<code>elif</code> 2번)</li><li>★ 1·2·3이 아닌 답을 넣으면 <code>else</code>가 안내해요.</li></ul></div>
     <div class="label">➕ 더 해 보기</div>
-    <ul class="check"><li>칭호를 정할 때 새 질문의 답도 써 봤어요.</li><li>마지막에 "게임 끝! 친구와 비교해 보세요" 인사를 넣었어요.</li></ul>
-    <div class="label">👀 친구에게 보여 주기: 친구의 한마디</div>
-    <div class="write small"></div>
+    <ul class="check"><li>칭호를 정할 때 새 질문의 답도 쓰기</li><li>이모지로 질문과 칭호 꾸미기</li></ul>
+    <div class="keep"><div class="label">👀 친구에게 보여 주기 <span class="how">친구의 한마디</span></div><div class="write small"></div></div>
   </section>
 
   <section class="block new">
     <h2>💡 새로 만들기 <small>하고 싶은 사람</small></h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li>아이디어 하나를 골라요.</li><li>무엇을 만들지 적고 만들어요.</li></ol></div>
-    <ul class="check"><li>"1" 대신 "치킨"이라고 대답해도 알아듣게 하기</li><li>친구 버전 (친구 이름을 물어보고 친구에게 질문하기)</li><li>내 아이디어</li></ul>
-    <div class="write"></div>
+    <div class="goal">목표: 오늘 만든 프로그램에 내 아이디어 기능을 하나 더한다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>아이디어 고르기 <span class="how">하나에 표시</span></div><ul class="check"><li>"1" 대신 "치킨"이라고 대답해도 알아듣게 하기</li><li>친구 버전: 친구 이름을 묻고 친구에게 질문하기</li><li>내 아이디어</li></ul></div>
+    <div class="keep"><div class="label"><span class="n">②</span>계획 적고 만들기 <span class="how">무엇을 묻고 무엇을 보여 줄지</span></div><div class="write"></div></div>
     <h3>✅ 오늘의 마무리</h3>
-    <ul class="check"><li>워밍업 오류 3개를 고쳤어요.</li><li>단계를 하나씩 실행하며 만들었어요.</li><li>★ 꼭 하기 3개를 완성했어요.</li><li>친구에게 내 프로그램을 보여 줬어요.</li></ul>
-    <div class="label">친구들이 가장 오래 고민한 내 질문은?</div>
-    <div class="write small"></div>
+    <ul class="check"><li>워밍업 오류 3개를 고쳤다.</li><li>단계마다 실행하며 완성했다.</li><li>★ 3개를 완성했다.</li><li>친구에게 보여 줬다.</li></ul>
+    <div class="keep"><div class="label">친구들이 가장 오래 고민한 내 질문</div><div class="write small"></div></div>
   </section>
 
   <section class="block challenge">
     <h2>🚀 도전 프로젝트 <small>밸런스 게임 성향 테스트 · 일찍 끝낸 사람</small></h2>
-    <div class="todo"><h3>📋 할 일</h3><ol><li><code>extension_starter.py</code>를 그대로 실행해 봐요.</li><li>주제를 하나 골라 질문 3개와 A·B 선택지를 아래 표에 적어요.</li><li>코드를 바꾸고 실행해서 체크해요.</li></ol></div>
-    <p>주제를 골라요: 급식 취향, 게임 스타일, 좀비 생존, 공부 스타일, 초능력, 여행 스타일. 고른 답(A, B)을 이어 붙여 <b>"AB" 같은 성향 코드</b>를 만들고, 코드에 따라 결과를 보여 줘요.</p>
-    <div class="tool"><div class="th">🧰 도구 카드 · 성향 코드: 이어 붙이고 비교하기</div><p>답 두 개를 <code>+</code>로 이어 붙이면 "AB" 같은 코드가 돼요. 그 코드를 <code>==</code>로 비교해요.</p><pre class="code nonum"><span class="l">code = "B" + "A"</span><span class="l">if code == "BA":</span><span class="l">    print("자유로운 탐험가")</span></pre><p class="muted">→ 자유로운 탐험가</p></div>
-    <table class="fill"><tr><th></th><th>질문</th><th>A</th><th>B</th></tr><tr><td class="w"><b>Q1</b></td><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"><b>Q2</b></td><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"><b>Q3</b></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table><p>질문이 3개면 성향 코드는 모두 <span class="blank"></span>가지예요.</p>
-    <ul class="check"><li>주제를 골라 질문과 결과를 내 것으로 바꿨어요.</li><li>질문을 3개로 늘리고, 성향 코드마다 결과를 만들었어요.</li><li>결과마다 한 줄 설명이 나와요.</li></ul>
+    <p class="why"><b>왜 만들까?</b> 인터넷의 성격 유형 테스트가 이 원리로 돌아가요. 답을 이어 붙여 코드로 만들고 코드에 따라 결과를 고르는 방법을 연습해요.</p>
+    <div class="goal">목표: 질문 3개의 답으로 성향 코드(예: ABA)를 만들고, 코드마다 결과를 보여 준다.</div>
+    <div class="tool"><div class="th">🧰 도구 카드 · 성향 코드: 이어 붙이고 비교하기</div><p>답을 <code>+</code>로 이어 붙이면 "AB" 같은 코드가 돼요. 그 코드를 <code>==</code>로 비교해요.</p><pre class="code nonum"><span class="l">code = "B" + "A"</span><span class="l">if code == "BA":</span><span class="l">    print("자유로운 탐험가")</span></pre><p class="muted">→ 자유로운 탐험가</p></div>
+    <div class="keep"><div class="label"><span class="n">①</span>실행해 보기 <span class="how"><code>extension_starter.py</code>를 그대로 실행</span></div></div>
+    <div class="keep"><div class="label"><span class="n">②</span>설계하기 <span class="how">주제를 고르고 질문 3개와 A·B 선택지를 표에 적기</span></div><p class="muted">주제: 급식 취향, 게임 스타일, 좀비 생존, 공부 스타일, 초능력, 여행 스타일 중 하나</p><table class="fill"><tr><th></th><th>질문</th><th>A</th><th>B</th></tr><tr><td class="w"><b>Q1</b></td><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"><b>Q2</b></td><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"><b>Q3</b></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table><p>질문이 3개면 성향 코드는 모두 <span class="blank"></span>가지예요.</p></div>
+    <div class="keep"><div class="label"><span class="n">③</span>바꾸고 체크하기</div><ul class="check"><li>주제를 골라 질문과 결과를 내 것으로 바꿨어요.</li><li>질문을 3개로 늘리고, 성향 코드마다 결과를 만들었어요.</li><li>결과마다 한 줄 설명이 나와요.</li></ul></div>
     <div class="label">➕ 더 해 보기</div>
-    <ul class="check"><li>소문자 a, b로 답해도 알아듣게 하기 (받자마자 대문자로 바꾸기)</li><li>결과에 어울리는 동료 추천하기</li><li>A·B가 아닌 답을 넣으면 <code>else</code>로 안내하기</li></ul>
+    <ul class="check"><li>소문자 a, b로 답해도 알아듣게 하기 (받자마자 대문자로 바꾸기)</li><li>결과에 어울리는 동료 추천하기</li><li>A·B가 아닌 답이면 <code>else</code>로 안내하기</li></ul>
   </section>
 
   <section class="block hints">
-    <h2>🃏 힌트 카드 <small>막히면 1번부터 차례로</small></h2>
-    <div class="hints-grid"><div class="hint"><div class="hh"><span>단계 1</span><span>●○○</span></div><p>질문은 <code>print()</code>, 대답은 <code>input()</code>이에요. 대답 받는 줄 끝에 <code>.strip()</code>을 붙여요. 점(<code>.</code>)을 빼먹지 않게!</p></div><div class="hint"><div class="hh"><span>단계 2</span><span>●○○</span></div><p>비교는 <code>==</code>(등호 두 개). 대답은 글자라서 <code>"1"</code>처럼 따옴표로 감싸요. 줄 끝에 <code>:</code>, 안쪽 줄은 4칸 들여 써요.</p></div><div class="hint"><div class="hh"><span>단계 3</span><span>●○○</span></div><p>단계 1의 질문 줄과 모양이 같아요. 대답 상자 이름만 <code>answer2</code>로 바꿔요.</p></div><div class="hint"><div class="hh"><span>단계 4</span><span>●○○</span></div><p>먼저 <code>title</code> 상자에 "엉뚱한"을 넣어 두고, 답이 1이나 2면 다른 칭호로 바꿔 넣어요. 같은 상자에 다시 넣으면 새 값으로 바뀌어요.</p></div><div class="hint"><div class="hh"><span>새로 만들기 · 방향</span><span>●○○</span></div><p>"치킨"이라는 대답도 알아들으려면 갈림길을 하나 더 만들면 돼요. 무엇과 비교할지 먼저 적어 봐요.</p></div><div class="hint"><div class="hh"><span>새로 만들기 · 쓸 도구</span><span>●●○</span></div><p><code>elif answer1 == "치킨":</code>처럼 <code>elif</code>를 하나 더 써요. <code>else</code>보다 위에 써야 해요!</p></div><div class="hint"><div class="hh"><span>새로 만들기 · 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">if answer1 == "1":</span><span class="l">    print("치킨파 " + name + "!")</span><span class="l">elif answer1 == "치킨":</span><span class="l">    print("치킨파 " + name + "!")</span><span class="l">elif answer1 == "2":</span><span class="l">    print("피자파 " + name + "!")</span></pre></div><div class="hint"><div class="hh"><span>도전 · 소문자 거의 코드</span><span>●●●</span></div><pre class="code nonum"><span class="l">q1 = input("&gt; ").strip()</span><span class="l">if q1 == "a":</span><span class="l">    q1 = "A"</span><span class="l">if q1 == "b":</span><span class="l">    q1 = "B"</span></pre></div></div>
+    <h2>🃏 힌트 카드 <small>막힌 상황에 맞는 카드를 찾아 ●○○부터</small></h2>
+    <div class="hints-list"><div class="hint" data-group="step"><div class="hh"><span>1번 질문 묻기 · 대답 받는 줄에서 오류가 날 때</span><span>●○○</span></div><p>대답 받는 줄 끝에 <code>.strip()</code>을 붙였는지, 점(<code>.</code>)과 괄호 두 쌍이 다 있는지 봐요.</p></div><div class="hint" data-group="step"><div class="hh"><span>답에 따라 다른 말 하기 · 늘 else만 나올 때</span><span>●○○</span></div><p>비교는 <code>==</code>(등호 두 개)예요. 대답은 글자라서 <code>"1"</code>처럼 따옴표로 감싸요. 줄 끝 <code>:</code>, 안쪽 줄 4칸도 봐요.</p></div><div class="hint" data-group="step"><div class="hh"><span>2번 질문 묻기 · 질문이 1번과 붙어서 나올 때</span><span>●○○</span></div><p>맨 앞의 <code>print("")</code>가 빈 줄을 만들어요. 대답 상자 이름은 <code>answer2</code>예요.</p></div><div class="hint" data-group="step"><div class="hh"><span>칭호 붙이기 · 칭호가 늘 "엉뚱한"일 때</span><span>●○○</span></div><p><code>if</code>에서 비교하는 상자가 <code>answer2</code>인지 봐요. 같은 상자에 다시 넣으면 새 값으로 바뀌어요.</p></div><div class="hint" data-group="new"><div class="hh"><span>"치킨"도 알아듣기 · 무엇부터 할지 모를 때</span><span>●○○</span></div><p>"치킨"이라는 대답도 1처럼 처리하려면 갈림길을 하나 더 만들어요. 어디에 넣을지 먼저 찾아요.</p></div><div class="hint" data-group="new"><div class="hh"><span>"치킨"도 알아듣기 · 쓸 도구가 떠오르지 않을 때</span><span>●●○</span></div><p><code>elif answer1 == "치킨":</code>을 하나 더 써요. 단계 2의 <code>if</code>와 <code>elif</code> 사이에 끼워 넣어요(<code>else</code>보다 위).</p></div><div class="hint" data-group="new"><div class="hh"><span>"치킨"도 알아듣기 · 거의 다 됐는데 안 될 때</span><span>●●●</span></div><p>단계 2 코드의 첫 번째 <code>print</code> 줄 바로 아래에 이 두 줄을 끼워 넣어요.</p><pre class="code nonum"><span class="l">elif answer1 == "치킨":</span><span class="l">    print("치킨파 " + name + "! 바삭바삭 최고!")</span></pre></div><div class="hint" data-group="challenge"><div class="hh"><span>성향 테스트 만들기 · 무엇부터 할지 모를 때</span><span>●○○</span></div><p><code>extension_starter.py</code>를 실행해 보고, 질문을 하나 더 늘리면 코드가 몇 가지가 되는지 먼저 세어 봐요.</p></div><div class="hint" data-group="challenge"><div class="hh"><span>성향 테스트 만들기 · 쓸 도구가 떠오르지 않을 때</span><span>●●○</span></div><p>세 번째 대답 상자 <code>q3</code>를 만들고 <code>code = q1 + q2 + q3</code>로 바꿔요. 결과는 <code>elif code == "ABA":</code>처럼 8개를 비교해요.</p></div><div class="hint" data-group="challenge"><div class="hh"><span>성향 테스트 만들기 · 거의 다 됐는데 안 될 때</span><span>●●●</span></div><p><code>q2 = input(...)</code> 줄 아래에 질문을 넣고, <code>code =</code> 줄을 바꿔요.</p><pre class="code nonum"><span class="l">print("Q3. 새 아이템을 얻으면?")</span><span class="l">print("A. 아껴 둔다   B. 바로 쓴다")</span><span class="l">q3 = input("&gt; ").strip()</span><span class="l">code = q1 + q2 + q3</span></pre></div></div>
   </section>
 </main>
 </body>
