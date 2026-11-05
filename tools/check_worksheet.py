@@ -129,8 +129,10 @@ def check_lesson(path, html, s):
         if re.fullmatch(r"\s*단계\s*\d+\s*", re.sub(r"<[^>]+>", "", title)):
             errors.append(f"힌트 제목이 '{title}'처럼 번호만 있어요. '하려는 일 · 막힌 상황'으로 써요")
     for g in ("new", "challenge"):
+        if g not in kinds:
+            continue
         levels = {d for gg, _, d in hints if gg == g}
-        if levels and levels != {"●○○", "●●○", "●●●"}:
+        if levels != {"●○○", "●●○", "●●●"}:
             errors.append(f"'{g}' 힌트가 3단계(●○○ ●●○ ●●●)가 아니에요: {sorted(levels)}")
     readme = Path(path).with_name("README.md")
     if readme.exists() and re.search(r"&(lt|gt|amp);", readme.read_text(encoding="utf-8")):

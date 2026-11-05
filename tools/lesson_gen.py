@@ -219,6 +219,22 @@ def md(s):
     return html.unescape(s).strip()
 
 
+def md_block(body):
+    """교안 칸(HTML) → README 마크다운. 표는 마크다운 표로, 빈칸은 ____로."""
+    body = re.sub(r'<span class="blank"></span>', '____', body)
+    out = []
+    for part in re.split(r'(<table.*?</table>)', body, flags=re.S):
+        if part.startswith('<table'):
+            rows = re.findall(r'<tr>(.*?)</tr>', part, re.S)
+            cells = [[md(c) or ' ' for c in re.findall(r'<t[hd][^>]*>(.*?)</t[hd]>', r, re.S)] for r in rows]
+            if cells:
+                out += ['| ' + ' | '.join(cells[0]) + ' |', '|' + ' --- |' * len(cells[0])] + ['| ' + ' | '.join(c) + ' |' for c in cells[1:]] + ['']
+        else:
+            for t in re.findall(r'<p[^>]*>(.*?)</p>', part, re.S) or ([part] if md(part) else []):
+                out += [md(t), '']
+    return '\n'.join(out).strip()
+
+
 def md_body(body):
     if '<pre' in body:
         lines = re.findall(r'<span class="l">(.*?)</span>(?=<span class="l">|</pre>)', body, re.S)
@@ -256,7 +272,10 @@ def docs(w, complete):
     r += ['', f"## 🚀 도전 프로젝트: {ch['name']}", '', f"**왜 만들까?** {md(ch['why'])}", '', f"목표: {md(ch['goal'])}", '']
     for t in ch.get('tool', []):
         r += [f"> 🧰 **{md(t[0])}**: {md(t[1])}", '']
-    r += ['`extension_starter.py`를 실행해 보고 바꾼다.', ''] + [f'- [ ] {md(x)}' for x in ch['checks']] + ['', '**➕ 더 해 보기**', ''] + [f'- {md(x)}' for x in ch['more']]
+    r += ['① 실행해 보기: `extension_starter.py`를 그대로 실행', '', f"② {md(ch['design'][0])}: {md(ch['design'][1])}", '']
+    if ch.get('body'):
+        r += [md_block(ch['body']), '']
+    r += ['③ 바꾸고 체크하기', ''] + [f'- [ ] {md(x)}' for x in ch['checks']] + ['', '**➕ 더 해 보기**', ''] + [f'- {md(x)}' for x in ch['more']]
     r += ['', '## 🃏 힌트', '']
     for h, dots, body, g in w['hints']:
         r += ['<details>', f'<summary>{h} {dots}</summary>', '', md_body(body), '', '</details>', '']
