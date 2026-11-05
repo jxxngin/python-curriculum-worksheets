@@ -121,7 +121,7 @@ def hint_badges(w):
         else:
             b = {'warmup': '워밍업', 'change': '바꾸기', 'new': '새로 만들기', 'challenge': '도전'}[g]
         out.append((b, h, dots, body, g))
-    if n and n != len(w['steps']):
+    if n != len(w['steps']):
         raise SystemExit(f"단계 힌트 {n}개 / 단계 {len(w['steps'])}개: 단계마다 한 칸씩 둬요")
     return out
 

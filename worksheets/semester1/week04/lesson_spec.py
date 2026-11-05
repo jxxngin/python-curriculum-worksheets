@@ -14,7 +14,7 @@ SPEC = dict(week=4, title='비밀의 문 게임', badge='무작위로 뽑기',
     steps=[
         dict(name='보물 문을 무작위로 정하기', goal='실행할 때마다 보물 문 번호(1~3)를 새로 뽑는다.', small=True,
              tool=[('도구 상자 꺼내기: import', '파이썬에 들어 있는 도구 상자를 꺼내 써요. 맨 위에 한 번만 써요.', ['import random'], 'random 도구 상자를 쓸 수 있어요'),
-                   ('무작위 뽑기: random.randint(a, b)', 'a부터 b까지 중 하나를 뽑아요. b도 나와요.', ['dice = random.randint(1, 6)', 'print(dice)'], '1~6 중 하나 (실행할 때마다 달라요)')],
+                   ('무작위 뽑기: random.randint(a, b)', 'a부터 b까지 중 하나를 뽑아요. b도 나와요.', ['dice = random.randint(1, 6)', 'print(dice)'], '1~6 중 하나 (실행할 때마다 새로 뽑아요. 같은 수가 또 나올 수도 있어요)')],
              lines=['import random', 'name = input("탐험가 이름: ")', 'score = 0', 'treasure_door = random.randint(1, 3)', 'print(f"(테스트용) 보물은 {treasure_door}번 문")'],
              sol_lines=['import random', 'name = input("탐험가 이름: ")', 'score = 0', 'treasure_door = random.randint(1, 3)', '# print(f"(테스트용) 보물은 {treasure_door}번 문")'],
              record='3번 실행하고 보물 문 번호 적기',

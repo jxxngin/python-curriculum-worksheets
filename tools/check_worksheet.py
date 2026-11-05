@@ -135,6 +135,9 @@ def check_lesson(path, html, s):
     for g, title, dots in hints:
         if re.fullmatch(r"\s*단계\s*\d+\s*", re.sub(r"<[^>]+>", "", title)):
             errors.append(f"힌트 제목이 '{title}'처럼 번호만 있어요. '하려는 일 · 막힌 상황'으로 써요")
+    n_step_hints = sum(1 for g, _, _ in hints if g == "step")
+    if n_step_hints != kinds.count("step"):
+        errors.append(f"단계 힌트 {n_step_hints}개 / 단계 {kinds.count('step')}개: 단계마다 힌트 한 칸씩 둬요")
     for g in ("new", "challenge"):
         if g not in kinds:
             continue
