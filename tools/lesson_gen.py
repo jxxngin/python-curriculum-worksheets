@@ -40,7 +40,7 @@ def check(items):
 
 
 def tool(name, when, lines, result):
-    return (f'<div class="tool"><div class="th">🧰 도구 카드 · {name}</div><p>{when}</p>'
+    return (f'<div class="tool"><div class="th">🧰 {name}</div><p>{when}</p>'
             f'{code(lines, nonum=True)}<p class="muted">→ {result}</p></div>')
 
 
@@ -108,8 +108,30 @@ def make_py(w, d):
     return complete
 
 
+def hint_badges(w):
+    """힌트마다 뱃지를 붙인다. 단계 힌트는 나온 차례대로 단계 1, 2, …(단계마다 한 칸), 나머지는 활동 이름."""
+    n, out = 0, []
+    for h, dots, body, g in w['hints']:
+        if g == 'step':
+            n += 1
+            b = f'단계 {n}'
+        else:
+            b = {'change': '바꾸기', 'new': '새로 만들기', 'challenge': '도전'}[g]
+        out.append((b, h, dots, body, g))
+    if n and n != len(w['steps']):
+        raise SystemExit(f"단계 힌트 {n}개 / 단계 {len(w['steps'])}개: 단계마다 한 칸씩 둬요")
+    return out
+
+
+def tip_lines(tip):
+    """워밍업 팁을 오류별 한 줄씩 나눈다(4차 피드백). ' · '로 오류를 나누고, '고치는 모양:'은 따로 한 줄."""
+    tip, _, fix = tip.partition('. 고치는 모양:')
+    lines = [x.strip() for x in tip.split(' · ')]
+    return lines + (['고치는 모양:' + fix] if fix else [])
+
+
 def goal(text):
-    return f'<div class="goal">목표: {text}</div>'
+    return f'<div class="goal">📌 목표: {text}</div>'
 
 
 def act(n, name, how, inner):
@@ -152,20 +174,20 @@ def lesson(w, d, complete):
     {goal('오류 메시지를 읽고 오류 3개를 고친다.')}
     {act('①', '코드 읽기', '이상한 곳 3개 표시 · ' + skip_note, warm_code)}
     {act('②', '실행하고 고치기', '<code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기', table(['줄 번호', '오류 이름', '어떻게 고쳤나요?'], 3, widths=['20%', '30%', None]))}
-    <p class="muted">{w['warm_tip']}</p>
+    <div class="muted">{''.join(f'<p>{x}</p>' for x in tip_lines(w['warm_tip']))}</div>
   </section>''')
     for i, s in enumerate(w['steps'], 1):
         tools = ''.join(tool(*t) for t in s.get('tool', []))
         parts = [goal(s['goal']), tools]
         if s.get('lines'):
-            parts.append(act('①', '🧩 기능 추가하기', f'<code>{f}</code>의 <b># 단계 {i}</b> 아래에 입력', code(s['lines'], nonum=True)))
-            parts.append(act('②', '▶️ 실행하고 확인', s.get('record', '마지막 줄 적기'), record_box(s)))
+            parts.append(act('①', '기능 추가하기', f'<code>{f}</code>의 <b># 단계 {i}</b> 아래에 입력', code(s['lines'], nonum=True)))
+            parts.append(act('②', '실행하고 확인', s.get('record', '마지막 줄 적기'), record_box(s)))
         parts.append(s.get('body', ''))
         if s.get('ok'):
             parts.append(check(s['ok']))
         if s.get('trace'):
             tq, th, trows = s['trace']
-            parts.append(act('③', '🔍 따라가기', tq, table(th, 0, first=trows)))
+            parts.append(act('③', '따라가기', tq, table(th, 0, first=trows)))
         B.append(f'''  <section class="block step">
     <h2><span class="tag">단계 {i}</span> {s['name']}</h2>
     {''.join(parts)}
@@ -201,7 +223,7 @@ def lesson(w, d, complete):
     <div class="label">➕ 더 해 보기</div>
     {check(ch['more'])}
   </section>''')
-    hints = ''.join(f'<div class="hint" data-group="{g}"><div class="hh"><span>{h}</span><span>{dots}</span></div>{body}</div>' for h, dots, body, g in w['hints'])
+    hints = ''.join(f'<div class="hint" data-group="{g}"><div class="hh"><span class="ht"><span class="hb">{b}</span><span>{h}</span></span><span class="hd">{dots}</span></div>{body}</div>' for b, h, dots, body, g in hint_badges(w))
     B.append(f'''  <section class="block hints">
     <h2>🃏 힌트 카드 <small>막힌 상황에 맞는 카드를 찾아 ●○○부터</small></h2>
     <div class="hints-list">{hints}</div>
@@ -251,25 +273,25 @@ def docs(w, complete):
     f = w.get('file', 'mini_starter.py')
     r = [f"# {w['week_label']}: {w.get('h1', w['title'] + ' 만들기')}", '', '> 교안 요약이다. 활동은 `lesson.html`에서 한다(인쇄하면 학습지).', '',
          '## 🎯 오늘의 미션', '', md(w['story']), '', '**오늘의 목표**', ''] + [f'- {md(g)}' for g in w['goals']] + ['', '완성하면 이렇게 돼요:', '', '```', complete, '```', '',
-         '## 🔧 워밍업', '', f"목표: 오류 메시지를 읽고 오류 3개를 고친다. ({w['warm_title']})", '', f"`warmup.py`를 실행하고 고친다. 팁: {md(w['warm_tip'])}", '']
+         '## 🔧 워밍업', '', f"📌 목표: 오류 메시지를 읽고 오류 3개를 고친다. ({w['warm_title']})", '', "`warmup.py`를 실행하고 고친다. 팁:", ''] + [f'- {md(x)}' for x in tip_lines(w['warm_tip'])] + ['']
     for i, s in enumerate(w['steps'], 1):
-        r += [f"## 🪜 단계 {i}: {s['name']}", '', f"목표: {md(s['goal'])}", '']
+        r += [f"## 🪜 단계 {i}: {s['name']}", '', f"📌 목표: {md(s['goal'])}", '']
         for t in s.get('tool', []):
             r += [f"> 🧰 **{md(t[0])}**: {md(t[1])}", '>', '> ```python'] + [f'> {l}' for l in t[2]] + ['> ```', f'> → {md(t[3])}', '']
         if s.get('lines'):
-            r += [f"① 🧩 기능 추가하기: `{f}`의 `# 단계 {i}` 아래에 입력", '', '```python'] + s['lines'] + ['```', '', f"② ▶️ 실행하고 확인: {md(s.get('record', '마지막 줄 적기'))}", '']
+            r += [f"① 기능 추가하기: `{f}`의 `# 단계 {i}` 아래에 입력", '', '```python'] + s['lines'] + ['```', '', f"② 실행하고 확인: {md(s.get('record', '마지막 줄 적기'))}", '']
         if s.get('readme'):
             r += [s['readme'], '']
         if s.get('ok'):
             r += ['✅ ' + ' / '.join(md(x) for x in s['ok']), '']
         if s.get('trace'):
-            r += [f"③ 🔍 따라가기: {md(s['trace'][0])}", '']
+            r += [f"③ 따라가기: {md(s['trace'][0])}", '']
     c = w['change']
-    r += ['## ⭐ 내 것으로 바꾸기 (오늘의 완성 기준)', '', f"목표: {md(c['goal'])}", '', '**★ 꼭 하기**', ''] + [f'- [ ] {md(x)}' for x in c['must']] + ['', '**➕ 더 해 보기**', ''] + [f'- [ ] {md(x)}' for x in c['more']]
+    r += ['## ⭐ 내 것으로 바꾸기 (오늘의 완성 기준)', '', f"📌 목표: {md(c['goal'])}", '', '**★ 꼭 하기**', ''] + [f'- [ ] {md(x)}' for x in c['must']] + ['', '**➕ 더 해 보기**', ''] + [f'- [ ] {md(x)}' for x in c['more']]
     r += ['', '👀 친구에게 보여 주고 한마디 받기', '', '## 💡 새로 만들기 (하고 싶은 사람)', ''] + [f'- {md(x)}' for x in w['new_ideas']]
     r += ['', '**✅ 오늘의 마무리**', '', '- [ ] 워밍업 오류 3개를 고쳤다.', '- [ ] 단계마다 실행하며 완성했다.', '- [ ] ★ 3개를 완성했다.', '- [ ] 친구에게 보여 줬다.']
     ch = w['challenge']
-    r += ['', f"## 🚀 도전 프로젝트: {ch['name']}", '', f"**왜 만들까?** {md(ch['why'])}", '', f"목표: {md(ch['goal'])}", '']
+    r += ['', f"## 🚀 도전 프로젝트: {ch['name']}", '', f"**왜 만들까?** {md(ch['why'])}", '', f"📌 목표: {md(ch['goal'])}", '']
     for t in ch.get('tool', []):
         r += [f"> 🧰 **{md(t[0])}**: {md(t[1])}", '']
     r += ['① 실행해 보기: `extension_starter.py`를 그대로 실행', '', f"② {md(ch['design'][0])}: {md(ch['design'][1])}", '']
@@ -277,8 +299,8 @@ def docs(w, complete):
         r += [md_block(ch['body']), '']
     r += ['③ 바꾸고 체크하기', ''] + [f'- [ ] {md(x)}' for x in ch['checks']] + ['', '**➕ 더 해 보기**', ''] + [f'- {md(x)}' for x in ch['more']]
     r += ['', '## 🃏 힌트', '']
-    for h, dots, body, g in w['hints']:
-        r += ['<details>', f'<summary>{h} {dots}</summary>', '', md_body(body), '', '</details>', '']
+    for b, h, dots, body, g in hint_badges(w):
+        r += ['<details>', f'<summary>[{b}] {h} {dots}</summary>', '', md_body(body), '', '</details>', '']
     (d / 'README.md').write_text('\n'.join(r), encoding='utf-8')
     note = f" ({w['demo_random_note']})" if w.get('demo_random_note') else ''
     a = [f"# {w['week_label']} 교안 정답지: {w['title']}", '', '교사용. `lesson.html`의 블록 순서대로 정리했다. 실행 결과는 `mini_solution.py`를 Python 3.11로 실제로 실행해 확인했다' + note + '.', '',

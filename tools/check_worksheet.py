@@ -113,18 +113,25 @@ def check_lesson(path, html, s):
         errors.append(f"활동 블록 순서가 고정 흐름과 달라요: {kinds} (docs/01-worksheet-format.md)")
     for k, has in zip(kinds, s.todo_in_block):
         if not has and k != "hints":
-            errors.append(f"'{k}' 블록에 🎯 목표 한 줄이 없어요")
+            errors.append(f"'{k}' 블록에 📌 목표 한 줄이 없어요")
     # 2차 피드백 규칙
     if 'class="todo"' in html:
         errors.append("할 일 목록(.todo)이 남아 있어요. 목표 한 줄 + 제자리 번호 지시로 바꿔요")
     if "따라 쓸 코드" in html:
-        errors.append("'따라 쓸 코드'라는 말이 있어요. '🧩 기능 추가하기'로 써요")
+        errors.append("'따라 쓸 코드'라는 말이 있어요. '기능 추가하기'로 써요")
     emoji = re.compile("[\U0001F300-\U0001FAFF\u2600-\u27BF]")
     for m in re.finditer(r'기능 추가하기.*?<pre[^>]*>(.*?)</pre>', html, re.S):
         if emoji.search(re.sub(r"<[^>]+>", "", m.group(1))):
             errors.append("기능 추가하기 코드에 이모지가 있어요. 따라 치기 어려우니 빼요")
             break
-    hints = re.findall(r'<div class="hint" data-group="(\w+)"><div class="hh"><span>(.*?)</span><span>(.*?)</span>', html)
+    # 3차 피드백: 번호 지시에 이모지 없음, 목표 줄은 📌, 힌트 카드마다 뱃지
+    if re.search(r'<span class="n">[①②③④⑤]</span>\s*[🌀-🫿☀-➿▶]', html):
+        errors.append("번호 지시(① ② ③) 옆에 이모지가 있어요. 빼요")
+    if re.search(r'<div class="goal">(?!📌)', html):
+        errors.append("목표 줄이 📌로 시작하지 않아요")
+    if html.count('<div class="hint" ') != html.count('<span class="hb">'):
+        errors.append("뱃지(단계 N / 새로 만들기 / 도전)가 없는 힌트 카드가 있어요")
+    hints = re.findall(r'<div class="hint" data-group="(\w+)"><div class="hh"><span class="ht"><span class="hb">.*?</span><span>(.*?)</span></span><span class="hd">(.*?)</span>', html)
     for g, title, dots in hints:
         if re.fullmatch(r"\s*단계\s*\d+\s*", re.sub(r"<[^>]+>", "", title)):
             errors.append(f"힌트 제목이 '{title}'처럼 번호만 있어요. '하려는 일 · 막힌 상황'으로 써요")
