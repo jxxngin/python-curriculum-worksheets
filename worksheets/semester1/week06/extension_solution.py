@@ -46,10 +46,10 @@ emergency = person and distance < 10
 print("")
 print(f"📏 필요한 안전거리: {safe_distance}m / 현재 {distance}m")
 
-# AI 판단
+# AI 판단: 결과는 4가지(정지/감속/차선 변경/주행). 긴급 상황은 정지의 특별 메시지로 보여 준다
 if emergency:
-    decision = "긴급 정지"
-    print("🚨 판단: 긴급 정지! 보행자 보호가 최우선!")
+    decision = "정지"
+    print("🛑 판단: 정지 (🚨 긴급! 보행자 보호가 최우선)")
 elif must_stop:
     decision = "정지"
     print("🛑 판단: 정지")
@@ -82,7 +82,7 @@ if not too_close and not rain and speed <= 60:
 
 # 사람 판단과 비교
 print("")
-print("당신이 운전자라면? (긴급 정지/정지/차선 변경/감속/주행)")
+print("당신이 운전자라면? (정지/감속/차선 변경/주행)")
 human = input("> ").strip()
 if human == decision:
     print("🤝 AI와 같은 판단이에요!")

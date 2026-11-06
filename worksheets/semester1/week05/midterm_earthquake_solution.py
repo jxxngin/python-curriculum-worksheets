@@ -20,10 +20,7 @@ mag_x10 = mag_whole * 10 + mag_point   # 비교하기 쉽게 10배 한 값
 print("")
 print(f"📈 감지된 지진 규모: {mag_whole}.{mag_point}")
 print(f"P파 도착: {p_time}초 후, S파 도착: {s_time}초 후")
-print(f"⏱️ {city}에서 대피할 수 있는 시간: 약 {warning_time}초")
-
-if warning_time >= 60:
-    print(f"   = {warning_time // 60}분 {warning_time % 60}초")
+print(f"⏱️ {city}에서 대피할 수 있는 시간: 약 {warning_time // 60}분 {warning_time % 60}초 ({warning_time}초)")
 
 # 경보 단계 정하기
 print("")

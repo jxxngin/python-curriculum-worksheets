@@ -95,7 +95,8 @@ def make_py(w, d):
     for i, s in enumerate(w['steps'], 1):
         starter += [f"# 단계 {i}: {s['name']}", '', '']
         sol += [f"# 단계 {i}: {s['name']}"] + s.get('sol_lines', s['lines']) + ['']
-    sol += ['# ----- 바꾸기 예시 (선생님용, 주석을 풀면 실행돼요) -----'] + ['# ' + l if l else '#' for l in w['change_example']]
+    where = w.get('change_where', '맨 아래에 이어서')
+    sol += [f'# ----- 바꾸기 예시 (선생님용). 주석을 풀어 {where} 넣으면 실행돼요 -----'] + ['# ' + l if l else '#' for l in w['change_example']]
     (d / 'mini_starter.py').write_text('\n'.join(starter) + '\n', encoding='utf-8')
     (d / 'mini_solution.py').write_text('\n'.join(sol) + '\n', encoding='utf-8')
     src = '\n'.join(sol)
@@ -220,7 +221,7 @@ def lesson(w, d, complete):
     <p class="why"><b>왜 만들까?</b> {ch['why']}</p>
     {goal(ch['goal'])}
     {''.join(tool(*t) for t in ch.get('tool', []))}
-    {act('①', '실행해 보기', '<code>extension_starter.py</code>를 그대로 실행', '')}
+    {act('①', '실행해 보기', ch.get('run', '<code>extension_starter.py</code>를 그대로 실행'), '')}
     {act('②', ch['design'][0], ch['design'][1], ch.get('body', '<div class="draw"></div>'))}
     {act('③', '바꾸고 체크하기', '', check(ch['checks']))}
     <div class="label">➕ 더 해 보기</div>
@@ -297,7 +298,7 @@ def docs(w, complete):
     r += ['', f"## 🚀 도전 프로젝트: {ch['name']}", '', f"**왜 만들까?** {md(ch['why'])}", '', f"📌 목표: {md(ch['goal'])}", '']
     for t in ch.get('tool', []):
         r += [f"> 🧰 **{md(t[0])}**: {md(t[1])}", '']
-    r += ['① 실행해 보기: `extension_starter.py`를 그대로 실행', '', f"② {md(ch['design'][0])}: {md(ch['design'][1])}", '']
+    r += ['① 실행해 보기: ' + md(ch.get('run', '<code>extension_starter.py</code>를 그대로 실행')), '', f"② {md(ch['design'][0])}: {md(ch['design'][1])}", '']
     if ch.get('body'):
         r += [md_block(ch['body']), '']
     r += ['③ 바꾸고 체크하기', ''] + [f'- [ ] {md(x)}' for x in ch['checks']] + ['', '**➕ 더 해 보기**', ''] + [f'- {md(x)}' for x in ch['more']]

@@ -46,7 +46,7 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 | `change` | 바꾸기: 표 머리, 예시 행, `must`(★ 최대 3개), `more`(더 해 보기) |
 | `change_example` | solution 맨 아래에 주석으로 넣을 바꾸기 예시 |
 | `new_ideas`, `brag` | 새로 만들기 아이디어, 마무리 질문 |
-| `challenge` | 도전 프로젝트: `name`, `design`, `story`, `tool`, `body`(표 등 HTML), `checks`, `more` |
+| `challenge` | 도전 프로젝트: `name`, `why`, `goal`, `design`, `tool`, `body`(표 등 HTML), `checks`, `more`, `run`(시작 파일 안내, 기본은 `extension_starter.py`를 그대로 실행) |
 | `hints` | 힌트 카드: (이름, ●○○, 내용 HTML) |
 | `key` | 정답지: `warm`(줄, 오류, 고친 방법), `warm_note`, `steps`(단계별 실행 결과), `trace`(표), `change`, `challenge` |
 | 프로젝트 주차용 | `mini=False`, `complete=(실행할 파일, 입력, 무작위 값)`, `file`(학생이 이어 쓸 파일), `h1`, `week_label`, `mission_todo`; 단계에 `lines` 대신 `todo`, `body`(기획서 표 등), `write`, `readme` |
@@ -78,6 +78,8 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 - 실행 기간은 cron 날짜 범위로 제한한다. 루틴이 스스로 꺼지지 못할 때를 대비한다.
 
 ## 1학기 전체 수정 (P5)
+
+- **중간 프로젝트 주(5주)는 공통 퀴즈 뼈대로 만든다**(저장소 주인 결정, 2026-11-06). 주제를 고르는 주라도 교안은 하나다. 단계에서는 한 주제(수학 퀴즈)로 공통 뼈대를 함께 만들고, "내 것으로 바꾸기"에서 고른 교과로 바꾼다. 도전은 `run`으로 두 시작 파일 중 택1을 안내한다. 같은 뼈대로 바꿀 수 없는 기말(10~11주)은 그때 다시 정한다.
 
 - 1학기 주차는 새 교안 형식(`lesson.html`)으로 다시 만든다. 파이썬 파일도 단계별 쓰기 방식(단계 표시 starter, 단계 주석 solution)에 맞게 고친다.
 - `lesson.html`을 만든 주차는 예전 `worksheet.html`을 지운다(저장소 주인 결정, 2026-11-05). 필요하면 git 기록에서 꺼낸다.
