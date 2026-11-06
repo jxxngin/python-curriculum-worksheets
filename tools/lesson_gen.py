@@ -220,7 +220,7 @@ def lesson(w, d, complete):
     <p class="why"><b>왜 만들까?</b> {ch['why']}</p>
     {goal(ch['goal'])}
     {''.join(tool(*t) for t in ch.get('tool', []))}
-    {act('①', '실행해 보기', '<code>extension_starter.py</code>를 그대로 실행', '')}
+    {act('①', '실행해 보기', ch.get('run', '<code>extension_starter.py</code>를 그대로 실행'), '')}
     {act('②', ch['design'][0], ch['design'][1], ch.get('body', '<div class="draw"></div>'))}
     {act('③', '바꾸고 체크하기', '', check(ch['checks']))}
     <div class="label">➕ 더 해 보기</div>
@@ -297,7 +297,7 @@ def docs(w, complete):
     r += ['', f"## 🚀 도전 프로젝트: {ch['name']}", '', f"**왜 만들까?** {md(ch['why'])}", '', f"📌 목표: {md(ch['goal'])}", '']
     for t in ch.get('tool', []):
         r += [f"> 🧰 **{md(t[0])}**: {md(t[1])}", '']
-    r += ['① 실행해 보기: `extension_starter.py`를 그대로 실행', '', f"② {md(ch['design'][0])}: {md(ch['design'][1])}", '']
+    r += ['① 실행해 보기: ' + md(ch.get('run', '<code>extension_starter.py</code>를 그대로 실행')), '', f"② {md(ch['design'][0])}: {md(ch['design'][1])}", '']
     if ch.get('body'):
         r += [md_block(ch['body']), '']
     r += ['③ 바꾸고 체크하기', ''] + [f'- [ ] {md(x)}' for x in ch['checks']] + ['', '**➕ 더 해 보기**', ''] + [f'- {md(x)}' for x in ch['more']]
