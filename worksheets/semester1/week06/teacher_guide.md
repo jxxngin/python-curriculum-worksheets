@@ -45,7 +45,7 @@
 순서: 19번(IndentationError) → 8번(NameError) → 10번(메시지 없음).
 
 1. 19번째 줄: `print("😎 …")` 앞에 4칸 들여쓰기 (IndentationError, 실행 전에 나온다)
-2. 8번째 줄: `false` → `False` (NameError)
+2. 8번째 줄: `false` → `False` (NameError, 질문 두 개에 대답한 뒤 나온다)
 3. 10번째 줄: `if rain == "네" or "흐림":` → `if rain == "네":` (메시지 없음. 비도 안 오고 맑아도 우산을 챙기라고 한다. 힌트 블록의 `워밍업` 카드에 고치는 모양이 있다)
 
 ## 단계별 확인

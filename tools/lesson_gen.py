@@ -95,7 +95,8 @@ def make_py(w, d):
     for i, s in enumerate(w['steps'], 1):
         starter += [f"# 단계 {i}: {s['name']}", '', '']
         sol += [f"# 단계 {i}: {s['name']}"] + s.get('sol_lines', s['lines']) + ['']
-    sol += ['# ----- 바꾸기 예시 (선생님용, 주석을 풀면 실행돼요) -----'] + ['# ' + l if l else '#' for l in w['change_example']]
+    where = w.get('change_where', '맨 아래에 이어서')
+    sol += [f'# ----- 바꾸기 예시 (선생님용). 주석을 풀어 {where} 넣으면 실행돼요 -----'] + ['# ' + l if l else '#' for l in w['change_example']]
     (d / 'mini_starter.py').write_text('\n'.join(starter) + '\n', encoding='utf-8')
     (d / 'mini_solution.py').write_text('\n'.join(sol) + '\n', encoding='utf-8')
     src = '\n'.join(sol)

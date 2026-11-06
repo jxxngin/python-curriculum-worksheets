@@ -244,7 +244,7 @@ else:
 <details>
 <summary>[새로 만들기] 힌트 기회 · 거의 다 됐는데 안 될 때 ●●●</summary>
 
-1번 문제의 `answer = input(...)` 줄 바로 아래에 넣어요. 그리고 1번 채점의 `score + 10`을 `score + points`로 바꿔요.
+1번 문제의 `answer = input(...)` 줄 바로 아래에 넣어요. 그리고 1번 채점의 두 줄도 바꿔요: `print(f"정답! +{points}점")`, `score = score + points`. 그래야 힌트를 쓰면 화면에도 +5점이 나와요.
 
 ```python
 points = 10

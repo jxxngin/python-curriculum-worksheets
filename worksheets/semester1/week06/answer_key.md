@@ -14,7 +14,7 @@
 | 2 | 8 | NameError (`name 'false' is not defined. Did you mean: 'False'?`) | `False` (첫 글자 대문자) |
 | 3 | 10 | 메시지 없음 (비도 안 오고 맑아도 우산을 챙기라고 한다) | `if rain == "네":` (워밍업 힌트 카드) |
 
-- IndentationError(19번)는 실행 전에 나온다. 고치면 실행되고 대답을 넣기 전에 8번 NameError가 난다. 10번은 `or` 오른쪽의 `"흐림"`이 비교가 아니라 글자라서 늘 참이다.
+- IndentationError(19번)는 실행 전에 나온다. 고치면 실행되고, 5·6번 줄의 질문 두 개에 대답한 뒤 8번 NameError가 난다. 10번은 `or` 오른쪽의 `"흐림"`이 비교가 아니라 글자라서 늘 참이다.
 
 ## 🪜 단계 1 · 손님 정보 물어보기
 
