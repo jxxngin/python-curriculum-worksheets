@@ -2,11 +2,14 @@
 
 초등 고학년~중고등 소그룹 파이썬 수업용 주차별 워크시트.
 
+**👉 웹에서 보기: https://jxxngin.github.io/python-curriculum-worksheets/** (학기·주차별 목차, 교안을 링크로 바로 열고 인쇄)
+
 - **제작 기준: [docs/](docs/README.md)** (커리큘럼, 워크시트 형식, 내용 규칙, 점검, 제작 절차, 결정 기록, 템플릿)
 - 커리큘럼 원본: [docs/curriculum.md](docs/curriculum.md)
 - 진행 상황: [PROGRESS.md](PROGRESS.md)
 - 워크시트: [worksheets/semester1](worksheets/semester1)
 - 에이전트 안내: [CLAUDE.md](CLAUDE.md)
+- 웹 사이트: `main`에 푸시하면 GitHub Actions가 `python tools/build_site.py`로 목차와 교안 페이지를 만들어 GitHub Pages에 올린다. 목차는 `docs/curriculum.md`의 표로 만들고, 교안이 있는 주차만 링크가 걸린다.
 
 새 형식 주차는 교안 `lesson.html`(화면에서 보는 교안, 인쇄하면 학습지), 교안 요약 `README.md`, 실습용 파이썬 파일, 교사용 정답지(`answer_key.md`), 교사 가이드로 이루어진다. 1학기 1~6주차는 새 형식이고, 나머지 주차는 아직 예전 형식(A4 `worksheet.html` + `README.md`)이다.
 
