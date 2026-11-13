@@ -33,7 +33,7 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 
 - 만드는 파일: `lesson.html`, `README.md`, `answer_key.md`, (개념 주차) `mini_starter.py`, `mini_solution.py`
 - 손으로 쓰는 파일: `lesson_spec.py`, `warmup.py`, `extension_*.py`, `teacher_guide.md`, (프로젝트 주차) 주제별 starter/solution
-- 기준 예시: `week01/lesson_spec.py`(3단계), `week04/lesson_spec.py`(4단계, 무작위 값 고정)
+- 기준 예시: `week01/lesson_spec.py`(3단계), `week04/lesson_spec.py`(4단계, 무작위 값 고정), `week08/lesson_spec.py`(`random.choice` 고정), `week09/lesson_spec.py`(설계와 보충), `week10-11/lesson_spec.py`(기말, 워밍업 2개)
 
 `SPEC` 주요 필드
 
@@ -50,6 +50,11 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 | `hints` | 힌트 카드: (이름, ●○○, 내용 HTML) |
 | `key` | 정답지: `warm`(줄, 오류, 고친 방법), `warm_note`, `steps`(단계별 실행 결과), `trace`(표), `change`, `challenge` |
 | 프로젝트 주차용 | `mini=False`, `complete=(실행할 파일, 입력, 무작위 값)`, `file`(학생이 이어 쓸 파일), `h1`, `week_label`, `mission_todo`; 단계에 `lines` 대신 `todo`, `body`(기획서 표 등), `write`, `readme` |
+| 무작위·입력 | `demo_choices`(완성 화면에서 `random.choice()`가 고를 값), `prefix_inputs`(단계별로 끊어 실행해 볼 때 넣을 입력. 기본은 `demo_inputs` + `'1'` 5개), `complete`의 넷째 값(고를 값). `time.sleep()`은 기다리지 않고 실행한다 |
+| 프로젝트 블록 바꾸기 | `complete_bar`(완성 화면 제목). `change`에 `title`, `small`, `act1=(이름, 설명)`, `body`(설계 표 대신 넣을 HTML), `act2`, `friend=(이름, 설명)`, `readme`. `new_title`, `new_small`, `new_goal`, `new_body`, `new_readme`, `new_badge`(힌트 뱃지), `wrap`(오늘의 마무리). `challenge`를 빼면 도전 블록이 없다 |
+| 워밍업 여러 개 | `warmups=[dict(file, label, title, errors, hint, key, note, before_step), …]`. 첫째는 미션 뒤, 나머지는 `before_step` 단계 앞에 놓인다(10~11주) |
+| 힌트 뱃지 지정 | 힌트에 다섯째 값을 주면 그 글자가 뱃지가 된다(예: `('…', '●○○', '…', 'change', '방탈출')`) |
+| 정답지 | `key`에 `intro`(머리말), `mission`(완성 화면 설명), `step_label`(프로젝트 주차는 "확인할 점"), `new`(새로 만들기·보충 정답) |
 
 ## 프로젝트 주차 (5, 9, 10~11주)
 
@@ -59,7 +64,7 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 - `warmup`: 그대로
 - `step`: 프로젝트 단계. 예) 중간: 주제 고르기·기획서 → 만들기 1·2 → 발표 준비. 설계와 보충: 설계도 ①·② → 보충 문제. 기말: 명령 카드 → 만들기(일정표) → 친구 테스트 → 발표 준비
 - `change`: 최소 완성 기준(★ 최대 3개 + 더 해 보기)과 평가표
-- `new`, `challenge`, `hints`: 그대로(필요 없으면 `new`·`challenge`는 빼도 된다)
+- `new`, `challenge`, `hints`: 그대로. `challenge`는 필요 없으면 뺀다. `new`는 늘 있고(오늘의 마무리가 들어 있다), 제목과 내용을 바꿔 쓴다(9주 보충 문제, 10~11주 추가 기능)
 
 ## 중간에 끊긴 경우
 
@@ -79,7 +84,7 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 
 ## 1학기 전체 수정 (P5)
 
-- **중간 프로젝트 주(5주)는 공통 퀴즈 뼈대로 만든다**(저장소 주인 결정, 2026-11-06). 주제를 고르는 주라도 교안은 하나다. 단계에서는 한 주제(수학 퀴즈)로 공통 뼈대를 함께 만들고, "내 것으로 바꾸기"에서 고른 교과로 바꾼다. 도전은 `run`으로 두 시작 파일 중 택1을 안내한다. 같은 뼈대로 바꿀 수 없는 기말(10~11주)은 그때 다시 정한다.
+- **중간 프로젝트 주(5주)는 공통 퀴즈 뼈대로 만든다**(저장소 주인 결정, 2026-11-06). 주제를 고르는 주라도 교안은 하나다. 단계에서는 한 주제(수학 퀴즈)로 공통 뼈대를 함께 만들고, "내 것으로 바꾸기"에서 고른 교과로 바꾼다. 도전은 `run`으로 두 시작 파일 중 택1을 안내한다. 같은 뼈대로 바꿀 수 없는 기말(10~11주)은 **과정 중심 교안 하나**로 정했다(2026-11-13): 명령 카드·시작 파일 → 최소 기준 만들기(10주) → 친구 테스트 → 발표 준비(11주), 워밍업은 주마다 하나.
 
 - 1학기 주차는 새 교안 형식(`lesson.html`)으로 다시 만든다. 파이썬 파일도 단계별 쓰기 방식(단계 표시 starter, 단계 주석 solution)에 맞게 고친다.
 - `lesson.html`을 만든 주차는 예전 `worksheet.html`을 지운다(저장소 주인 결정, 2026-11-05). 필요하면 git 기록에서 꺼낸다.

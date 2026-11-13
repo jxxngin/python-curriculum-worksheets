@@ -108,7 +108,30 @@ def check_lesson(path, html, s):
     for need in ("mission", "warmup", "step", "change", "hints"):
         if need not in kinds:
             errors.append(f"활동 블록 '{need}'가 없어요")
-    rank = [ORDER.index(k) for k in kinds if k in ORDER]
+    # 여러 주에 걸친 교안(머리 칩이 "10~11주차"처럼 N~M주차)만, 새 주의 첫 단계 바로 앞에 워밍업을 더 둘 수 있다.
+    # 새 주의 첫 단계 = 단계 이름 끝의 "(N주)"가 바로 앞 단계와 다른 단계. 그 밖의 추가 워밍업은 순서 검사에 그대로 걸린다.
+    order_kinds = list(kinds)
+    multi = re.search(r'class="chip">[^<]*?(\d+)~(\d+)주차', html)
+    heads = re.findall(r'<section class="block (\w+)">\s*<h2>(.*?)</h2>', html, re.S)
+    week_of = lambda h2: (re.search(r"\((\d+)주\)\s*$", re.sub(r"<[^>]+>", "", h2)) or [None, None])[1]
+    if [k for k, _ in heads] == kinds and "warmup" in kinds:
+        first_warm = kinds.index("warmup")
+        allowed = 0
+        for i in range(len(kinds) - 1, first_warm, -1):
+            if kinds[i] != "warmup":
+                continue
+            prev_steps = [h for k, h in heads[:i] if k == "step"]
+            nxt = heads[i + 1] if i + 1 < len(heads) else (None, "")
+            ok = (multi and nxt[0] == "step" and prev_steps
+                  and week_of(nxt[1]) and week_of(prev_steps[-1]) and week_of(nxt[1]) != week_of(prev_steps[-1]))
+            if ok:
+                del order_kinds[i]
+                allowed += 1
+            else:
+                errors.append("추가 워밍업은 여러 주 교안(N~M주차)에서 새 주의 첫 단계 바로 앞에만 둬요")
+        if multi and allowed > int(multi.group(2)) - int(multi.group(1)):
+            errors.append("추가 워밍업이 주 수보다 많아요")
+    rank = [ORDER.index(k) for k in order_kinds if k in ORDER]
     if rank != sorted(rank):
         errors.append(f"활동 블록 순서가 고정 흐름과 달라요: {kinds} (docs/01-worksheet-format.md)")
     for k, has in zip(kinds, s.todo_in_block):
