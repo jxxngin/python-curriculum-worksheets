@@ -188,7 +188,7 @@ print("감사합니다!")
 
 ## 💡 새로 만들기 (하고 싶은 사람)
 
-- 예산 모드: 처음에 가진 돈을 묻고, 넘게 담으려 하면 "돈이 부족해요"
+- 예산 모드: 처음에 가진 돈을 묻고, 넘게 담으려 하면 "돈이 부족해요" (개수 기능을 만든 뒤)
 - 1+1 행사: 행사 메뉴는 2개를 담으면 1개 값만 쌓기
 
 **✅ 오늘의 마무리**
@@ -293,29 +293,32 @@ print("감사합니다!")
 <details>
 <summary>[새로 만들기] 예산 모드 · 무엇부터 할지 모를 때 ●○○</summary>
 
-처음에 가진 돈을 물어요. 담기 전에 "합계 + 이번 가격"이 가진 돈보다 크면 담지 않고 다시 물어요.
+바꾸기의 개수 기능(★)을 먼저 만들어요. 처음에 가진 돈을 묻고, 개수까지 받은 뒤 "합계 + 이번 소계(가격 × 개수)"가 가진 돈보다 크면 담지 않고 다시 물어요.
 
 </details>
 
 <details>
 <summary>[새로 만들기] 예산 모드 · 쓸 도구가 떠오르지 않을 때 ●●○</summary>
 
-새 상자 `budget`(가진 돈, 반복 전에 `int(input())`로). `if total + price > budget:` 안에서 알려 주고 `continue`.
+새 상자 `budget`(가진 돈, 반복 전에 `int(input())`로)과 `subtotal`(이번 소계, `price * count`). `if total + subtotal > budget:` 안에서 알려 주고 `continue`. 합계에도 같은 `subtotal`을 더해요.
 
 </details>
 
 <details>
 <summary>[새로 만들기] 예산 모드 · 거의 다 됐는데 안 될 때 ●●●</summary>
 
-주석이 알려 주는 두 자리에 넣어요. `if`는 `while` 안이라 4칸 들여 써요.
+주석이 알려 주는 두 자리에 넣어요. 둘째 덩어리는 바꾸기에서 만든 개수 두 줄(`count = …`, `total = total + price * count`)을 바꿔 쓰는 거예요. `while` 안이라 4칸 들여 써요.
 
 ```python
 # 단계 2의 total = 0 아래에
 budget = int(input("가진 돈 (숫자만): "))
-# 단계 4의 print(f"{price}원을 담았어요.") 바로 위에
-    if total + price > budget:
+# 바꾸기의 개수 두 줄을 아래로 바꿔 쓰기
+    count = int(input("몇 개? (숫자만): "))
+    subtotal = price * count
+    if total + subtotal > budget:
         print("돈이 부족해요. 다른 메뉴를 골라요.")
         continue
+    total = total + subtotal
 ```
 
 </details>
