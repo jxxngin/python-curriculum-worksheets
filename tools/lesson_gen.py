@@ -54,7 +54,10 @@ def table(headers, rows=0, first=None, widths=None):
     return f'<table class="fill"><tr>{h}</tr>{body}</table>'
 
 
-def run(src, inputs, randoms=None):
+def run(src, inputs, randoms=None, choices=None):
+    """src를 실행한 화면을 돌려준다. randoms: randint가 차례로 낼 값, choices: random.choice가 차례로 고를 값.
+    time.sleep()은 기다리지 않는다."""
+    import time
     it = iter(inputs)
     out = io.StringIO()
 
@@ -63,26 +66,30 @@ def run(src, inputs, randoms=None):
         out.write(p + v + '\n')
         return v
     g = {'input': fin, '__name__': '__main__'}
+    orig = random.randint, random.choice, time.sleep
     if randoms is not None:
         r_it = iter(randoms)
-        orig = random.randint
         random.randint = lambda a, b: next(r_it)
+    if choices is not None:
+        c_it = iter(choices)
+        random.choice = lambda seq: next(c_it)
+    time.sleep = lambda s: None
     old = sys.stdout
     sys.stdout = out
     try:
         exec(src, g)
     finally:
         sys.stdout = old
-        if randoms is not None:
-            random.randint = orig
+        random.randint, random.choice, time.sleep = orig
     return out.getvalue().rstrip('\n')
 
 
 def build(w):
     d = w['_dir']
     if w.get('mini', True) is False:
-        f, inp, rnd = w['complete']
-        complete = run((d / f).read_text(encoding='utf-8'), inp, rnd)
+        f, inp, rnd = w['complete'][:3]
+        ch = w['complete'][3] if len(w['complete']) > 3 else None
+        complete = run((d / f).read_text(encoding='utf-8'), inp, rnd, ch)
     else:
         complete = make_py(w, d)
     lesson(w, d, complete)
@@ -100,12 +107,13 @@ def make_py(w, d):
     (d / 'mini_starter.py').write_text('\n'.join(starter) + '\n', encoding='utf-8')
     (d / 'mini_solution.py').write_text('\n'.join(sol) + '\n', encoding='utf-8')
     src = '\n'.join(sol)
-    complete = run(src, w['demo_inputs'], w.get('demo_randoms'))
+    complete = run(src, w['demo_inputs'], w.get('demo_randoms'), w.get('demo_choices'))
     # each step prefix must run
     acc = []
     for i, s in enumerate(w['steps'], 1):
         acc += s.get('sol_lines', s['lines'])
-        run('\n'.join(acc), w['demo_inputs'] + ['1'] * 5, (w.get('demo_randoms') or []) + [1] * 5 if w.get('demo_randoms') else None)
+        ch = w.get('demo_choices')
+        run('\n'.join(acc), w.get('prefix_inputs', w['demo_inputs'] + ['1'] * 5), (w.get('demo_randoms') or []) + [1] * 5 if w.get('demo_randoms') else None, ch * 2 if ch else None)
     return complete
 
 
