@@ -108,7 +108,15 @@ def check_lesson(path, html, s):
     for need in ("mission", "warmup", "step", "change", "hints"):
         if need not in kinds:
             errors.append(f"활동 블록 '{need}'가 없어요")
-    rank = [ORDER.index(k) for k in kinds if k in ORDER]
+    # 여러 주에 걸친 교안(예: 10~11주)은 주가 바뀌는 자리, 곧 단계 바로 앞에 워밍업을 하나 더 둘 수 있다
+    order_kinds = list(kinds)
+    first_warm = order_kinds.index("warmup") if "warmup" in order_kinds else -1
+    for i in range(len(kinds) - 1, first_warm, -1):
+        if kinds[i] == "warmup" and i > first_warm:
+            if i + 1 >= len(kinds) or kinds[i + 1] != "step":
+                errors.append("둘째 워밍업은 단계 블록 바로 앞에 둬요 (여러 주 교안)")
+            del order_kinds[i]
+    rank = [ORDER.index(k) for k in order_kinds if k in ORDER]
     if rank != sorted(rank):
         errors.append(f"활동 블록 순서가 고정 흐름과 달라요: {kinds} (docs/01-worksheet-format.md)")
     for k, has in zip(kinds, s.todo_in_block):

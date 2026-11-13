@@ -36,7 +36,7 @@ while room <= 3 and lives > 0:
         else:
             a = random.randint(10, 50)
             b = random.randint(3, 9)
-            question = f"{a}을(를) {b}로 나눈 나머지는? "
+            question = f"{a} ÷ {b}의 나머지는? "
             answer = a % b
 
         reply = int(input(question))

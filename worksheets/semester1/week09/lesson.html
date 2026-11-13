@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9주차 교안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 교안 공통 스타일: docs/templates/lesson-template.html 과 같아야 한다. 고치지 않는다. ===== */
+:root {
+  --ink: #1f2937;
+  --sub: #6b7280;
+  --line: #d1d5db;
+  --soft: #f3f4f6;
+  --bg: #f6f7fb;
+  --paper: #ffffff;
+  --code-bg: #f8fafc;
+  /* 활동 색: 파랑(미션~마무리) / 주황(도전) / 회색(힌트). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --main: #2563eb;  --main-soft: #eff6ff;
+  --more: #ea580c;  --more-soft: #fff7ed;
+  --gray: #6b7280;  --gray-soft: #f3f4f6;
+  --mission: var(--main);   --mission-soft: var(--main-soft);
+  --warmup: var(--main);    --warmup-soft: var(--main-soft);
+  --step: var(--main);      --step-soft: var(--main-soft);
+  --change: var(--main);    --change-soft: var(--main-soft);
+  --new: var(--main);       --new-soft: var(--main-soft);
+  --challenge: var(--more); --challenge-soft: var(--more-soft);
+  --hint: var(--gray);      --hint-soft: var(--gray-soft);
+  --tool: #475569;          --tool-soft: #f1f5f9;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.lesson { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; display: flex; flex-direction: column; gap: 28px; }
+code, .mono { font-family: "Nanum Gothic Coding", Consolas, monospace; }
+code { background: var(--soft); padding: 1px 6px; border-radius: 6px; font-size: .92em; }
+p { margin: 0; }
+.muted { color: var(--sub); font-size: .92em; }
+
+/* 머리 */
+.lesson-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.lesson-head .chip { background: var(--mission); color: #fff; border-radius: 999px; padding: 4px 14px; font-weight: 700; font-size: .9em; }
+.lesson-head h1 { margin: 0; font-size: 1.9em; font-weight: 900; letter-spacing: -0.5px; flex: 1 1 320px; }
+.who { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; white-space: nowrap; font-size: .9em; color: var(--sub); }
+.who span { display: inline-block; min-width: 120px; height: 1.4em; border-bottom: 1.5px solid var(--line); margin-right: 8px; }
+
+/* 활동 블록 */
+.block { --c: var(--ink); --cs: var(--soft); background: var(--paper); border-radius: 18px; padding: 24px 26px 26px; border-top: 8px solid var(--c); display: flex; flex-direction: column; gap: 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.block.mission   { --c: var(--mission);   --cs: var(--mission-soft); }
+.block.warmup    { --c: var(--warmup);    --cs: var(--warmup-soft); }
+.block.step      { --c: var(--step);      --cs: var(--step-soft); }
+.block.change    { --c: var(--change);    --cs: var(--change-soft); }
+.block.new       { --c: var(--new);       --cs: var(--new-soft); }
+.block.challenge { --c: var(--challenge); --cs: var(--challenge-soft); }
+.block.hints     { --c: var(--hint);      --cs: var(--hint-soft); }
+.block > h2 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.45em; font-weight: 900; color: var(--c); }
+.block > h2 .tag { background: var(--c); color: #fff; border-radius: 10px; padding: 2px 12px; font-size: .7em; }
+.block > h2 small { color: var(--sub); font-weight: 500; font-size: .6em; }
+h3 { margin: 0; font-size: 1.05em; font-weight: 900; color: var(--c, var(--ink)); }   /* 블록 안 작은 제목은 블록 색 */
+
+/* 할 일 */
+/* 목표 한 줄 (할 일 목록 대신) */
+.goal { background: var(--cs); color: var(--c); border-radius: 12px; padding: 12px 18px; font-weight: 700; }
+.goals { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.goals h3 { color: var(--c); margin-bottom: 4px; }
+.goals ul { margin: 0; padding-left: 22px; }
+.order { color: var(--sub); font-size: .92em; }
+.label .n { display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--c); color: #fff; font-size: .85em; margin-right: 6px; }
+.label .how { color: var(--ink); font-weight: 500; }
+.keep { display: flex; flex-direction: column; gap: 10px; }
+.why { border-left: 5px solid var(--c); padding: 4px 0 4px 14px; }
+/* (예전) 할 일 상자 */
+.todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.todo h3 { color: var(--c); margin-bottom: 4px; }
+.todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
+
+/* 도구 카드 */
+.tool { background: var(--tool-soft); border-radius: 12px; padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+.tool .th { font-weight: 900; color: var(--tool); }
+
+/* 코드 */
+pre.code { margin: 0; padding: 14px 16px 14px 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px;
+  font-family: "Nanum Gothic Coding", Consolas, monospace; font-size: 16px; line-height: 1.75; counter-reset: ln; white-space: pre; overflow-x: auto; }
+pre.code > span.l { display: block; padding-left: 46px; position: relative; min-height: 1.75em; }
+pre.code > span.l::before { counter-increment: ln; content: counter(ln); position: absolute; left: 0; width: 32px; text-align: right; color: #9ca3af; font-size: .85em; }
+pre.code.nonum > span.l { padding-left: 16px; }
+pre.code.nonum > span.l::before { content: none; }
+pre.code .c { color: #6b7280; }
+.blank { display: inline-block; min-width: 90px; height: 1.5em; vertical-align: -0.35em; border: 2px dashed var(--c); border-radius: 8px; background: #fff; position: relative; }
+.blank[data-n]::after { content: attr(data-n); position: absolute; top: -10px; left: -10px; width: 18px; height: 18px; border-radius: 50%; background: var(--c); color: #fff; font: 700 11px/18px "Noto Sans KR", sans-serif; text-align: center; }
+
+/* 쓰는 칸 */
+.label { font-weight: 900; color: var(--c); }
+.write { border: 2px solid var(--line); border-radius: 12px; min-height: 160px; background:
+  repeating-linear-gradient(transparent 0 39px, #e5e7eb 39px 40px); background-origin: content-box; padding: 6px 14px; }
+.write.small { min-height: 90px; }
+.screen { border-radius: 12px; overflow: hidden; border: 2px solid var(--ink); }
+.screen .bar { background: var(--ink); color: #fff; font-size: .85em; padding: 4px 12px; }
+.screen .body { padding: 10px 14px; font-family: "Nanum Gothic Coding", monospace; font-size: 15px; line-height: 1.55; white-space: pre; overflow-x: auto; }
+table.fill { width: 100%; border-collapse: collapse; }
+table.fill th, table.fill td { border: 1.5px solid var(--line); padding: 8px 12px; text-align: left; }
+table.fill th { background: var(--cs); color: var(--ink); }
+table.fill td.w { height: 56px; }
+table.fill.ref th { background: var(--soft); }
+table.fill.ref td { height: auto; padding: 6px 12px; font-size: .92em; }
+ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+ul.check li { padding-left: 34px; position: relative; }
+ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width: 22px; height: 22px; border: 2.5px solid var(--c); border-radius: 6px; background: #fff; }
+.draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
+
+/* 힌트 카드 */
+.hints-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hints-list > .hint { min-width: 0; }
+.hints-list > .hint:has(pre) { grid-column: 1 / -1; }   /* 코드가 든 카드(●●● 거의 코드)는 한 줄 전체 */
+.hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.hint .hh { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-weight: 900; color: var(--hint); }
+.hint .ht { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
+.hint .hb { font-size: .78em; font-weight: 700; color: #fff; background: var(--main); border-radius: 999px; padding: 1px 10px; white-space: nowrap; }
+.hint[data-group="challenge"] .hb { background: var(--more); }
+.hint .hd { white-space: nowrap; }
+.hint pre.code { font-size: 14px; }
+
+/* 인쇄: 활동 블록마다 새 쪽, 쓰는 칸은 쪽 사이에서 끊지 않는다 */
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .lesson { max-width: none; padding: 0; gap: 0; }
+  .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
+  .lesson-head + .block { break-before: auto; margin-top: 8mm; }
+  .todo, .goal, .goals, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li, .keep { break-inside: avoid; }
+  pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .block { padding: 18px 16px 20px; border-radius: 14px; }
+  pre.code { font-size: 14px; }
+  .hints-list { grid-template-columns: 1fr; }
+}
+/* ===== 공통 스타일 끝 ===== */
+
+/* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-head">
+    <span class="chip">1학기 · 9주차 · 설계와 보충</span>
+    <h1>기말 설계도 그리기</h1>
+    <div class="who">이름 <span></span> 날짜 <span></span></div>
+  </header>
+
+  <section class="block mission">
+    <h2>🎯 오늘의 미션</h2>
+    <p>기말 프로젝트 주제를 하나 고르고, 코드를 쓰기 전에 설계도를 그려요. 설계를 마치면 보충 문제로 1~8주에 배운 것을 다시 써 봐요.</p>
+    <div class="goals"><h3>📌 오늘의 목표</h3><ul><li>기말 주제를 고르고 최소 완성 기준을 말할 수 있다.</li><li>화면 흐름, 변수·리스트 표, 순서도로 설계도를 그릴 수 있다.</li><li>작은 프로그램을 바꾸며 헷갈리는 개념을 다시 써 볼 수 있다.</li></ul></div>
+    <div class="screen"><div class="bar">10~11주에 만들 프로그램 예시: 수학 문제 방탈출</div><div class="body">🔐 수학 문제 방탈출 🔐
+방 3개를 모두 지나 열쇠 3개를 모으면 탈출이에요. 목숨은 3개!
+
+=== 1번 방: 덧셈의 방 ➕ ===
+23 + 41 = 64
+철컥! 🔑 1번 열쇠를 얻었어요.
+
+=== 2번 방: 구구단의 방 ✖️ ===
+7 × 8 = 54
+땡! 정답은 56. 남은 목숨 ❤️❤️🤍
+6 × 4 = 24
+철컥! 🔑 2번 열쇠를 얻었어요.
+
+=== 3번 방: 나머지의 방 ➗ ===
+38 ÷ 5의 나머지는? 3
+철컥! 🔑 3번 열쇠를 얻었어요.
+
+문을 확인하는 중...
+모은 열쇠: ['1번 열쇠', '2번 열쇠', '3번 열쇠']
+🎉 탈출 성공! 바깥 공기가 상쾌해요.
+등급: 🥈 침착한 탐험가</div></div>
+  </section>
+
+  <section class="block warmup">
+    <h2>🔧 워밍업 <small>고장 난 보물 상자 고치기</small></h2>
+    <div class="goal">📌 목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시 · 1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실었어요.</span></div><pre class="code" style="counter-reset: ln 4"><span class="l">keys = ["금 열쇠", "은 열쇠", "동 열쇠"]</span><span class="l">print(f"가진 열쇠: {keys}")</span><span class="l">print(f"마지막 열쇠: {keys[3]}")</span><span class="l"></span><span class="l">tries = 0</span><span class="l">while tries &lt; 3:</span><span class="l">    pick = input("어떤 열쇠를 쓸까요? ").strip()</span><span class="l">    tries = tries + 1</span><span class="l">    if pick = "금 열쇠":</span><span class="l">        print("🎁 상자가 열렸어요!")</span><span class="l">        break</span><span class="l">    print(f"철컥... 안 맞아요. 남은 기회: {tries - 3}")</span></pre></div>
+    <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how"><code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기</span></div><table class="fill ref"><tr><th style=width:24%>오류 이름</th><th>뜻</th><th>확인할 곳</th></tr><tr><td><b>SyntaxError</b></td><td>문법이 틀림</td><td><code>if</code> 줄의 비교 기호</td></tr><tr><td><b>IndexError</b></td><td>없는 칸 번호를 씀</td><td>리스트의 칸 수와 칸 번호</td></tr><tr><td><b>메시지 없는 오류</b></td><td>남은 기회가 음수로 나와요</td><td>빼는 순서</td></tr></table><table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 1</span> 주제 고르고 화면 흐름 그리기</h2>
+    <div class="goal">📌 목표: 기말 주제 하나를 고르고, 시작 → 되풀이되는 화면 → 끝 화면을 그린다.</div><div class="keep"><div class="label"><span class="n">①</span>주제 고르기 <span class="how">하나에 표시</span></div><table class="fill"><tr><th style=width:12%>고르기</th><th style=width:30%>주제</th><th>최소 완성 기준 (이보다 더 만든 것은 추가 기능)</th></tr><tr><td class="w"></td><td class="w">수학 문제 방탈출</td><td class="w">방 3개, 방마다 무작위 문제를 맞힐 때까지 반복, 목숨 3개, 열쇠 리스트</td></tr><tr><td class="w"></td><td class="w">펫과 함께하는 하루</td><td class="w">10턴, 행동 3개(밥, 놀기, 재우기), 배고픔·기분 수치 2개, 행복도로 성공·실패 판정</td></tr><tr><td class="w"></td><td class="w">청소년 창업 시뮬레이션 (🚀 어려움)</td><td class="w">7일 영업, 돈·평판 수치 2개, 판매 상품 리스트, 무작위 사건 3개, 목표 금액 달성 여부 판정</td></tr><tr><td class="w"></td><td class="w">1~8주 프로젝트를 교과 주제로 키우기 (내 주제:            )</td><td class="w"><code>while</code>, 리스트, 조건, <code>random</code>을 모두 쓰기</td></tr></table></div><div class="keep"><div class="label"><span class="n">②</span>화면 흐름 그리기 <span class="how">상자 3개 이상(시작 화면 → 되풀이되는 화면 → 끝 화면), 화면에 나올 글자도 적기</span></div><div class="draw"></div></div><ul class="check"><li>주제를 골랐어요.</li><li>되풀이되는 화면에 나올 글자를 적었어요.</li></ul>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 2</span> 변수·리스트 표와 순서도</h2>
+    <div class="goal">📌 목표: 바뀌는 값(변수)과 모아 둘 값(리스트)을 정하고, 반복과 판정의 순서를 그린다.</div><div class="tool"><div class="th">🧰 순서도 기호</div><p>네모 <code>[ ]</code>는 "하는 일", 마름모 <code>&lt; &gt;</code>는 "묻는 조건"이에요. 조건에서 예/아니요로 갈라지고, 반복은 화살표가 위로 돌아가요.</p><pre class="code nonum"><span class="l">[펫 이름 묻기]</span><span class="l">&lt;턴이 10 이하?&gt; 예 → [행동 고르기] → 다시 위로</span><span class="l">               아니요 → [행복도로 판정]</span></pre><p class="muted">→ 반복이 어디서 시작하고 끝나는지 보여요</p></div><div class="keep"><div class="label"><span class="n">①</span>변수 표 <span class="how">화면에 숫자로 보이는 것 = 변수</span></div><table class="fill"><tr><th>이름 (영어)</th><th>뜻</th><th>처음 값</th><th>언제 바뀌나요?</th></tr><tr><td class="w">예) lives</td><td class="w">목숨</td><td class="w">3</td><td class="w">틀릴 때 1 줄어요</td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div><div class="keep"><div class="label"><span class="n">②</span>리스트 표 <span class="how">여러 개를 모아 두는 것 = 리스트</span></div><table class="fill"><tr><th>이름 (영어)</th><th>처음 내용</th><th>언제 append / in?</th></tr><tr><td class="w">예) keys</td><td class="w">[ ] (빈 리스트)</td><td class="w">방을 나갈 때 append</td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div><div class="keep"><div class="label"><span class="n">③</span>순서도 그리기 <span class="how">반복이 시작·끝나는 곳, 성공·실패를 판정하는 곳 표시</span></div><div class="draw"></div></div><ul class="check"><li>변수마다 처음 값을 적었어요.</li><li>순서도에 반복이 끝나는 조건이 있어요.</li></ul>
+  </section>
+
+  <section class="block change">
+    <h2>⭐ 설계도 점검 <small>오늘의 완성 기준</small></h2>
+    <div class="goal">📌 목표: 설계도가 최소 완성 기준을 모두 담았는지 점검하고, 쓸 개념을 고른다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>사용할 개념 체크 <span class="how">설계도에서 쓸 개념에 모두 표시</span></div><ul class="check"><li><code>print()</code> · <code>input()</code> · 변수 · f-string</li><li><code>if</code> / <code>elif</code> / <code>else</code> · <code>==</code> · <code>.strip()</code></li><li><code>int()</code> · 산술 연산자 · <code>%</code></li><li><code>import random</code> · <code>random.randint()</code> · <code>abs()</code></li><li><code>and</code> / <code>or</code> / <code>not</code> · 깃발 변수 (<code>True</code> / <code>False</code>)</li><li><code>while</code> · <code>break</code> · <code>continue</code> · 누적 변수</li><li>리스트 · <code>append()</code> · <code>in</code> · <code>random.choice()</code></li></ul></div>
+    <div class="keep"><div class="label"><span class="n">②</span>설계도 점검하기 <span class="how">★ 3개를 하면 완성</span></div><ul class="check"><li>★ 고른 주제의 최소 완성 기준을 설계도에 하나도 빠짐없이 넣었어요.</li><li>★ 반복(<code>while</code>)이 언제 끝나는지 조건을 적었어요.</li><li>★ 변수마다 처음 값을 정했어요. (누적 변수는 반복 전에)</li></ul></div>
+    <div class="label">➕ 더 해 보기</div>
+    <ul class="check"><li>최소 기준보다 더 만들고 싶은 기능을 따로 적었어요.</li><li><code>time.sleep()</code>(10주 명령 카드)으로 넣을 기다리는 연출 자리를 표시했어요.</li></ul>
+    <div class="keep"><div class="label">👀 친구에게 설계도 설명하기 <span class="how">1분 동안 설명하고 친구의 한마디 받기</span></div><div class="write small"></div></div>
+  </section>
+
+  <section class="block new">
+    <h2>💡 보충 문제 <small>설계를 마친 사람 · 선생님이 추천한 사람</small></h2>
+    <div class="goal">📌 목표: 작은 프로그램을 미션대로 바꿔서 1~8주에 배운 것을 다시 써 본다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>문제 고르기 <span class="how"><code>review_starter.py</code>를 실행하고 번호를 넣으면 그 문제만 실행돼요</span></div><table class="fill"><tr><th style=width:9%>번호</th><th style=width:12%>복습</th><th style=width:20%>프로그램</th><th>미션</th><th style=width:12%>했어요</th></tr><tr><td class="w">1</td><td class="w">1주</td><td class="w">별명 카드</td><td class="w">좋아하는 음식도 묻고, 카드에 한 줄 더 보여 주기</td><td class="w"></td></tr><tr><td class="w">2</td><td class="w">2주</td><td class="w">음료수 자판기</td><td class="w">음료를 하나 더하기 (질문 글자와 <code>elif</code>)</td><td class="w"></td></tr><tr><td class="w">3</td><td class="w">3·4주</td><td class="w">주사위 두 개</td><td class="w">두 주사위가 같으면 "더블!"도 보여 주기</td><td class="w"></td></tr><tr><td class="w">4</td><td class="w">6주</td><td class="w">영화 관람 판정</td><td class="w">12살 이상이고 보호자와 함께 왔으면 팝콘 쿠폰 주기 (<code>and</code>)</td><td class="w"></td></tr><tr><td class="w">5</td><td class="w">7주</td><td class="w">저금통</td><td class="w">모은 돈이 5000원 이상이 되면 저절로 멈추기</td><td class="w"></td></tr><tr><td class="w">6</td><td class="w">8주</td><td class="w">소풍 가방</td><td class="w">"끝"을 넣을 때까지 물건을 여러 개 넣기 (<code>while</code>)</td><td class="w"></td></tr></table></div>
+    <div class="keep"><div class="label"><span class="n">②</span>고치고 실행하기 <span class="how">고른 문제 안(4칸 들여 쓴 곳)에서만 고치고, 바꾼 줄 적기</span></div><div class="write small"></div></div>
+    <h3>✅ 오늘의 마무리</h3>
+    <ul class="check"><li>워밍업 오류 3개를 고쳤다.</li><li>기말 주제를 골랐다.</li><li>화면 흐름, 변수·리스트 표, 순서도를 그렸다.</li><li>★ 3개(설계도 점검)를 완성했다.</li></ul>
+    <div class="keep"><div class="label">다음 주에 가장 먼저 만들 기능</div><div class="write small"></div></div>
+  </section>
+
+  <section class="block hints">
+    <h2>🃏 힌트 카드 <small>막힌 상황에 맞는 카드를 찾아 ●○○부터</small></h2>
+    <div class="hints-list"><div class="hint" data-group="warmup"><div class="hh"><span class="ht"><span class="hb">워밍업</span><span>남은 기회가 -2처럼 나올 때</span></span><span class="hd">●○○</span></div><p>남은 기회는 "전체 3번 빼기 쓴 기회"예요. <code>{3 - tries}</code>로 써요.</p></div><div class="hint" data-group="step"><div class="hh"><span class="ht"><span class="hb">단계 1</span><span>주제를 못 고를 때</span></span><span class="hd">●○○</span></div><p>세 주제의 최소 완성 기준을 읽고, 1~8주 중 가장 재미있었던 프로젝트와 닮은 것을 골라요. 창업은 기준이 5개라 어려워요.</p></div><div class="hint" data-group="step"><div class="hh"><span class="ht"><span class="hb">단계 2</span><span>변수 표에 무엇을 적을지 모를 때</span></span><span class="hd">●○○</span></div><p>화면에 숫자로 보이는 것(목숨, 배고픔, 돈, 턴)이 변수예요. 여러 개를 모아 두는 것(열쇠, 상품)은 리스트예요.</p></div><div class="hint" data-group="new"><div class="hh"><span class="ht"><span class="hb">보충</span><span>5번 저금통 · 무엇부터 할지 모를 때</span></span><span class="hd">●○○</span></div><p>돈을 더한 바로 뒤에 "모은 돈이 5000원 이상인지" 물어보고, 그렇다면 반복을 멈춰요.</p></div><div class="hint" data-group="new"><div class="hh"><span class="ht"><span class="hb">보충</span><span>5번 저금통 · 쓸 도구가 떠오르지 않을 때</span></span><span class="hd">●●○</span></div><p><code>if saved &gt;= 5000:</code> 안에 알림 <code>print</code>와 <code>break</code>를 넣어요.</p></div><div class="hint" data-group="new"><div class="hh"><span class="ht"><span class="hb">보충</span><span>5번 저금통 · 거의 다 됐는데 안 될 때</span></span><span class="hd">●●●</span></div><p><code>saved = saved + coin</code> 아래에 넣어요. 문제 5의 <code>while</code> 안이라 8칸 들여 써요.</p><pre class="code nonum"><span class="l">        if saved &gt;= 5000:</span><span class="l">            print("목표 5000원 달성!")</span><span class="l">            break</span></pre></div></div>
+  </section>
+</main>
+</body>
+</html>

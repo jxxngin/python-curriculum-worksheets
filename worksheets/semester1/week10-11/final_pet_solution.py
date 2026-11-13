@@ -6,7 +6,7 @@ import random
 import time
 
 pet = input("펫 이름을 지어 주세요: ").strip()
-print(f"🐾 {pet}와(과) 함께하는 하루가 시작됐어요!")
+print(f"🐾 함께하는 하루 시작! 펫 이름: {pet}")
 
 hunger = 5
 mood = 5
@@ -20,20 +20,20 @@ while turn <= 10:
 
     if action == "1":
         hunger = hunger - 3
-        print(f"냠냠! {pet}가 밥을 먹었어요.")
+        print(f"{pet}: 냠냠! 밥을 먹었어요.")
         diary.append("밥")
     elif action == "2":
         toy = random.choice(toys)
         mood = mood + 3
         hunger = hunger + 1
-        print(f"{pet}가 {toy}을(를) 가지고 신나게 놀았어요!")
+        print(f"{pet}: 신나게 놀았어요! (장난감: {toy})")
         diary.append("놀기")
     elif action == "3":
         mood = mood + 1
-        print(f"쿨쿨... {pet}가 낮잠을 잤어요. 💤")
+        print(f"{pet}: 쿨쿨... 낮잠을 잤어요. 💤")
         diary.append("잠")
     else:
-        print(f"{pet}가 고개를 갸웃해요. (1~3 중에서 골라요)")
+        print(f"{pet}: 고개를 갸웃해요. (1~3 중에서 골라요)")
         continue                      # 턴을 쓰지 않고 다시 고르기
 
     # 무작위 사건
@@ -65,6 +65,6 @@ happy = mood * 10 - hunger * 5
 print(f"배고픔 {hunger} / 기분 {mood} → 행복도 {happy}점")
 print(f"오늘의 일기: {diary}")
 if happy >= 60:
-    print(f"🎉 성공! {pet}는 오늘 정말 행복했어요.")
+    print(f"🎉 성공! {pet}: 오늘 정말 행복했어요.")
 else:
-    print(f"😢 실패... {pet}가 조금 서운했대요. 내일 다시 도전!")
+    print(f"😢 실패... {pet}: 조금 서운했대요. 내일 다시 도전!")
