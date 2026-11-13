@@ -6,7 +6,7 @@
 print("🦠 독감 유행 시뮬레이터 🦠")
 
 students = int(input("학교 학생 수: "))
-spread = int(input("감염자 한 명이 하루에 옮기는 사람 수: "))
+spread = int(input("감염자 한 명이 하루에 옮기는 사람 수 (1 이상): "))
 
 infected = 1     # 처음 감염자
 day = 0
