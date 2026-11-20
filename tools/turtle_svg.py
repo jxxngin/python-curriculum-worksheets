@@ -6,7 +6,8 @@
 - 진짜 turtle 대신 기록용 가짜 모듈을 sys.modules['turtle']에 끼워 실행한다. 창을 띄우지 않는다.
 - 선·채우기·점·글자를 실행 순서대로 기록하고, 채우기는 begin_fill 자리에 놓아 그 뒤에 그린 선이 위에 보이게 한다(진짜 터틀과 같음).
 - circle()은 파이썬 turtle과 같은 방식(여러 개의 짧은 직선)으로 계산한다.
-- 지원하지 않는 기능을 쓰면 AttributeError가 나서 바로 알 수 있다.
+- 지원하지 않는 기능을 쓰면 AttributeError가, 정확히 흉내 낼 수 없는 옵션(write의 move=True)은 NotImplementedError가 나서 바로 알 수 있다.
+- clear()는 그 거북이가 그린 것만 지운다(실제 터틀과 같음).
 """
 import math
 import sys
@@ -36,12 +37,17 @@ class FakeTurtle:
         self._fill_pts = None
         self._fill_slot = None
         self._visible = True
+        self._mine = []          # 이 거북이가 그린 항목(clear()는 이것만 지운다)
 
     # ---- 그리기 내부
+    def _add(self, item):
+        self._c.items.append(item)
+        self._mine.append(item)
+
     def _start_path(self):
         if self._down and self._path is None:
             self._path = [(self._x, self._y)]
-            self._c.items.append(['line', self._path, self._color, self._width])
+            self._add(['line', self._path, self._color, self._width])
 
     def _end_path(self):
         self._path = None
@@ -153,7 +159,7 @@ class FakeTurtle:
     def begin_fill(self):
         self._fill_pts = [(self._x, self._y)]
         self._fill_slot = ['fill', None, None]
-        self._c.items.append(self._fill_slot)
+        self._add(self._fill_slot)
         self._end_path()
 
     def end_fill(self):
@@ -165,11 +171,15 @@ class FakeTurtle:
     def dot(self, size=None, *c):
         size = size or max(self._width + 4, self._width * 2)
         self._end_path()   # 지금까지의 선을 끊어야 점 뒤에 그린 선이 점 위에 보인다(그린 순서 그대로)
-        self._c.items.append(['dot', self._x, self._y, size, _col(c) if c else self._color])
+        self._add(['dot', self._x, self._y, size, _col(c) if c else self._color])
 
     def write(self, text, move=False, align='left', font=('Arial', 8, 'normal')):
+        if move:
+            # 실제 터틀은 글꼴의 실제 폭만큼 움직인다. 기록용 터틀은 그 폭을 정확히 알 수 없어
+            # 어림해서 움직이면 완성 그림이 조용히 달라진다. 그래서 쓰지 못하게 막는다.
+            raise NotImplementedError('기록용 터틀은 write(move=True)를 지원하지 않아요. move 없이 쓰고 goto()로 옮겨요.')
         self._end_path()
-        self._c.items.append(['text', self._x, self._y, str(text), align, font, self._color])
+        self._add(['text', self._x, self._y, str(text), align, font, self._color])
 
     # ---- 알아보기
     def position(self):
@@ -206,8 +216,15 @@ class FakeTurtle:
     st = showturtle
 
     def clear(self):
-        self._c.items.clear()
+        # 이 거북이가 그린 것만 지운다(다른 거북이의 그림과 배경색은 그대로). 위치·방향·펜 상태도 그대로다.
+        mine = {id(it) for it in self._mine}
+        self._c.items[:] = [it for it in self._c.items if id(it) not in mine]
+        self._mine = []
         self._end_path()
+        if self._fill_pts is not None:   # 채우는 중이면 이후 점부터 다시 모은다
+            self._fill_slot = ['fill', None, None]
+            self._add(self._fill_slot)
+            self._fill_pts = [(self._x, self._y)]
 
 
 class FakeScreen:
