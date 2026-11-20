@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8주차 교안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 교안 공통 스타일: docs/templates/lesson-template.html 과 같아야 한다. 고치지 않는다. ===== */
+:root {
+  --ink: #1f2937;
+  --sub: #6b7280;
+  --line: #d1d5db;
+  --soft: #f3f4f6;
+  --bg: #f6f7fb;
+  --paper: #ffffff;
+  --code-bg: #f8fafc;
+  /* 활동 색: 파랑(미션~마무리) / 주황(도전) / 회색(힌트). 색만으로 구분하지 않는다: 이모지·이름표와 함께 쓴다 */
+  --main: #2563eb;  --main-soft: #eff6ff;
+  --more: #ea580c;  --more-soft: #fff7ed;
+  --gray: #6b7280;  --gray-soft: #f3f4f6;
+  --mission: var(--main);   --mission-soft: var(--main-soft);
+  --warmup: var(--main);    --warmup-soft: var(--main-soft);
+  --step: var(--main);      --step-soft: var(--main-soft);
+  --change: var(--main);    --change-soft: var(--main-soft);
+  --new: var(--main);       --new-soft: var(--main-soft);
+  --challenge: var(--more); --challenge-soft: var(--more-soft);
+  --hint: var(--gray);      --hint-soft: var(--gray-soft);
+  --tool: #475569;          --tool-soft: #f1f5f9;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.lesson { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; display: flex; flex-direction: column; gap: 28px; }
+code, .mono { font-family: "Nanum Gothic Coding", Consolas, monospace; }
+code { background: var(--soft); padding: 1px 6px; border-radius: 6px; font-size: .92em; }
+p { margin: 0; }
+.muted { color: var(--sub); font-size: .92em; }
+
+/* 머리 */
+.lesson-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.lesson-head .chip { background: var(--mission); color: #fff; border-radius: 999px; padding: 4px 14px; font-weight: 700; font-size: .9em; }
+.lesson-head h1 { margin: 0; font-size: 1.9em; font-weight: 900; letter-spacing: -0.5px; flex: 1 1 320px; }
+.who { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; white-space: nowrap; font-size: .9em; color: var(--sub); }
+.who span { display: inline-block; min-width: 120px; height: 1.4em; border-bottom: 1.5px solid var(--line); margin-right: 8px; }
+
+/* 활동 블록 */
+.block { --c: var(--ink); --cs: var(--soft); background: var(--paper); border-radius: 18px; padding: 24px 26px 26px; border-top: 8px solid var(--c); display: flex; flex-direction: column; gap: 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.block.mission   { --c: var(--mission);   --cs: var(--mission-soft); }
+.block.warmup    { --c: var(--warmup);    --cs: var(--warmup-soft); }
+.block.step      { --c: var(--step);      --cs: var(--step-soft); }
+.block.change    { --c: var(--change);    --cs: var(--change-soft); }
+.block.new       { --c: var(--new);       --cs: var(--new-soft); }
+.block.challenge { --c: var(--challenge); --cs: var(--challenge-soft); }
+.block.hints     { --c: var(--hint);      --cs: var(--hint-soft); }
+.block > h2 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.45em; font-weight: 900; color: var(--c); }
+.block > h2 .tag { background: var(--c); color: #fff; border-radius: 10px; padding: 2px 12px; font-size: .7em; }
+.block > h2 small { color: var(--sub); font-weight: 500; font-size: .6em; }
+h3 { margin: 0; font-size: 1.05em; font-weight: 900; color: var(--c, var(--ink)); }   /* 블록 안 작은 제목은 블록 색 */
+
+/* 할 일 */
+/* 목표 한 줄 (할 일 목록 대신) */
+.goal { background: var(--cs); color: var(--c); border-radius: 12px; padding: 12px 18px; font-weight: 700; }
+.goals { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.goals h3 { color: var(--c); margin-bottom: 4px; }
+.goals ul { margin: 0; padding-left: 22px; }
+.order { color: var(--sub); font-size: .92em; }
+.label .n { display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--c); color: #fff; font-size: .85em; margin-right: 6px; }
+.label .how { color: var(--ink); font-weight: 500; }
+.keep { display: flex; flex-direction: column; gap: 10px; }
+.why { border-left: 5px solid var(--c); padding: 4px 0 4px 14px; }
+/* (예전) 할 일 상자 */
+.todo { background: var(--cs); border-radius: 12px; padding: 14px 18px; }
+.todo h3 { color: var(--c); margin-bottom: 4px; }
+.todo ol { margin: 0; padding-left: 24px; font-size: 1.05em; }
+
+/* 도구 카드 */
+.tool { background: var(--tool-soft); border-radius: 12px; padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+.tool .th { font-weight: 900; color: var(--tool); }
+
+/* 코드 */
+pre.code { margin: 0; padding: 14px 16px 14px 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px;
+  font-family: "Nanum Gothic Coding", Consolas, monospace; font-size: 16px; line-height: 1.75; counter-reset: ln; white-space: pre; overflow-x: auto; }
+pre.code > span.l { display: block; padding-left: 46px; position: relative; min-height: 1.75em; }
+pre.code > span.l::before { counter-increment: ln; content: counter(ln); position: absolute; left: 0; width: 32px; text-align: right; color: #9ca3af; font-size: .85em; }
+pre.code.nonum > span.l { padding-left: 16px; }
+pre.code.nonum > span.l::before { content: none; }
+pre.code .c { color: #6b7280; }
+.blank { display: inline-block; min-width: 90px; height: 1.5em; vertical-align: -0.35em; border: 2px dashed var(--c); border-radius: 8px; background: #fff; position: relative; }
+.blank[data-n]::after { content: attr(data-n); position: absolute; top: -10px; left: -10px; width: 18px; height: 18px; border-radius: 50%; background: var(--c); color: #fff; font: 700 11px/18px "Noto Sans KR", sans-serif; text-align: center; }
+
+/* 쓰는 칸 */
+.label { font-weight: 900; color: var(--c); }
+.write { border: 2px solid var(--line); border-radius: 12px; min-height: 160px; background:
+  repeating-linear-gradient(transparent 0 39px, #e5e7eb 39px 40px); background-origin: content-box; padding: 6px 14px; }
+.write.small { min-height: 90px; }
+.screen { border-radius: 12px; overflow: hidden; border: 2px solid var(--ink); }
+.screen .bar { background: var(--ink); color: #fff; font-size: .85em; padding: 4px 12px; }
+.screen .body { padding: 10px 14px; font-family: "Nanum Gothic Coding", monospace; font-size: 15px; line-height: 1.55; white-space: pre; overflow-x: auto; }
+table.fill { width: 100%; border-collapse: collapse; }
+table.fill th, table.fill td { border: 1.5px solid var(--line); padding: 8px 12px; text-align: left; }
+table.fill th { background: var(--cs); color: var(--ink); }
+table.fill td.w { height: 56px; }
+table.fill.ref th { background: var(--soft); }
+table.fill.ref td { height: auto; padding: 6px 12px; font-size: .92em; }
+ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+ul.check li { padding-left: 34px; position: relative; }
+ul.check li::before { content: ""; position: absolute; left: 0; top: .2em; width: 22px; height: 22px; border: 2.5px solid var(--c); border-radius: 6px; background: #fff; }
+.draw { border: 2px dashed var(--line); border-radius: 12px; min-height: 260px; }
+
+/* 힌트 카드 */
+.hints-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hints-list > .hint { min-width: 0; }
+.hints-list > .hint:has(pre) { grid-column: 1 / -1; }   /* 코드가 든 카드(●●● 거의 코드)는 한 줄 전체 */
+.hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.hint { background: var(--hint-soft); border: 2px dashed var(--hint); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.hint .hh { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-weight: 900; color: var(--hint); }
+.hint .ht { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
+.hint .hb { font-size: .78em; font-weight: 700; color: #fff; background: var(--main); border-radius: 999px; padding: 1px 10px; white-space: nowrap; }
+.hint[data-group="challenge"] .hb { background: var(--more); }
+.hint .hd { white-space: nowrap; }
+.hint pre.code { font-size: 14px; }
+
+/* 인쇄: 활동 블록마다 새 쪽, 쓰는 칸은 쪽 사이에서 끊지 않는다 */
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .lesson { max-width: none; padding: 0; gap: 0; }
+  .block { box-shadow: none; break-before: page; break-inside: auto; border-radius: 10px; }
+  .lesson-head + .block { break-before: auto; margin-top: 8mm; }
+  .todo, .goal, .goals, .tool, pre.code, .write, .screen, table.fill, .draw, .hint, ul.check li, .keep { break-inside: avoid; }
+  pre.code, .screen .body { white-space: pre-wrap; overflow: visible; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .block { padding: 18px 16px 20px; border-radius: 14px; }
+  pre.code { font-size: 14px; }
+  .hints-list { grid-template-columns: 1fr; }
+}
+/* ===== 공통 스타일 끝 ===== */
+
+/* ===== 주차별 추가 (꼭 필요할 때만, 이 아래에) ===== */
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-head">
+    <span class="chip">1학기 · 8주차 · 명단 만들기</span>
+    <h1>탐정의 용의자 명단 만들기</h1>
+    <div class="who">이름 <span></span> 날짜 <span></span></div>
+  </header>
+
+  <section class="block mission">
+    <h2>🎯 오늘의 미션</h2>
+    <p>용의자 명단(리스트)에 사람을 더하고, 컴퓨터가 몰래 고른 범인을 3번 안에 찾는 추리 게임을 만들어요.</p>
+    <div class="goals"><h3>📌 오늘의 목표</h3><ul><li>리스트에 여러 값을 담고 칸 번호(<code>[0]</code>)로 꺼낼 수 있다.</li><li><code>append()</code>로 리스트에 값을 더하고, <code>in</code>으로 들어 있는지 확인할 수 있다.</li><li><code>random.choice()</code>로 리스트에서 하나를 무작위로 고를 수 있다.</li></ul></div>
+    <div class="screen"><div class="bar">완성하면 이렇게 돼요</div><div class="body">사라진 생일 케이크 사건
+용의자 명단: ['옆집 고양이', '배고픈 동생', '택배 기사님']
+가장 먼저 의심받는 사람: 옆집 고양이
+수상한 사람을 한 명 더 적어 주세요: 옆 반 친구
+새 명단: ['옆집 고양이', '배고픈 동생', '택배 기사님', '옆 반 친구']
+범인이 정해졌어요. 기회는 3번!
+범인은 누구일까요? 택배 기사님
+택배 기사님: 알리바이가 있어요.
+범인은 누구일까요? 옆 반 친구
+정답! 범인을 찾았어요.
+사건 기록: 범인은 옆 반 친구</div></div>
+  </section>
+
+  <section class="block warmup">
+    <h2>🔧 워밍업 <small>고장 난 간식 뽑기 고치기</small></h2>
+    <div class="goal">📌 목표: 오류 메시지를 읽고 오류 3개를 고친다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>코드 읽기 <span class="how">이상한 곳 3개 표시 · 1~4번 줄은 설명 주석이라 생략했어요. 5번 줄부터 실었어요.</span></div><pre class="code" style="counter-reset: ln 4"><span class="l">import random</span><span class="l"></span><span class="l">snacks = ["젤리", "과자", "초콜릿"]</span><span class="l">print(f"첫 번째 후보: {snacks[1]}")</span><span class="l"></span><span class="l">snacks.add("아이스크림")</span><span class="l">print(f"새 명단: {snacks}")</span><span class="l">print(f"마지막 후보: {snacks[4]}")</span><span class="l"></span><span class="l">today = random.choice(snacks)</span><span class="l">print(f"🍬 오늘의 간식: {today}")</span></pre></div>
+    <div class="keep"><div class="label"><span class="n">②</span>실행하고 고치기 <span class="how"><code>warmup.py</code>를 실행하고 오류 메시지를 보며 표에 적기</span></div><table class="fill ref"><tr><th style=width:24%>오류 이름</th><th>뜻</th><th>확인할 곳</th></tr><tr><td><b>메시지 없는 오류</b></td><td>첫 번째 후보가 "과자"로 나와요</td><td>칸 번호는 몇부터 세는지</td></tr><tr><td><b>AttributeError</b></td><td>그런 기능(함수)이 없음</td><td>점(.) 뒤의 함수 이름</td></tr><tr><td><b>IndexError</b></td><td>없는 칸 번호를 씀</td><td>리스트의 칸 수와 칸 번호</td></tr></table><table class="fill"><tr><th style=width:20%>줄 번호</th><th style=width:30%>오류 이름</th><th>어떻게 고쳤나요?</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 1</span> 용의자 명단 만들기</h2>
+    <div class="goal">📌 목표: 용의자 3명을 리스트에 담아 보여 주고, 첫 번째 용의자를 꺼낸다.</div><div class="tool"><div class="th">🧰 여러 값을 한 상자에: 리스트</div><p>대괄호 <code>[ ]</code> 안에 쉼표로 값을 늘어놓아요. 칸 번호는 <b>0부터</b> 세고, <code>이름[번호]</code>로 꺼내요.</p><pre class="code nonum"><span class="l">foods = ["떡볶이", "김밥", "라면"]</span><span class="l">print(foods[0])</span><span class="l">print(foods[2])</span></pre><p class="muted">→ 떡볶이, 라면</p></div><div class="keep"><div class="label"><span class="n">①</span>기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 1</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">print("사라진 생일 케이크 사건")</span><span class="l">suspects = ["옆집 고양이", "배고픈 동생", "택배 기사님"]</span><span class="l">print(f"용의자 명단: {suspects}")</span><span class="l">print(f"가장 먼저 의심받는 사람: {suspects[0]}")</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>실행하고 확인 <span class="how">마지막 줄 적기</span></div><div class="write small"></div></div><ul class="check"><li>명단과 첫 번째 용의자가 나왔어요.</li></ul>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 2</span> 수상한 사람 더하기</h2>
+    <div class="goal">📌 목표: 수상한 사람을 한 명 물어 명단 맨 뒤에 더한다.</div><div class="tool"><div class="th">🧰 맨 뒤에 붙이기: append()</div><p><code>리스트.append(값)</code>은 리스트 맨 뒤에 값을 하나 붙여요. 빈 리스트 <code>[]</code>에서 시작해도 돼요.</p><pre class="code nonum"><span class="l">team = []</span><span class="l">team.append("지우")</span><span class="l">print(team)</span></pre><p class="muted">→ ['지우']</p></div><div class="keep"><div class="label"><span class="n">①</span>기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 2</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">new = input("수상한 사람을 한 명 더 적어 주세요: ").strip()</span><span class="l">suspects.append(new)</span><span class="l">print(f"새 명단: {suspects}")</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>실행하고 확인 <span class="how">"새 명단" 줄 적기</span></div><div class="write small"></div></div><ul class="check"><li>내가 적은 사람이 명단 맨 뒤에 붙었어요.</li></ul>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 3</span> 범인 몰래 뽑기</h2>
+    <div class="goal">📌 목표: 명단에서 범인을 무작위로 한 명 고르고, 기회 상자를 0으로 준비한다.</div><div class="tool"><div class="th">🧰 무작위로 하나 고르기: random.choice()</div><p>리스트에서 하나를 무작위로 골라요. 쓰기 전에 <code>import random</code>이 있어야 해요.</p><pre class="code nonum"><span class="l">import random</span><span class="l">colors = ["빨강", "파랑", "노랑"]</span><span class="l">print(random.choice(colors))</span></pre><p class="muted">→ 셋 중 하나를 새로 뽑아요. 같은 색이 또 나올 수도 있어요</p></div><div class="keep"><div class="label"><span class="n">①</span>기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 3</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">import random</span><span class="l">culprit = random.choice(suspects)</span><span class="l">tries = 0</span><span class="l">print("범인이 정해졌어요. 기회는 3번!")</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>실행하고 확인 <span class="how">마지막 줄 적기</span></div><div class="write small"></div></div><ul class="check"><li>범인이 정해졌다는 말이 나왔어요. 범인은 아직 비밀이에요.</li></ul>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 4</span> 명단에 있는 사람만 조사하기</h2>
+    <div class="goal">📌 목표: 범인을 3번 묻고, 명단에 없는 이름은 기회를 쓰지 않고 다시 묻는다.</div><div class="tool"><div class="th">🧰 들어 있나요?: in, not in</div><p><code>값 in 리스트</code>는 들어 있으면 <code>True</code>예요. <code>not in</code>은 반대예요.</p><pre class="code nonum"><span class="l">foods = ["떡볶이", "김밥"]</span><span class="l">print("김밥" in foods)</span><span class="l">print("피자" not in foods)</span></pre><p class="muted">→ True, True</p></div><div class="keep"><div class="label"><span class="n">①</span>기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 4</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">while tries &lt; 3:</span><span class="l">    guess = input("범인은 누구일까요? ").strip()</span><span class="l">    if guess not in suspects:</span><span class="l">        print("명단에 없는 사람이에요.")</span><span class="l">        continue</span><span class="l">    tries = tries + 1</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>실행하고 확인 <span class="how">수상한 사람으로 삼촌을 적은 뒤, 표의 이름을 차례로 넣고 어떻게 됐는지 적기</span></div><table class="fill"><tr><th>넣은 이름</th><th>어떻게 됐나요?</th></tr><tr><td class="w">피자</td><td class="w"></td></tr><tr><td class="w">배고픈 동생</td><td class="w"></td></tr><tr><td class="w">옆집 고양이</td><td class="w"></td></tr><tr><td class="w">택배 기사님</td><td class="w"></td></tr></table></div><ul class="check"><li>명단에 없는 이름은 알려 주고, 명단에 있는 이름을 3번 넣으니 끝났어요.</li></ul>
+  </section>
+
+  <section class="block step">
+    <h2><span class="tag">단계 5</span> 범인 판정하기</h2>
+    <div class="goal">📌 목표: 범인을 맞히면 바로 멈추고, 틀리면 알리바이를 알려 주고, 마지막에 범인을 공개한다.</div><div class="keep"><div class="label"><span class="n">①</span>기능 추가하기 <span class="how"><code>mini_starter.py</code>의 <b># 단계 5</b> 아래에 입력</span></div><pre class="code nonum"><span class="l">    if guess == culprit:</span><span class="l">        print("정답! 범인을 찾았어요.")</span><span class="l">        break</span><span class="l">    print(f"{guess}: 알리바이가 있어요.")</span><span class="l">print(f"사건 기록: 범인은 {culprit}")</span></pre></div><div class="keep"><div class="label"><span class="n">②</span>실행하고 확인 <span class="how">마지막 줄 적기</span></div><div class="write small"></div></div><ul class="check"><li>맞히면 "정답!"이 나오고 바로 사건 기록이 나왔어요.</li><li>3번 다 틀리면 사건 기록에서 범인을 알려 줬어요.</li></ul><div class="keep"><div class="label"><span class="n">③</span>따라가기 <span class="how">범인이 배고픈 동생이고, 새 사람으로 삼촌을 적은 뒤 택배 기사님 / 피자 / 배고픈 동생을 넣으면?</span></div><table class="fill"><tr><th>넣은 이름</th><th>tries</th><th>나온 말</th></tr><tr><td class="w">택배 기사님</td><td class="w"></td><td class="w"></td></tr><tr><td class="w">피자</td><td class="w"></td><td class="w"></td></tr><tr><td class="w">배고픈 동생</td><td class="w"></td><td class="w"></td></tr></table></div>
+  </section>
+
+  <section class="block change">
+    <h2>⭐ 내 것으로 바꾸기 <small>오늘의 완성 기준</small></h2>
+    <div class="goal">📌 목표: 내 사건으로 바꾸고, 용의자를 여러 명 더하고, 틀릴 때마다 단서를 보여 준다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>설계하기 <span class="how">바꿀 내용을 표에 먼저 적기</span></div><table class="fill"><tr><th>사건 이름</th><th>처음 용의자 3명</th><th>단서 2개 이상</th></tr><tr><td class="w">예) 미술실 물감 실종 사건</td><td class="w">반장, 청소 당번, 옆 반 학생</td><td class="w">파란 발자국, 열린 창문</td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td></tr></table></div>
+    <div class="keep"><div class="label"><span class="n">②</span>고치고 실행하기 <span class="how">★ 3개를 하면 완성</span></div><ul class="check"><li>★ 사건 이름과 처음 용의자를 내 사건으로 바꿨어요.</li><li>★ "끝"을 넣을 때까지 용의자를 여러 명 더해요. 이미 명단에 있는 이름은 <code>in</code>으로 막아요.</li><li>★ 단서 리스트를 만들고, 틀릴 때마다 <code>random.choice()</code>로 단서를 하나 보여 줘요.</li></ul></div>
+    <div class="label">➕ 더 해 보기</div>
+    <ul class="check"><li><code>random.shuffle(suspects)</code>(보너스)로 명단 순서를 섞어 보여 주기</li><li>범인을 못 찾으면 "범인을 놓쳤어요" 따로 보여 주기</li><li>이모지로 꾸미기</li></ul>
+    <div class="keep"><div class="label">👀 친구에게 보여 주기 <span class="how">친구의 한마디</span></div><div class="write small"></div></div>
+  </section>
+
+  <section class="block new">
+    <h2>💡 새로 만들기 <small>하고 싶은 사람</small></h2>
+    <div class="goal">📌 목표: 오늘 만든 프로그램에 내 아이디어 기능을 하나 더한다.</div>
+    <div class="keep"><div class="label"><span class="n">①</span>아이디어 고르기 <span class="how">하나에 표시</span></div><ul class="check"><li>조사 기록: 이미 조사한 사람을 또 고르면 알려 주기 (<code>checked</code> 리스트)</li><li>공범 모드: 범인을 2명 뽑기 (같은 사람이 뽑히면 <code>while</code>로 다시 뽑기)</li><li>내 아이디어</li></ul></div>
+    <div class="keep"><div class="label"><span class="n">②</span>계획 적고 만들기 <span class="how">무엇을 묻고 무엇을 보여 줄지</span></div><div class="write"></div></div>
+    <h3>✅ 오늘의 마무리</h3>
+    <ul class="check"><li>워밍업 오류 3개를 고쳤다.</li><li>단계마다 실행하며 완성했다.</li><li>★ 3개를 완성했다.</li><li>친구에게 보여 줬다.</li></ul>
+    <div class="keep"><div class="label">친구 사건에서 범인을 찾기까지 쓴 기회</div><div class="write small"></div></div>
+  </section>
+
+  <section class="block challenge">
+    <h2>🚀 도전 프로젝트 <small>이상형 월드컵 · 일찍 끝낸 사람</small></h2>
+    <p class="why"><b>왜 만들까?</b> 후보를 둘씩 붙여 이긴 쪽만 새 리스트에 모으는 방식은 토너먼트 대진표와 같아요. 리스트를 라운드마다 새로 만들고 바꿔 끼우는 연습이에요.</p>
+    <div class="goal">📌 목표: 후보 8개로 우승자가 나올 때까지 이어지는 월드컵을 만든다. 시작 파일은 8강 한 라운드만 하고 4강 진출 명단을 보여 준다. 내 주제로 바꾸고, 우승자가 나올 때까지 라운드를 되풀이하고, 1·2가 아닌 입력은 같은 대결을 다시 묻게 한다.</div>
+    <div class="tool"><div class="th">🧰 리스트 바꿔 끼우기</div><p><code>candidates = winners</code>처럼 쓰면 이긴 후보 리스트가 다음 라운드의 후보가 돼요. 새 라운드 전에 <code>winners = []</code>로 비워요.</p><pre class="code nonum"><span class="l">a = ["사과", "배", "귤"]</span><span class="l">a = ["배"]</span><span class="l">print(a)</span></pre><p class="muted">→ ['배']</p></div>
+    <div class="keep"><div class="label"><span class="n">①</span>실행해 보기 <span class="how"><code>extension_starter.py</code>를 그대로 실행</span></div></div>
+    <div class="keep"><div class="label"><span class="n">②</span>대진표 적기 <span class="how">내 주제와 후보 8개를 칸 번호 아래에 적고, 시작 파일을 실행해 질문에 답하기</span></div><table class="fill"><tr><th>[0]</th><th>[1]</th><th>[2]</th><th>[3]</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table><table class="fill"><tr><th>[4]</th><th>[5]</th><th>[6]</th><th>[7]</th></tr><tr><td class="w"></td><td class="w"></td><td class="w"></td><td class="w"></td></tr></table><p>시작 파일에서 1만 계속 넣으면 4강에는 몇 번 칸 후보들이 올라가나요? <span class="blank"></span></p></div>
+    <div class="keep"><div class="label"><span class="n">③</span>바꾸고 체크하기</div><ul class="check"><li>주제와 후보 8개를 내 것으로 바꿨어요.</li><li>우승자가 나올 때까지 라운드를 되풀이해요. (<code>candidates = winners</code>, <code>size = size // 2</code>)</li><li>1, 2가 아닌 입력은 <code>continue</code>로 같은 대결을 다시 물어요.</li></ul></div>
+    <div class="label">➕ 더 해 보기</div>
+    <ul class="check"><li>라운드마다 "8강 / 4강 / 결승" 제목 보여 주기</li><li><code>random.shuffle()</code>로 대진표 섞기</li><li>떨어진 후보를 탈락자 리스트에 모으기</li><li>"?"를 넣으면 컴퓨터가 <code>random.choice()</code>로 대신 고르기</li></ul>
+  </section>
+
+  <section class="block hints">
+    <h2>🃏 힌트 카드 <small>막힌 상황에 맞는 카드를 찾아 ●○○부터</small></h2>
+    <div class="hints-list"><div class="hint" data-group="warmup"><div class="hh"><span class="ht"><span class="hb">워밍업</span><span>add가 없다고 나올 때</span></span><span class="hd">●○○</span></div><p>리스트 맨 뒤에 값을 붙이는 함수는 <code>append</code>예요: <code>snacks.append("아이스크림")</code></p></div><div class="hint" data-group="step"><div class="hh"><span class="ht"><span class="hb">단계 1</span><span>[ ]나 따옴표에서 SyntaxError가 날 때</span></span><span class="hd">●○○</span></div><p>이름마다 따옴표로 감싸고 쉼표로 나눠요. 여는 <code>[</code>와 닫는 <code>]</code>가 짝이 맞는지 봐요.</p></div><div class="hint" data-group="step"><div class="hh"><span class="ht"><span class="hb">단계 2</span><span>append에서 오류가 날 때</span></span><span class="hd">●○○</span></div><p><code>suspects.append(new)</code>처럼 리스트 이름 뒤에 점(.)을 찍고, 괄호 안에 붙일 값을 써요.</p></div><div class="hint" data-group="step"><div class="hh"><span class="ht"><span class="hb">단계 3</span><span>random에서 NameError가 날 때</span></span><span class="hd">●○○</span></div><p><code>import random</code>이 <code>random.choice()</code>보다 위에 있는지 봐요.</p></div><div class="hint" data-group="step"><div class="hh"><span class="ht"><span class="hb">단계 4</span><span>명단에 있는 이름인데 "없는 사람"이라고 나올 때</span></span><span class="hd">●○○</span></div><p>명단의 글자와 똑같이 넣어요. 띄어쓰기까지 같아야 해요(예: <code>옆집 고양이</code>). <code>.strip()</code>은 앞뒤 공백만 지워요.</p></div><div class="hint" data-group="step"><div class="hh"><span class="ht"><span class="hb">단계 5</span><span>정답을 맞혀도 계속 물을 때</span></span><span class="hd">●○○</span></div><p><code>break</code>가 <code>if guess == culprit:</code> 아래 8칸에 있는지 봐요.</p></div><div class="hint" data-group="new"><div class="hh"><span class="ht"><span class="hb">새로 만들기</span><span>조사 기록 · 무엇부터 할지 모를 때</span></span><span class="hd">●○○</span></div><p>빈 리스트를 하나 더 만들고, 조사할 때마다 거기에 붙여요. 붙이기 전에 이미 들어 있는지 먼저 봐요.</p></div><div class="hint" data-group="new"><div class="hh"><span class="ht"><span class="hb">새로 만들기</span><span>조사 기록 · 쓸 도구가 떠오르지 않을 때</span></span><span class="hd">●●○</span></div><p>새 상자 <code>checked = []</code>(반복 전에). <code>if guess in checked:</code>면 알려 주고 <code>continue</code>, 아니면 <code>checked.append(guess)</code>.</p></div><div class="hint" data-group="new"><div class="hh"><span class="ht"><span class="hb">새로 만들기</span><span>조사 기록 · 거의 다 됐는데 안 될 때</span></span><span class="hd">●●●</span></div><p>주석이 알려 주는 두 자리에 넣어요.</p><pre class="code nonum"><span class="l"><span class="c"># 단계 3의 tries = 0 아래에</span></span><span class="l">checked = []</span><span class="l"><span class="c"># 단계 4의 tries = tries + 1 바로 위에</span></span><span class="l">    if guess in checked:</span><span class="l">        print("이미 조사한 사람이에요.")</span><span class="l">        continue</span><span class="l">    checked.append(guess)</span></pre></div><div class="hint" data-group="challenge"><div class="hh"><span class="ht"><span class="hb">도전</span><span>우승까지 반복 · 무엇부터 할지 모를 때</span></span><span class="hd">●○○</span></div><p>지금 반복 전체가 라운드 하나예요. 그 반복을 큰 반복으로 감싸서 후보가 1명 남을 때까지 되풀이해요.</p></div><div class="hint" data-group="challenge"><div class="hh"><span class="ht"><span class="hb">도전</span><span>우승까지 반복 · 쓸 도구가 떠오르지 않을 때</span></span><span class="hd">●●○</span></div><p><code>while size &gt; 1:</code> 안에 <code>winners = []</code>, <code>i = 0</code>, 지금의 대결 반복을 넣어요. 라운드가 끝나면 <code>candidates = winners</code>, <code>size = size // 2</code>.</p></div><div class="hint" data-group="challenge"><div class="hh"><span class="ht"><span class="hb">도전</span><span>우승까지 반복 · 거의 다 됐는데 안 될 때</span></span><span class="hd">●●●</span></div><p>시작 파일의 <code>winners = []</code>부터 끝까지를 아래로 바꿔 써요.</p><pre class="code nonum"><span class="l">while size &gt; 1:</span><span class="l">    winners = []</span><span class="l">    i = 0</span><span class="l">    while i &lt; size:</span><span class="l">        left = candidates[i]</span><span class="l">        right = candidates[i + 1]</span><span class="l">        print(f"1번 {left}  VS  2번 {right}")</span><span class="l">        pick = input("더 좋은 쪽 번호(1/2): ").strip()</span><span class="l">        if pick == "1":</span><span class="l">            winners.append(left)</span><span class="l">        else:</span><span class="l">            winners.append(right)</span><span class="l">        i = i + 2</span><span class="l">    candidates = winners</span><span class="l">    size = size // 2</span><span class="l">print(f"우승: {candidates[0]}")</span></pre></div></div>
+  </section>
+</main>
+</body>
+</html>

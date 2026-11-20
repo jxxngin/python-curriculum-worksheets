@@ -29,7 +29,7 @@ while size > 1:
         pick = input("더 좋은 쪽 번호(1/2, 고민되면 ?): ").strip()
         if pick == "?":
             choice = random.choice([left, right])
-            print(f"  🎲 컴퓨터가 {choice}을(를) 골랐어요!")
+            print(f"  🎲 컴퓨터의 선택: {choice}")
         elif pick == "1":
             choice = left
         elif pick == "2":

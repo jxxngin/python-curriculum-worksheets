@@ -42,6 +42,9 @@ class Scan(HTMLParser):
         self.todo_in_block = []  # 블록마다 할 일 상자가 있는지
         self._block_depth = None
         self._depth = 0
+        self.heads = []          # 블록마다 [종류, 제목 글자] (블록 순서와 같은 파서로 모은다)
+        self.chip = ""           # 머리 칩 글자 (예: "1학기 · 10~11주차 · 기말 프로젝트")
+        self._grab = None        # 지금 글자를 모으는 곳: "h2" / "chip"
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -56,6 +59,11 @@ class Scan(HTMLParser):
             kind = next((c for c in classes if c in ORDER), "?")
             self.blocks.append(kind)
             self.todo_in_block.append(False)
+            self.heads.append([kind, ""])
+        if tag == "h2" and self.heads and not self.heads[-1][1]:
+            self._grab = "h2"
+        if "chip" in classes and not self.chip:
+            self._grab = "chip"
         if ("todo" in classes or "goal" in classes or "goals" in classes) and self.todo_in_block:
             self.todo_in_block[-1] = True
         for key in ("src", "href"):
@@ -65,6 +73,14 @@ class Scan(HTMLParser):
 
     def handle_endtag(self, tag):
         self._depth -= 1
+        if (self._grab == "h2" and tag == "h2") or (self._grab == "chip" and tag == "span"):
+            self._grab = None
+
+    def handle_data(self, data):
+        if self._grab == "h2":
+            self.heads[-1][1] += data
+        elif self._grab == "chip":
+            self.chip += data
 
 
 def common_checks(path, html, template, errors):
@@ -108,7 +124,36 @@ def check_lesson(path, html, s):
     for need in ("mission", "warmup", "step", "change", "hints"):
         if need not in kinds:
             errors.append(f"활동 블록 '{need}'가 없어요")
-    rank = [ORDER.index(k) for k in kinds if k in ORDER]
+    # 여러 주에 걸친 교안(머리 칩이 "10~11주차"처럼 N~M주차)만, 새 주의 첫 단계 바로 앞에 워밍업을 더 둘 수 있다.
+    # 새 주의 첫 단계 = 단계 이름 끝의 "(N주)"가 칩의 범위 안에 있고, 바로 앞 단계의 주보다 뒤인 단계.
+    # 블록 종류·제목·칩은 모두 같은 HTML 파서(Scan)로 모은다. 그 밖의 추가 워밍업은 순서 검사에 그대로 걸린다.
+    order_kinds = list(kinds)
+    rng = re.search(r"(\d+)~(\d+)주차", s.chip)
+    lo, hi = (int(rng.group(1)), int(rng.group(2))) if rng else (None, None)
+
+    def week_of(title):
+        m = re.search(r"\((\d+)주\)\s*$", title.strip())
+        return int(m.group(1)) if m else None
+    if "warmup" in kinds:
+        first_warm = kinds.index("warmup")
+        allowed = 0
+        for i in range(len(kinds) - 1, first_warm, -1):
+            if kinds[i] != "warmup":
+                continue
+            prev_steps = [t for k, t in s.heads[:i] if k == "step"]
+            nxt = s.heads[i + 1] if i + 1 < len(s.heads) else (None, "")
+            wn = week_of(nxt[1])
+            wp = week_of(prev_steps[-1]) if prev_steps else None
+            ok = (rng and nxt[0] == "step" and wn is not None and wp is not None
+                  and lo <= wp < wn <= hi)
+            if ok:
+                del order_kinds[i]
+                allowed += 1
+            else:
+                errors.append("추가 워밍업은 여러 주 교안(N~M주차)에서 새 주의 첫 단계 바로 앞에만 둬요 (단계 이름의 (N주)는 칩의 범위 안, 앞 단계보다 뒤)")
+        if rng and allowed > hi - lo:
+            errors.append("추가 워밍업이 주 수보다 많아요")
+    rank = [ORDER.index(k) for k in order_kinds if k in ORDER]
     if rank != sorted(rank):
         errors.append(f"활동 블록 순서가 고정 흐름과 달라요: {kinds} (docs/01-worksheet-format.md)")
     for k, has in zip(kinds, s.todo_in_block):

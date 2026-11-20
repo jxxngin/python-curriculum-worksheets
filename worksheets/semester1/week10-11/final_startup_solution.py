@@ -24,7 +24,7 @@ while day <= 7:
     print(f"판매 상품: {products}")
 
     if money >= 8000 and "아이스티" not in products:
-        new = input("8000원으로 '아이스티'를 개발할까요? (네/아니오) ").strip()
+        new = input("8000원으로 '아이스티'를 개발할까요? (네/아니요) ").strip()
         if new == "네":
             money = money - 8000
             products.append("아이스티")
@@ -80,6 +80,6 @@ print("\n📊 7일 영업 결과를 계산하는 중...")
 time.sleep(1)
 print(f"최종 금액 {money}원 / 평판 {reputation} / 최고 매출 {best_day}일째 {best_sales}원")
 if money >= goal:
-    print(f"🎉 목표 {goal}원 달성! {shop}는 동네 맛집이 됐어요.")
+    print(f"🎉 목표 {goal}원 달성! {shop}: 동네 맛집이 됐어요.")
 else:
     print(f"😢 목표까지 {goal - money}원 부족해요. 전략을 바꿔 다시 도전!")

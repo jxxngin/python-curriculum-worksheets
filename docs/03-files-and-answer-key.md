@@ -26,8 +26,11 @@
 | 주차 | 파일 |
 | --- | --- |
 | 중간 | 주제별 `midterm_<주제>_starter.py` / `_solution.py` |
-| 설계와 보충 | `review_starter.py` / `review_solution.py` (보충 문제 전부) |
-| 기말 | 주제별 `final_<주제>_starter.py` / `_solution.py` |
+| 설계와 보충 | `review_starter.py` / `review_solution.py` (보충 문제 전부). 빈칸 없이 그대로 실행되는 작은 프로그램들이고, 실행하면 번호를 물어 그 문제만 실행한다. solution은 문제마다 미션 한 가지씩 한 예시 답안 (2026-11-13) |
+| 기말 | 주제별 `final_<주제>_starter.py` / `_solution.py`. 워밍업은 주마다 하나: `warmup.py`(10주), `warmup_week11.py`(11주) (2026-11-13) |
+
+- 프로젝트 주차도 `lesson_spec.py`로 만든다(`mini=False`). `mini_*.py`는 만들지 않는다.
+- 프로젝트 주차의 `answer_key.md` 단계 절은 "실행하고 확인" 대신 "확인할 점"으로 쓴다(spec `key.step_label`).
 
 ## 파이썬 파일 규칙
 
