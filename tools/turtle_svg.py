@@ -169,6 +169,8 @@ class FakeTurtle:
         self._fill_pts = None
 
     def dot(self, size=None, *c):
+        if isinstance(size, (str, tuple)):   # dot("red")처럼 색만 준 경우(실제 터틀과 같음)
+            c, size = (size,) + c, None
         size = size or max(self._width + 4, self._width * 2)
         self._end_path()   # 지금까지의 선을 끊어야 점 뒤에 그린 선이 점 위에 보인다(그린 순서 그대로)
         self._add(['dot', self._x, self._y, size, _col(c) if c else self._color])
@@ -231,6 +233,15 @@ class FakeScreen:
     def __init__(self, canvas):
         self._c = canvas
 
+    def colormode(self, mode=None):
+        """색 숫자의 범위: 1.0(기본, 0~1) 또는 255(0~255). 실제 터틀과 같다."""
+        global _MODE
+        if mode is None:
+            return _MODE
+        if mode not in (1, 1.0, 255):
+            raise ValueError(f'colormode는 1.0이나 255만 돼요: {mode!r}')
+        _MODE = 255 if mode == 255 else 1.0
+
     def bgcolor(self, *c):
         self._c.bg = _col(c)
 
@@ -251,6 +262,7 @@ class FakeScreen:
     done = exitonclick = mainloop
 
 
+_MODE = 1.0   # colormode. record()마다 1.0으로 되돌린다
 _TK = None
 _RGB = {}
 
@@ -278,12 +290,17 @@ def _col(c):
     if len(c) == 1 and isinstance(c[0], tuple):
         c = c[0]
     if len(c) == 3:
-        r, g, b = (int(v * 255) if isinstance(v, float) and v <= 1 else int(v) for v in c)
+        top = 255 if _MODE == 255 else 1.0
+        if not all(0 <= v <= top for v in c):
+            raise ValueError(f'색 숫자는 0~{top:g} 사이여야 해요(colormode {top:g}): {tuple(c)!r}')
+        r, g, b = (round(v * 255 / top) for v in c)
         return f'#{r:02x}{g:02x}{b:02x}'
     return _tk_rgb(str(c[0]))
 
 
 def fake_module(canvas):
+    global _MODE
+    _MODE = 1.0   # 실행마다 실제 터틀의 기본 색 모드로
     m = types.ModuleType('turtle')
     default = FakeTurtle(canvas)
     screen = FakeScreen(canvas)
@@ -292,7 +309,7 @@ def fake_module(canvas):
     for name in dir(FakeTurtle):
         if not name.startswith('_'):
             setattr(m, name, getattr(default, name))
-    for name in ('bgcolor', 'title', 'setup', 'tracer', 'update', 'mainloop', 'done', 'exitonclick'):
+    for name in ('bgcolor', 'title', 'setup', 'tracer', 'update', 'mainloop', 'done', 'exitonclick', 'colormode'):
         setattr(m, name, getattr(screen, name))
     return m
 
@@ -338,8 +355,13 @@ def to_svg(canvas, max_width=360, pad=20):
             out.append(f'<circle cx="{it[1] - x0:.1f}" cy="{y1 - it[2]:.1f}" r="{it[3] / 2:.1f}" fill="{escape(it[4])}"/>')
         elif it[0] == 'text':
             anchor = {'left': 'start', 'center': 'middle', 'right': 'end'}.get(it[4], 'start')
-            out.append(f'<text x="{it[1] - x0:.1f}" y="{y1 - it[2]:.1f}" font-size="{it[5][1] * 1.33:.0f}"'
-                       f' text-anchor="{anchor}" fill="{escape(it[6])}">{escape(it[3])}</text>')
+            font = tuple(it[5]) + ('normal',) * (3 - len(it[5]))
+            style = str(font[2]).lower().split()
+            out.append(f'<text x="{it[1] - x0:.1f}" y="{y1 - it[2]:.1f}" font-size="{font[1] * 1.33:.0f}"'
+                       f' font-family="{escape(str(font[0]), quote=True)}, sans-serif"'
+                       + (' font-weight="bold"' if 'bold' in style else '')
+                       + (' font-style="italic"' if 'italic' in style else '')
+                       + f' text-anchor="{anchor}" fill="{escape(it[6])}">{escape(it[3])}</text>')
     out.append('</svg>')
     return ''.join(out)
 
@@ -347,6 +369,8 @@ def to_svg(canvas, max_width=360, pad=20):
 def record(src, inputs=(), max_width=360):
     """src를 가짜 터틀로 실행하고 (화면 글자, svg)를 돌려준다. input()은 inputs를 차례로 쓴다."""
     import io
+    global _MODE
+    _MODE = 1.0
     canvas = Canvas()
     it = iter(inputs)
     out = io.StringIO()
