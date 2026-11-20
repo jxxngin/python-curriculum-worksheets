@@ -359,13 +359,27 @@ def fake_module(canvas):
     return m
 
 
+LINE = 1.25     # 줄 간격(글자 크기의 배수)
+DESCENT = 0.25  # 기준선 아래로 내려가는 획의 높이(글자 크기의 배수)
+
+
+def text_lines(y, text, font):
+    """write() 글자를 줄마다 나눠 (줄, 기준선 y)로. 실제 터틀(Tk 글자, anchor s/sw/se)은 글자 묶음의
+    아랫변(내려가는 획 포함)을 y에 맞춘다. 그래서 마지막 줄의 기준선은 y보다 조금 위이고 앞줄들은 위로 쌓인다."""
+    em = font[1] * 1.33
+    lines = str(text).split('\n')
+    n = len(lines)
+    return [(ln, y + em * DESCENT + (n - 1 - i) * em * LINE) for i, ln in enumerate(lines)]
+
+
 def text_box(x, y, text, align, font):
-    """write() 글자가 차지하는 네모의 두 꼭짓점(터틀 좌표). 폭은 글자 수로 어림한다:
-    한글·한자 등 넓은 글자는 1em, 나머지는 0.6em. 터틀은 기준선이 y이고 글자는 그 위에 놓인다."""
+    """write() 글자가 차지하는 네모의 두 꼭짓점(터틀 좌표). 폭은 가장 긴 줄을 글자 수로 어림한다:
+    한글·한자 등 넓은 글자는 1em, 나머지는 0.6em. 높이는 줄 수만큼."""
     em = font[1] * 1.33   # SVG에 쓰는 글자 크기(px)와 같게
-    w = sum(1.0 if ord(ch) > 0x2E80 else 0.6 for ch in text) * em
+    lines = text_lines(y, text, font)
+    w = max(sum(1.0 if ord(ch) > 0x2E80 else 0.6 for ch in ln) for ln, _ in lines) * em
     x0 = {'left': x, 'center': x - w / 2, 'right': x - w}.get(align, x)
-    return [(x0, y - em * 0.3), (x0 + w, y + em * 1.1)]
+    return [(x0, y), (x0 + w, lines[0][1] + em * 0.95)]
 
 
 def to_svg(canvas, max_width=360, pad=20):
@@ -403,11 +417,19 @@ def to_svg(canvas, max_width=360, pad=20):
             anchor = {'left': 'start', 'center': 'middle', 'right': 'end'}.get(it[4], 'start')
             font = tuple(it[5]) + ('normal',) * (3 - len(it[5]))
             style = str(font[2]).lower().split()
-            out.append(f'<text x="{it[1] - x0:.1f}" y="{y1 - it[2]:.1f}" font-size="{font[1] * 1.33:.0f}"'
-                       f' font-family="{escape(str(font[0]), quote=True)}, sans-serif"'
-                       + (' font-weight="bold"' if 'bold' in style else '')
-                       + (' font-style="italic"' if 'italic' in style else '')
-                       + f' text-anchor="{anchor}" fill="{escape(it[6])}">{escape(it[3])}</text>')
+            attrs = (f' font-size="{font[1] * 1.33:.0f}" font-family="{escape(str(font[0]), quote=True)}, sans-serif"'
+                     + (' font-weight="bold"' if 'bold' in style else '')
+                     + (' font-style="italic"' if 'italic' in style else '')
+                     + f' text-anchor="{anchor}" fill="{escape(it[6])}"')
+            lines = text_lines(it[2], it[3], font)
+            tx = it[1]
+            if len(lines) > 1:
+                # Tk는 여러 줄 묶음을 align대로 놓고, 줄들은 묶음 안에서 왼쪽 맞춤으로 둔다
+                tx = text_box(it[1], it[2], it[3], it[4], font)[0][0]
+                attrs = attrs.replace(f'text-anchor="{anchor}"', 'text-anchor="start"')
+            for ln, ly in lines:   # 줄마다 따로(SVG는 줄바꿈을 공백으로 합친다)
+                if ln:
+                    out.append(f'<text x="{tx - x0:.1f}" y="{y1 - ly:.1f}"{attrs}>{escape(ln)}</text>')
     for poly, fc, oc in cursors:   # 보이는 거북이는 실제 창처럼 그림 맨 위에(채우기 색 + 펜 색 테두리, 두께 1)
         out.append(f'<polygon points="{" ".join(f(q) for q in poly)}" fill="{escape(fc)}" stroke="{escape(oc)}" stroke-width="1"/>')
     out.append('</svg>')
