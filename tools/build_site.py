@@ -23,8 +23,7 @@ REPO_URL = "https://github.com/jxxngin/python-curriculum-worksheets"
 # (폴더, 시안 여부) — 시안은 기준 확정 전 별도 제작본이라 목차에 '시안' 표시를 단다.
 SOURCES = {
     1: [("worksheets/semester1", False)],
-    2: [("worksheets/semester2", False),
-        ("codex-created-semester2/worksheets/semester2", True)],
+    2: [("worksheets/semester2", False)],
     3: [("worksheets/semester3", False)],
     4: [("worksheets/semester4", False)],
 }
