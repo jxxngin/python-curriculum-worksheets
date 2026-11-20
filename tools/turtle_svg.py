@@ -331,7 +331,18 @@ def fake_module(canvas):
     m = types.ModuleType('turtle')
     default = FakeTurtle(canvas, register=False)   # 실제 터틀처럼 모듈 함수를 처음 쓸 때 화면에 생긴다
     screen = FakeScreen(canvas)
-    m.Turtle = m.Pen = m.RawTurtle = lambda *a, **k: FakeTurtle(canvas)
+    def make_turtle(shape='classic', undobuffersize=1000, visible=True):
+        """turtle.Turtle()과 같은 인자. 모양·표시 여부를 그대로 적용한다(undobuffersize는 그림에 영향 없음)."""
+        t = FakeTurtle(canvas)
+        t.shape(shape)
+        if not visible:
+            t.hideturtle()
+        return t
+
+    def raw_turtle(*a, **k):
+        raise NotImplementedError('기록용 터틀은 RawTurtle을 지원하지 않아요. turtle.Turtle()을 써요.')
+    m.Turtle = m.Pen = make_turtle
+    m.RawTurtle = m.RawPen = raw_turtle
     m.Screen = lambda: screen
 
     def use(name):
