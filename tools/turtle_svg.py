@@ -164,9 +164,11 @@ class FakeTurtle:
 
     def dot(self, size=None, *c):
         size = size or max(self._width + 4, self._width * 2)
+        self._end_path()   # 지금까지의 선을 끊어야 점 뒤에 그린 선이 점 위에 보인다(그린 순서 그대로)
         self._c.items.append(['dot', self._x, self._y, size, _col(c) if c else self._color])
 
     def write(self, text, move=False, align='left', font=('Arial', 8, 'normal')):
+        self._end_path()
         self._c.items.append(['text', self._x, self._y, str(text), align, font, self._color])
 
     # ---- 알아보기
@@ -255,6 +257,15 @@ def fake_module(canvas):
     return m
 
 
+def text_box(x, y, text, align, font):
+    """write() 글자가 차지하는 네모의 두 꼭짓점(터틀 좌표). 폭은 글자 수로 어림한다:
+    한글·한자 등 넓은 글자는 1em, 나머지는 0.6em. 터틀은 기준선이 y이고 글자는 그 위에 놓인다."""
+    em = font[1] * 1.33   # SVG에 쓰는 글자 크기(px)와 같게
+    w = sum(1.0 if ord(ch) > 0x2E80 else 0.6 for ch in text) * em
+    x0 = {'left': x, 'center': x - w / 2, 'right': x - w}.get(align, x)
+    return [(x0, y - em * 0.3), (x0 + w, y + em * 1.1)]
+
+
 def to_svg(canvas, max_width=360, pad=20):
     pts = []
     for it in canvas.items:
@@ -265,7 +276,7 @@ def to_svg(canvas, max_width=360, pad=20):
         elif it[0] == 'dot':
             pts += [(it[1] - it[3] / 2, it[2] - it[3] / 2), (it[1] + it[3] / 2, it[2] + it[3] / 2)]
         elif it[0] == 'text':
-            pts += [(it[1], it[2]), (it[1], it[2] + it[5][1] * 1.5)]
+            pts += text_box(it[1], it[2], it[3], it[4], it[5])
     if not pts:
         pts = [(-50, -50), (50, 50)]
     x0 = min(p[0] for p in pts) - pad
