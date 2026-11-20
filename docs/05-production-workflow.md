@@ -56,6 +56,17 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 | 힌트 뱃지 지정 | 힌트에 다섯째 값을 주면 그 글자가 뱃지가 된다(예: `('…', '●○○', '…', 'change', '방탈출')`) |
 | 정답지 | `key`에 `intro`(머리말), `mission`(완성 화면 설명), `step_label`(프로젝트 주차는 "확인할 점"), `new`(새로 만들기·보충 정답) |
 
+### 2학기(터틀)용 필드 (2026-11-20)
+
+| 필드 | 뜻 |
+| --- | --- |
+| `semester=2` | 머리 칩의 학기 |
+| `head_lines`, `tail_lines`, `tail_note` | starter·solution 맨 위·맨 아래에 늘 두는 줄(`['import turtle']`, `['turtle.done()']`)과 맨 아래 줄 앞 안내 주석 |
+| 단계 `record_draw=True` | "② 실행하고 확인"을 그리기 칸으로 |
+| 도구 카드 결과 `'@svg 설명'` | 예시 코드를 실행한 그림을 결과 자리에 넣는다 |
+
+- `turtle`을 쓰는 코드는 생성 도구가 늘 기록용 터틀(`tools/turtle_svg.py`)로 실행한다. 창이 뜨지 않고, 완성 화면에 SVG가 들어간다.
+
 ## 프로젝트 주차 (5, 9, 10~11주)
 
 새 블록 종류를 만들지 않고 기존 블록을 쓴다. 블록 순서는 개념 주차와 같다.
