@@ -22,11 +22,29 @@ class Canvas:
         self.items = []          # ('line', pts, color, width) / ('fill', idx) / ('dot', x, y, size, color) / ('text', ...)
         self.bg = '#ffffff'
         self.title = ''
+        self.turtles = []        # 만든 거북이들. 끝났을 때 보이는 거북이는 그림 맨 위에 그린다
+
+
+# 파이썬 turtle에 들어 있는 모양 좌표(TurtleScreen._shapes와 같음). +y 쪽이 거북이가 보는 방향이다.
+SHAPES = {
+    'arrow': ((-10, 0), (10, 0), (0, 10)),
+    'turtle': ((0, 16), (-2, 14), (-1, 10), (-4, 7), (-7, 9), (-9, 8), (-6, 5), (-7, 1), (-5, -3), (-8, -6),
+               (-6, -8), (-4, -5), (0, -7), (4, -5), (6, -8), (8, -6), (5, -3), (7, 1), (6, 5), (9, 8), (7, 9),
+               (4, 7), (1, 10), (2, 14)),
+    'circle': tuple((round(10 * math.cos(math.radians(a)), 2), round(10 * math.sin(math.radians(a)), 2)) for a in range(0, 360, 18)),
+    'square': ((10, -10), (10, 10), (-10, 10), (-10, -10)),
+    'triangle': ((10, -5.77), (0, 11.55), (-10, -5.77)),
+    'classic': ((0, 0), (-5, -9), (0, -7), (5, -9)),
+    'blank': (),
+}
 
 
 class FakeTurtle:
-    def __init__(self, canvas):
+    def __init__(self, canvas, register=True):
         self._c = canvas
+        self._shape = 'classic'
+        if register:
+            canvas.turtles.append(self)
         self._x = self._y = 0.0
         self._h = 0.0
         self._down = True
@@ -206,8 +224,17 @@ class FakeTurtle:
     def speed(self, *a):
         pass
 
-    def shape(self, *a):
-        pass
+    def shape(self, name=None):
+        if name is None:
+            return self._shape
+        if name not in SHAPES:
+            raise ValueError(f'기록용 터틀이 모르는 모양이에요: {name!r} ({", ".join(SHAPES)})')
+        self._shape = name
+
+    def _cursor(self):
+        """보이는 거북이의 모양 꼭짓점(터틀 좌표). 실제 터틀(_polytrafo, 크기 그대로)과 같은 계산."""
+        e0, e1 = math.cos(math.radians(self._h)), math.sin(math.radians(self._h))
+        return [(self._x + e1 * x + e0 * y, self._y - e0 * x + e1 * y) for x, y in SHAPES[self._shape]]
 
     def hideturtle(self):
         self._visible = False
@@ -302,13 +329,20 @@ def fake_module(canvas):
     global _MODE
     _MODE = 1.0   # 실행마다 실제 터틀의 기본 색 모드로
     m = types.ModuleType('turtle')
-    default = FakeTurtle(canvas)
+    default = FakeTurtle(canvas, register=False)   # 실제 터틀처럼 모듈 함수를 처음 쓸 때 화면에 생긴다
     screen = FakeScreen(canvas)
     m.Turtle = m.Pen = m.RawTurtle = lambda *a, **k: FakeTurtle(canvas)
     m.Screen = lambda: screen
+
+    def use(name):
+        def f(*a, **k):
+            if default not in canvas.turtles:
+                canvas.turtles.append(default)
+            return getattr(default, name)(*a, **k)
+        return f
     for name in dir(FakeTurtle):
         if not name.startswith('_'):
-            setattr(m, name, getattr(default, name))
+            setattr(m, name, use(name))
     for name in ('bgcolor', 'title', 'setup', 'tracer', 'update', 'mainloop', 'done', 'exitonclick', 'colormode'):
         setattr(m, name, getattr(screen, name))
     return m
@@ -324,7 +358,8 @@ def text_box(x, y, text, align, font):
 
 
 def to_svg(canvas, max_width=360, pad=20):
-    pts = []
+    cursors = [(t._cursor(), t._fill, t._color) for t in canvas.turtles if t._visible and SHAPES[t._shape]]
+    pts = [q for poly, _, _ in cursors for q in poly]
     for it in canvas.items:
         if it[0] == 'line':   # 선은 두께의 절반만큼 양옆으로 퍼진다
             hw = it[3] / 2
@@ -362,6 +397,8 @@ def to_svg(canvas, max_width=360, pad=20):
                        + (' font-weight="bold"' if 'bold' in style else '')
                        + (' font-style="italic"' if 'italic' in style else '')
                        + f' text-anchor="{anchor}" fill="{escape(it[6])}">{escape(it[3])}</text>')
+    for poly, fc, oc in cursors:   # 보이는 거북이는 실제 창처럼 그림 맨 위에(채우기 색 + 펜 색 테두리, 두께 1)
+        out.append(f'<polygon points="{" ".join(f(q) for q in poly)}" fill="{escape(fc)}" stroke="{escape(oc)}" stroke-width="1"/>')
     out.append('</svg>')
     return ''.join(out)
 
