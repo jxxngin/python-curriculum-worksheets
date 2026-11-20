@@ -429,7 +429,9 @@ def to_svg(canvas, max_width=360, pad=20):
                 attrs = attrs.replace(f'text-anchor="{anchor}"', 'text-anchor="start"')
             for ln, ly in lines:   # 줄마다 따로(SVG는 줄바꿈을 공백으로 합친다)
                 if ln:
-                    out.append(f'<text x="{tx - x0:.1f}" y="{y1 - ly:.1f}"{attrs}>{escape(ln)}</text>')
+                    # 글자의 연속·앞뒤 공백은 실제 Tk처럼 그대로 둔다. SVG는 공백을 하나로 줄이고, HTML 안의 SVG는
+                    # xml:space도 무시하므로 공백을 줄바꿈 없는 공백(U+00A0, 폭이 같음)으로 바꿔 넣는다
+                    out.append(f'<text x="{tx - x0:.1f}" y="{y1 - ly:.1f}"{attrs}>{escape(ln).replace(" ", chr(0xA0))}</text>')
     for poly, fc, oc in cursors:   # 보이는 거북이는 실제 창처럼 그림 맨 위에(채우기 색 + 펜 색 테두리, 두께 1)
         out.append(f'<polygon points="{" ".join(f(q) for q in poly)}" fill="{escape(fc)}" stroke="{escape(oc)}" stroke-width="1"/>')
     out.append('</svg>')
