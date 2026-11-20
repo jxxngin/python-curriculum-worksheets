@@ -44,13 +44,16 @@ def check(items):
 def tool(name, when, lines, result):
     """도구 카드. 2학기(터틀)는 result를 '@svg 설명'으로 쓰면 예시 코드를 실제로 실행한 그림이 결과 자리에 들어간다."""
     if result.startswith('@svg'):
-        run('\n'.join(lines), [])
+        # 카드에는 import 줄을 싣지 않아도 된다(시작 파일 맨 위에 늘 있다). 실행할 때만 붙인다
+        head = [] if any(l.startswith('import turtle') for l in lines) else ['import turtle']
+        run('\n'.join(head + lines), [])
         cap = result[4:].strip()
-        pic = to_svg(run.canvas, max_width=180)
+        pic = to_svg(run.canvas, max_width=140)
         return (f'<div class="tool"><div class="th">🧰 {name}</div><p>{when}</p>'
                 f'{code(lines, nonum=True)}{pic}' + (f'<p class="muted">→ {cap}</p>' if cap else '') + '</div>')
+    # 예시 줄이 없는 작은 카드(설명 안에 예시를 넣은 경우)는 코드 상자와 결과 줄을 뺀다
     return (f'<div class="tool"><div class="th">🧰 {name}</div><p>{when}</p>'
-            f'{code(lines, nonum=True)}<p class="muted">→ {result}</p></div>')
+            + (code(lines, nonum=True) if lines else '') + (f'<p class="muted">→ {result}</p>' if result else '') + '</div>')
 
 
 def table(headers, rows=0, first=None, widths=None):
@@ -327,6 +330,7 @@ def md(s):
 def md_block(body):
     """교안 칸(HTML) → README 마크다운. 표는 마크다운 표로, 빈칸은 ____로."""
     body = re.sub(r'<span class="blank"></span>', '____', body)
+    body = re.sub(r'<svg.*?</svg>', '<p>(그림은 `lesson.html`에서 본다)</p>', body, flags=re.S)   # 2학기 그림
     out = []
     for part in re.split(r'(<table.*?</table>)', body, flags=re.S):
         if part.startswith('<table'):
@@ -376,7 +380,8 @@ def docs(w, complete):
             r += readme_warm(later[i], multi)
         r += [f"## 🪜 단계 {i}: {s['name']}", '', f"📌 목표: {md(s['goal'])}", '']
         for t in s.get('tool', []):
-            r += [f"> 🧰 **{md(t[0])}**: {md(t[1])}", '>', '> ```python'] + [f'> {l}' for l in t[2]] + ['> ```', f'> → {md(t[3])}', '']
+            res = re.sub(r'^@svg\s*', '', t[3])   # 그림 카드는 설명만(그림은 lesson.html에 있다)
+            r += [f"> 🧰 **{md(t[0])}**: {md(t[1])}"] + (['>', '> ```python'] + [f'> {l}' for l in t[2]] + ['> ```'] if t[2] else []) + ([f'> → {md(res)}'] if res else []) + ['']
         if s.get('lines'):
             r += [f"① 기능 추가하기: `{f}`의 `# 단계 {i}` 아래에 입력", '', '```python'] + s['lines'] + ['```', '', f"② 실행하고 확인: {md(s.get('record', '마지막 줄 적기'))}", '']
         if s.get('readme'):
