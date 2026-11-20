@@ -223,29 +223,29 @@ for 줄 끝에 `:`이 있는지, 아래 세 줄 앞에 4칸을 똑같이 띄웠�
 <details>
 <summary>[새로 만들기] 날개 끝 점 · 무엇부터 할지 모를 때 ●○○</summary>
 
-날개 끝은 단계 2 막대의 끝이에요. 단계 2처럼 막대 끝까지 갔다가 돌아오면서 점을 찍어요.
+날개 끝은 가운데에서 100만큼 떨어진 곳이에요. 단계 2처럼 날개마다 끝까지 갔다가 돌아오면서 점을 찍어요. 날개 수만큼 되풀이해요.
 
 </details>
 
 <details>
 <summary>[새로 만들기] 날개 끝 점 · 쓸 도구가 떠오르지 않을 때 ●●○</summary>
 
-단계 2와 같은 모양의 for를 하나 더 써요. `forward(100)`과 `backward(100)` 사이에 `turtle.dot(15, "yellow")`를 넣어요. 선이 덧그려지지 않게 먼저 `turtle.penup()`을 써요.
+단계 2와 같은 모양의 for를 하나 더 써요. `forward(100)`과 `backward(100)` 사이에 `turtle.dot(15, "yellow")`를 넣어요. 선이 덧그려지지 않게 먼저 `turtle.penup()`을 써요. 횟수와 각도는 내 날개 수에 맞춰요: 날개 8개면 `range(8)`, 360 ÷ 8 = 45도씩.
 
 </details>
 
 <details>
 <summary>[새로 만들기] 날개 끝 점 · 거의 다 됐는데 안 될 때 ●●●</summary>
 
-`turtle.done()` 줄 위에 입력해요.
+`turtle.done()` 줄 위에 입력해요. 날개 8개일 때예요. 날개가 4개면 `range(4)`, `left(90)`으로 바꿔요.
 
 ```python
 turtle.penup()
-for i in range(4):
+for i in range(8):
     turtle.forward(100)
     turtle.dot(15, "yellow")
     turtle.backward(100)
-    turtle.left(90)
+    turtle.left(45)
 ```
 
 </details>
