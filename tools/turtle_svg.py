@@ -20,7 +20,7 @@ COLORS_OK = None  # 색 이름은 그대로 SVG에 넘긴다(SVG도 CSS 색 이�
 class Canvas:
     def __init__(self):
         self.items = []          # ('line', pts, color, width) / ('fill', idx) / ('dot', x, y, size, color) / ('text', ...)
-        self.bg = 'white'
+        self.bg = '#ffffff'
         self.title = ''
 
 
@@ -30,8 +30,8 @@ class FakeTurtle:
         self._x = self._y = 0.0
         self._h = 0.0
         self._down = True
-        self._color = 'black'
-        self._fill = 'black'
+        self._color = '#000000'
+        self._fill = '#000000'
         self._width = 1
         self._path = None        # 지금 그리는 선(점 목록)
         self._fill_pts = None
@@ -251,13 +251,36 @@ class FakeScreen:
     done = exitonclick = mainloop
 
 
+_TK = None
+_RGB = {}
+
+
+def _tk_rgb(name):
+    """색 이름을 실제 터틀이 쓰는 Tk에 물어 '#rrggbb'로 바꾼다.
+    Tk 색 이름과 SVG/CSS 색 이름은 다르다(예: Tk의 gray50은 CSS에 없다). 이름을 그대로 넘기면 그림이 조용히 달라진다.
+    Tk도 모르는 이름이면 실제 터틀처럼 오류를 낸다."""
+    global _TK
+    if name in _RGB:
+        return _RGB[name]
+    if _TK is None:
+        import tkinter
+        _TK = tkinter.Tk()
+        _TK.withdraw()
+    try:
+        r, g, b = _TK.winfo_rgb(name)
+    except Exception:
+        raise ValueError(f'터틀이 모르는 색이에요: {name!r}')
+    _RGB[name] = f'#{r // 257:02x}{g // 257:02x}{b // 257:02x}'
+    return _RGB[name]
+
+
 def _col(c):
     if len(c) == 1 and isinstance(c[0], tuple):
         c = c[0]
     if len(c) == 3:
         r, g, b = (int(v * 255) if isinstance(v, float) and v <= 1 else int(v) for v in c)
         return f'#{r:02x}{g:02x}{b:02x}'
-    return str(c[0])
+    return _tk_rgb(str(c[0]))
 
 
 def fake_module(canvas):
@@ -286,8 +309,9 @@ def text_box(x, y, text, align, font):
 def to_svg(canvas, max_width=360, pad=20):
     pts = []
     for it in canvas.items:
-        if it[0] == 'line':
-            pts += it[1]
+        if it[0] == 'line':   # 선은 두께의 절반만큼 양옆으로 퍼진다
+            hw = it[3] / 2
+            pts += [q for x, y in it[1] for q in ((x - hw, y - hw), (x + hw, y + hw))]
         elif it[0] == 'fill' and it[1]:
             pts += it[1]
         elif it[0] == 'dot':
