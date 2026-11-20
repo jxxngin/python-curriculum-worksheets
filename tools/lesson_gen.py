@@ -10,6 +10,8 @@ spec 필드 설명: docs/05-production-workflow.md "설계 파일". 예시: week
 """
 import html, io, re, sys, random, builtins
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from turtle_svg import Canvas, fake_module as fake_turtle, to_svg  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 TPL = (ROOT / 'docs' / 'templates' / 'lesson-template.html').read_text(encoding='utf-8')
@@ -40,6 +42,13 @@ def check(items):
 
 
 def tool(name, when, lines, result):
+    """도구 카드. 2학기(터틀)는 result를 '@svg 설명'으로 쓰면 예시 코드를 실제로 실행한 그림이 결과 자리에 들어간다."""
+    if result.startswith('@svg'):
+        run('\n'.join(lines), [])
+        cap = result[4:].strip()
+        pic = to_svg(run.canvas, max_width=180)
+        return (f'<div class="tool"><div class="th">🧰 {name}</div><p>{when}</p>'
+                f'{code(lines, nonum=True)}{pic}' + (f'<p class="muted">→ {cap}</p>' if cap else '') + '</div>')
     return (f'<div class="tool"><div class="th">🧰 {name}</div><p>{when}</p>'
             f'{code(lines, nonum=True)}<p class="muted">→ {result}</p></div>')
 
@@ -56,8 +65,13 @@ def table(headers, rows=0, first=None, widths=None):
 
 def run(src, inputs, randoms=None, choices=None):
     """src를 실행한 화면을 돌려준다. randoms: randint가 차례로 낼 값, choices: random.choice가 차례로 고를 값.
-    time.sleep()은 기다리지 않는다."""
+    time.sleep()은 기다리지 않는다. turtle은 창을 띄우지 않는 기록용 터틀(tools/turtle_svg.py)로 바꿔 실행하고,
+    그린 그림은 run.canvas에 남는다(그림이 없으면 None)."""
     import time
+    canvas = Canvas() if 'turtle' in src else None
+    old_turtle = sys.modules.get('turtle')
+    if canvas:
+        sys.modules['turtle'] = fake_turtle(canvas)
     it = iter(inputs)
     out = io.StringIO()
 
@@ -81,6 +95,12 @@ def run(src, inputs, randoms=None, choices=None):
     finally:
         sys.stdout = old
         random.randint, random.choice, time.sleep = orig
+        if canvas:
+            if old_turtle is None:
+                sys.modules.pop('turtle', None)
+            else:
+                sys.modules['turtle'] = old_turtle
+    run.canvas = canvas
     return out.getvalue().rstrip('\n')
 
 
@@ -90,6 +110,7 @@ def build(w):
         f, inp, rnd = w['complete'][:3]
         ch = w['complete'][3] if len(w['complete']) > 3 else None
         complete = run((d / f).read_text(encoding='utf-8'), inp, rnd, ch)
+        w['_svg'] = to_svg(run.canvas) if run.canvas else None
     else:
         complete = make_py(w, d)
     lesson(w, d, complete)
@@ -99,21 +120,31 @@ def build(w):
 def make_py(w, d):
     starter = [f"# {w['week']}주 미니 프로젝트: {w['title']}", '# 교안의 단계마다 그 아래에 코드를 이어 써요.', '']
     sol = [f"# {w['week']}주 미니 프로젝트: {w['title']} (정답)", '# 교안의 단계 순서대로 이어 쓴 완성본이에요.', '']
+    head = w.get('head_lines', [])   # 2학기: starter·solution 맨 위에 늘 두는 줄(예: import turtle)
+    if head:
+        starter += head + ['']
+        sol += head + ['']
     for i, s in enumerate(w['steps'], 1):
         starter += [f"# 단계 {i}: {s['name']}", '', '']
         sol += [f"# 단계 {i}: {s['name']}"] + s.get('sol_lines', s['lines']) + ['']
+    tail = w.get('tail_lines', [])   # 2학기: starter·solution 맨 아래에 늘 두는 줄(예: turtle.done()). 단계 코드는 그 위에 쓴다
+    if tail:
+        note = w.get('tail_note', '# 이 줄은 늘 맨 아래에 둬요. 단계 코드는 이 줄 위에 써요.')
+        starter += [note] + tail + ['']
+        sol += [note] + tail + ['']
     where = w.get('change_where', '맨 아래에 이어서')
     sol += [f'# ----- 바꾸기 예시 (선생님용). 주석을 풀어 {where} 넣으면 실행돼요 -----'] + ['# ' + l if l else '#' for l in w['change_example']]
     (d / 'mini_starter.py').write_text('\n'.join(starter) + '\n', encoding='utf-8')
     (d / 'mini_solution.py').write_text('\n'.join(sol) + '\n', encoding='utf-8')
     src = '\n'.join(sol)
     complete = run(src, w['demo_inputs'], w.get('demo_randoms'), w.get('demo_choices'))
+    w['_svg'] = to_svg(run.canvas) if run.canvas else None
     # each step prefix must run
     acc = []
     for i, s in enumerate(w['steps'], 1):
         acc += s.get('sol_lines', s['lines'])
         ch = w.get('demo_choices')
-        run('\n'.join(acc), w.get('prefix_inputs', w['demo_inputs'] + ['1'] * 5), (w.get('demo_randoms') or []) + [1] * 5 if w.get('demo_randoms') else None, ch * 2 if ch else None)
+        run('\n'.join(head + acc + tail), w.get('prefix_inputs', w['demo_inputs'] + ['1'] * 5), (w.get('demo_randoms') or []) + [1] * 5 if w.get('demo_randoms') else None, ch * 2 if ch else None)
     return complete
 
 
@@ -181,12 +212,21 @@ def act(n, name, how, inner):
     return f'<div class="keep"><div class="label">{num}{name}{h}</div>{inner}</div>'
 
 
+def screen_body(w, complete):
+    """완성 화면: 글자 출력, 2학기는 그린 그림(SVG)과 (있으면) 글자 출력."""
+    if w.get('_svg'):
+        return w['_svg'] + (f'<div style="margin-top:8px">{E(complete)}</div>' if complete else '')
+    return E(complete)
+
+
 def wrap_list(w):
     """오늘의 마무리 체크리스트. 프로젝트 주차는 spec의 wrap으로 바꾼다."""
     return w.get('wrap', ['워밍업 오류 3개를 고쳤다.', '단계마다 실행하며 완성했다.', '★ 3개를 완성했다.', '친구에게 보여 줬다.'])
 
 
 def record_box(s):
+    if s.get('record_draw'):   # 2학기: 나온 그림을 따라 그리는 칸
+        return '<div class="draw"></div>'
     if s.get('record_table'):
         hd, rows = s['record_table']
         return table(hd, 0, first=rows)
@@ -208,7 +248,7 @@ def lesson(w, d, complete):
     <h2>🎯 오늘의 미션</h2>
     <p>{w['story']}</p>
     <div class="goals"><h3>📌 오늘의 목표</h3><ul>{goals}</ul></div>
-    <div class="screen"><div class="bar">{w.get('complete_bar', '완성하면 이렇게 돼요')}</div><div class="body">{E(complete)}</div></div>
+    <div class="screen"><div class="bar">{w.get('complete_bar', '완성하면 이렇게 돼요')}</div><div class="body">{screen_body(w, complete)}</div></div>
   </section>''')
     B.append(warmup_block(d, wms[0], multi))
     later = {wm['before_step']: wm for wm in wms[1:]}
@@ -329,7 +369,7 @@ def docs(w, complete):
     multi = len(wms) > 1
     later = {wm['before_step']: wm for wm in wms[1:]}
     r = [f"# {w['week_label']}: {w.get('h1', w['title'] + ' 만들기')}", '', '> 교안 요약이다. 활동은 `lesson.html`에서 한다(인쇄하면 학습지).', '',
-         '## 🎯 오늘의 미션', '', md(w['story']), '', '**오늘의 목표**', ''] + [f'- {md(g)}' for g in w['goals']] + ['', md(w.get('complete_bar', '완성하면 이렇게 돼요')) + ':', '', '```', complete, '```', '']
+         '## 🎯 오늘의 미션', '', md(w['story']), '', '**오늘의 목표**', ''] + [f'- {md(g)}' for g in w['goals']] + ['', md(w.get('complete_bar', '완성하면 이렇게 돼요')) + ':', ''] + (['완성 그림은 `lesson.html`에서 본다.', ''] if w.get('_svg') else []) + (['```', complete, '```', ''] if complete or not w.get('_svg') else [])
     r += readme_warm(wms[0], multi)
     for i, s in enumerate(w['steps'], 1):
         if i in later:

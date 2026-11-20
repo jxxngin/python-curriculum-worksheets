@@ -32,6 +32,12 @@
 - 프로젝트 주차도 `lesson_spec.py`로 만든다(`mini=False`). `mini_*.py`는 만들지 않는다.
 - 프로젝트 주차의 `answer_key.md` 단계 절은 "실행하고 확인" 대신 "확인할 점"으로 쓴다(spec `key.step_label`).
 
+## 2학기(터틀) 파일 (2026-11-20)
+
+- `mini_starter.py`·`mini_solution.py`는 맨 위 `import turtle`, 맨 아래 `turtle.done()`을 둔다(spec `head_lines`, `tail_lines`).
+- solution 실행 확인은 창을 띄우지 않는 기록용 터틀(`tools/turtle_svg.py`)로 한다. 한 번은 실제 터틀 창으로도 실행해 완성 그림과 눈으로 비교한다.
+- `answer_key.md`의 그림 답은 무엇이 보이는지 말로 적는다(예: "노란 원 안에 검은 점 두 개"). 그림은 `lesson.html`에 있다.
+
 ## 파이썬 파일 규칙
 
 - solution과 도전 starter는 끝까지 실행돼야 한다. `mini_solution.py`는 단계 N까지만 남겨도 실행돼야 한다(단계마다 확인할 수 있게).
