@@ -2,8 +2,8 @@
 
 ## 시작 조건
 
-- [README.md](README.md)의 기준 상태가 **확정**일 때만 제작한다.
-- `초안`이면 워크시트를 만들지 않고 기준 문서와 템플릿만 고친다.
+- 기준 상태는 학기별이다. [README.md](README.md)에서 그 학기의 기준 상태가 **확정**일 때만 그 학기를 제작한다.
+- `초안`이면 그 학기 워크시트를 만들지 않고 기준 문서와 템플릿만 고친다.
 
 ## 학기 제작 순서
 
@@ -63,8 +63,10 @@ python tools/lesson_gen.py worksheets/semester1/weekNN/lesson_spec.py
 | `semester=2` | 머리 칩의 학기 |
 | `head_lines`, `tail_lines`, `tail_note` | starter·solution 맨 위·맨 아래에 늘 두는 줄(`['import turtle']`, `['turtle.done()']`)과 맨 아래 줄 앞 안내 주석 |
 | 단계 `record_draw=True` | "② 실행하고 확인"을 그리기 칸으로 |
-| 도구 카드 결과 `'@svg 설명'` | 예시 코드를 실행한 그림을 결과 자리에 넣는다 |
+| 도구 카드 결과 `'@svg 설명'` | 예시 코드를 실행한 그림을 결과 자리에 넣는다. 카드에는 `import turtle`을 싣지 않아도 된다(실행할 때 붙인다) |
+| 도구 카드 예시 줄 `[]`, 결과 `''` | 코드 상자와 결과 줄이 없는 작은 카드(설명 안에 예시를 넣을 때, 쪽 수 줄이기) |
 
+- 기준 예시: `worksheets/semester2/week01/lesson_spec.py`(3단계, 도구 카드 그림, 도전 완성 그림)
 - `turtle`을 쓰는 코드는 생성 도구가 늘 기록용 터틀(`tools/turtle_svg.py`)로 실행한다. 창이 뜨지 않고, 완성 화면에 SVG가 들어간다.
 
 ## 프로젝트 주차 (5, 9, 10~11주)
